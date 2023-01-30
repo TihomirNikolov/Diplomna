@@ -76,5 +76,27 @@ namespace AuthMicroservice.Authentication.Helpers
             return principal;
 
         }
+
+        /// <summary>
+        /// Създава claim-ове за потребителя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<List<Claim>> GetClaims(ApplicationUser user)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Email)
+            };
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("Role", role));
+            }
+
+            return claims;
+        }
     }
 }
