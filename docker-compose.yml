@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    healthcheck:
+        test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" || exit 1
+        interval: 10s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+  authmicroservice:
+    image: ${DOCKER_REGISTRY-}authmicroservice
+    build:
+      context: .
+      dockerfile: AuthMicroservice/Dockerfile
+    depends_on:
+        ms-sql-server:
+            condition: service_healthy
+  #website:
+  #  build:
+  #    context: ./client
+  #    dockerfile: Dockerfile

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthMicroservice", "AuthMicroservice\AuthMicroservice.csproj", "{2BF2296C-9E7A-4413-94A9-1A4945D0A36B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthMicroservice", "AuthMicroservice\AuthMicroservice.csproj", "{2BF2296C-9E7A-4413-94A9-1A4945D0A36B}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "client", "client\", "{AE20642D-3AC3-4E22-B4BA-72B4E6985BA8}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_62725"
 		Debug.AspNetCompiler.PhysicalPath = "Client\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62725\"
@@ -26,6 +26,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "client", "client\", "{AE206
 		SlnRelativePath = "Client\"
 	EndProjectSection
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A6B2C0AA-E48E-4299-A307-B91D71F7C6C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{AE20642D-3AC3-4E22-B4BA-72B4E6985BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE20642D-3AC3-4E22-B4BA-72B4E6985BA8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE20642D-3AC3-4E22-B4BA-72B4E6985BA8}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{A6B2C0AA-E48E-4299-A307-B91D71F7C6C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B2C0AA-E48E-4299-A307-B91D71F7C6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B2C0AA-E48E-4299-A307-B91D71F7C6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B2C0AA-E48E-4299-A307-B91D71F7C6C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

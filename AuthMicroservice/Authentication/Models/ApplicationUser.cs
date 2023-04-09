@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace AuthMicroservice.Database.Models
+namespace AuthMicroservice.Authentication.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string? RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public List<RefreshToken> RefreshTokens { get; set; }
     }
 }

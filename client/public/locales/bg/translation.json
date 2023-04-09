@@ -1,0 +1,17 @@
+{
+    "loginGoogle": "Вход с Google",
+    "loginFacebook": "Вход с Facebook",
+    "loginTwitter": "Вход с Twitter",
+    "signUp": "Регистрация",
+    "signIn": "Вход",
+    "signOut": "Изход",
+    "password": "Парола",
+    "forgotPassword": "Забраваена парола?",
+    "confirmPassword": "Потвърдете паролата",
+    "firstName": "Име",
+    "lastName": "Фамилия",
+    "logIn": "Вход",
+    "dontHaveAccount": "Все още нямате акаунт?",
+    "alreadyHaveAccount": "Вече имате акаунт?",
+    "rememberMe": "Запомни ме"
+}

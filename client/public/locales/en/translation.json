@@ -1,0 +1,17 @@
+{
+    "loginGoogle": "Log in with Google",
+    "loginFacebook": "Log in with Facebook",
+    "loginTwitter": "Log in with Twitter",
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "confirmPassword": "Confirm password",
+    "firstName": "Name",
+    "lastName": "Last name",
+    "logIn": "Log in",
+    "dontHaveAccount": "Don't have account?",
+    "alreadyHaveAccount": "Already have account?",
+    "rememberMe": "Remember me"
+}
