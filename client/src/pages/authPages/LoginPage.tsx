@@ -3,10 +3,9 @@ import { FormEvent, useState } from "react";
 import { Checkbox, FloatingInput, LinkButton } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { LoginModel, TokenModel, baseURL } from "../../utilities";
+import { LoginModel, TokenModel, baseURL, notification, setTokenObject, validateEmail } from "../../utilities";
 import { User, useTheme, useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 import './css/LoginPage.css'
 
@@ -20,7 +19,6 @@ export default function LoginPage() {
     const [isPasswordValidationVisible, setIsPasswordValidationVisible] = useState<boolean>(false);
 
     const { t } = useTranslation();
-    const { theme } = useTheme();
     const { setUser } = useUser();
     const navigate = useNavigate();
 
@@ -46,10 +44,6 @@ export default function LoginPage() {
         setIsPasswordValidationVisible(true);
     }
 
-    function validateEmail(email: string) {
-        return email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    }
-
     function validatePassword(password: string) {
         return password.length > 1;
     }
@@ -73,12 +67,9 @@ export default function LoginPage() {
 
         let login: LoginModel = { email, password }
         try {
-            var response = await axios.post(`${baseURL()}api/authenticate/login`, login)
+            var response = await axios.post(`${baseURL()}api/authenticate/login`, login);
 
             let data = response.data as TokenModel;
-            if (rememberMe) {
-                localStorage.setItem('refresh', data.refreshToken);
-            }
 
             var user: User = {
                 accessToken: data.accessToken,
@@ -86,21 +77,23 @@ export default function LoginPage() {
                 role: "user",
                 isEmailConfirmed: data.isEmailConfirmed
             }
+
+            if (rememberMe) {
+                setTokenObject(user);
+            }
+
             setUser(user);
-            navigate('/home')
+            navigate('/home');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                toast.error("Wrong username or password.", {
-                    position: "top-center",
-                    theme: theme
-                });
+                notification.error(t('loginError'), "top-center");
             }
         }
     }
 
     return (
-        <div className="grid h-[calc(100vh-76px)] place-items-center">
+        <div className="grid h-[calc(100vh-50px)] place-items-center">
             <div className="space-y-5 mx-4 w-96">
                 <button className="text-black w-full rounded-lg py-1 bg-white hover:bg-gray-200 shadow-lg" >
                     <i className="fab fa-google fa-1x"></i> <label className="hover:cursor-pointer">{t('loginGoogle')}</label>
@@ -115,19 +108,19 @@ export default function LoginPage() {
                     <h1 className="text-xl font-bold text-black dark:text-gray-500">{t('signIn')}</h1>
                     <FloatingInput inputId="floating_outlined_1" placeholder="E-mail" tabIndex={1} disabled={false}
                         readOnly={false} type="text" value={email}
-                        onChange={e => onEmailChanged(e.target.value)}
+                        onChange={(e) => onEmailChanged(e.target.value)}
                         onBlur={(e) => onEmailLostFocus(e.target.value)}
                         isValid={isEmailValid}
                         isValidVisible={isEmailValidationVisible} />
                     <div>
                         <FloatingInput inputId="floating_outlined_2" placeholder={t('password')} tabIndex={2} disabled={false}
                             readOnly={false} type="password" value={password}
-                            onChange={e => onPasswordChanged(e.target.value)}
+                            onChange={(e) => onPasswordChanged(e.target.value)}
                             onBlur={(e) => onPasswordLostFocus(e.target.value)}
                             isValid={isPasswordValid} isPassword={true}
                             isValidVisible={isPasswordValidationVisible} />
                         <div className="grid place-items-end">
-                            <LinkButton link="/forgotpassword" text={t('forgotPassword')} />
+                            <LinkButton link="/forgotpassword" text={t('forgottenPassword')} />
                         </div>
                     </div>
                     <Checkbox checked={rememberMe} onChange={onChecked} labelText={t('rememberMe') ?? ''} />

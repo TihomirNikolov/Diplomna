@@ -1,24 +1,35 @@
+import { IRegistration } from "."
 import { SignUpModel } from "../../authentication"
 
 export enum RegistrationActionType {
-    UPDATE_REGISTER_MODEL = 'UPDATE_REGISTER_MODEL',
-    UPDATE = 'UPDATE'
+    UPDATE_REGISTER_MODEL = "UPDATE_REGISTER_MODEL",
+    UPDATE = "UPDATE",
+    RESET = "RESET"
 }
 
-export interface IRegistrationAction {
+export interface RegistrationAction {
     type: RegistrationActionType,
     key: string,
     value: string
   }
 
-export interface IRegistration {
+export interface Registration {
     registerModel: SignUpModel
     confirmPassword: string,
 }
 
+export const initialState: IRegistration = {
+    confirmPassword: '',
+    registerModel: {
+        email: '',
+        password: '',
+    }
+}
 
-export function registrationReducer(state: IRegistration, action: IRegistrationAction) {
+export function registrationReducer(state: Registration, action: RegistrationAction) {
     switch (action.type) {
+        case 'RESET':
+            return initialState;
         case 'UPDATE':
             return {
                 ...state,

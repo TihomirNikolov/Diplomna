@@ -1,4 +1,4 @@
-﻿using AuthMicroservice.Authentication.Models;
+﻿using AuthMicroservice.Authentication.Models.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -49,15 +49,15 @@ namespace AuthMicroservice.Authentication.Helpers
             return token;
         }
 
-        public string GenerateRefreshToken()
+        public string GenerateToken()
         {
             var randomNumber = new byte[64];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            return Convert.ToBase64String(randomNumber).Replace('+','-').Replace('/','_').TrimEnd('=');
         }
 
-        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
+        public ClaimsPrincipal? GetPrincipalFromToken(string? token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {

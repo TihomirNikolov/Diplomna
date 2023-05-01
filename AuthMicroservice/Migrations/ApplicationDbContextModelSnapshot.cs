@@ -22,7 +22,7 @@ namespace AuthMicroservice.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthMicroservice.Authentication.Models.ApplicationUser", b =>
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -87,13 +87,44 @@ namespace AuthMicroservice.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("AuthMicroservice.Authentication.Models.RefreshToken", b =>
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.EmailVerificationToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("EmailVerificationsTokens");
+                });
+
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeviceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
                         .IsRequired()
@@ -111,6 +142,33 @@ namespace AuthMicroservice.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.ResetPasswordToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ResetPasswordTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -246,11 +304,33 @@ namespace AuthMicroservice.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AuthMicroservice.Authentication.Models.RefreshToken", b =>
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.EmailVerificationToken", b =>
                 {
-                    b.HasOne("AuthMicroservice.Authentication.Models.ApplicationUser", "User")
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                        .WithOne("EmailVerificationToken")
+                        .HasForeignKey("AuthMicroservice.Authentication.Models.Database.EmailVerificationToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.RefreshToken", b =>
+                {
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.ResetPasswordToken", b =>
+                {
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                        .WithOne("ResetPasswordToken")
+                        .HasForeignKey("AuthMicroservice.Authentication.Models.Database.ResetPasswordToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -268,7 +348,7 @@ namespace AuthMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AuthMicroservice.Authentication.Models.ApplicationUser", null)
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -277,7 +357,7 @@ namespace AuthMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AuthMicroservice.Authentication.Models.ApplicationUser", null)
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -292,7 +372,7 @@ namespace AuthMicroservice.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AuthMicroservice.Authentication.Models.ApplicationUser", null)
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -301,16 +381,22 @@ namespace AuthMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AuthMicroservice.Authentication.Models.ApplicationUser", null)
+                    b.HasOne("AuthMicroservice.Authentication.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AuthMicroservice.Authentication.Models.ApplicationUser", b =>
+            modelBuilder.Entity("AuthMicroservice.Authentication.Models.Database.ApplicationUser", b =>
                 {
+                    b.Navigation("EmailVerificationToken")
+                        .IsRequired();
+
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("ResetPasswordToken")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

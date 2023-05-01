@@ -1,4 +1,5 @@
-import LanguageSelector from "./LanguageSelector";
 import i18n from "./i18next";
+import Tooltip from "./Tooltip";
+import Spinner from "./Spinner";
 
-export {LanguageSelector, i18n}
+export { i18n, Tooltip, Spinner }

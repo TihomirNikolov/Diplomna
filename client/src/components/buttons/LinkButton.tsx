@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom"
 
-interface IProps {
+interface Props {
     link: string,
     text: string
 }
 
-export default function LinkButton(props: IProps) {
+export default function LinkButton(props: Props) {
 
     return (
-        <a href={props.link} className="text-sm text-blue-600 hover:text-blue-500"> {props.text}</a>
+        <Link to={props.link} className="text-sm text-blue-600 hover:text-blue-500"> {props.text}</Link>
     )
 }

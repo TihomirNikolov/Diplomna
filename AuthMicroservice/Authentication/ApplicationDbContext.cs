@@ -1,4 +1,4 @@
-﻿using AuthMicroservice.Authentication.Models;
+﻿using AuthMicroservice.Authentication.Models.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +8,8 @@ namespace AuthMicroservice.Database
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<EmailVerificationToken> EmailVerificationsTokens { get; set; } 
+        public DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; } 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

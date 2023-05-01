@@ -1,11 +1,11 @@
-import { RegistrationActionType, IRegistration, IRegistrationAction, registrationReducer } from "./SignUpReducer";
-import { RegistrationValidationActionType, IRegistrationValidation, IRegistrationValidationAction, IRegistrationValidationState, IRegistrationValidationVisible, registrationValidationReducer } from "./SignUpValidationReducer";
+import { RegistrationActionType, Registration, RegistrationAction, registrationReducer, initialState } from "./SignUpReducer";
+import { RegistrationValidationActionType, IRegistrationValidation, IRegistrationValidationAction, IRegistrationValidationState, IRegistrationValidationVisible, registrationValidationReducer, initialValidationState } from "./SignUpValidationReducer";
 
 export {
     RegistrationActionType, RegistrationValidationActionType,
-    registrationReducer, registrationValidationReducer
+    registrationReducer, registrationValidationReducer, initialState, initialValidationState
 };
 export type {
-    IRegistration, IRegistrationAction, IRegistrationValidation,
+    Registration as IRegistration, RegistrationAction as IRegistrationAction, IRegistrationValidation,
     IRegistrationValidationAction, IRegistrationValidationState, IRegistrationValidationVisible
 };

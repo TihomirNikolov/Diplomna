@@ -1,16 +1,15 @@
-import { useLayoutEffect, useState } from "react"
 import { useTheme, useUser } from "../../contexts";
-import { LanguageSelector } from "../utilities";
-import { Toggle } from "../inputs";
+import { SearchBar, Profile, LanguageSelector, ShoppingCart } from "..";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLayoutEffect } from "react";
+import { authClient, baseURL, notification } from "../../utilities";
 import axios from "axios";
-import { baseURL } from "../../utilities";
+
 
 export default function Layout(props: any) {
-    const [isToggled, setIsToggled] = useState<boolean>(false);
+    const { user } = useUser();
     const { setTheme } = useTheme();
-    const { user, setUser } = useUser()
 
     const { t } = useTranslation();
 
@@ -38,73 +37,49 @@ export default function Layout(props: any) {
             document.documentElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             setTheme("dark")
-            setIsToggled(true);
         } else {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
             setTheme("light")
-            setIsToggled(false);
         }
     }
 
-    function onThemeSwitched(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.checked) {
-            saveTheme('dark');
-        }
-        else {
-            saveTheme('light');
-        }
-    }
-
-    async function onLoggedOut() {
-
-        const config = {
-            headers: { Authorization: `Bearer ${user.accessToken}`,
-                        RefreshToken: user.refreshToken }
-        };
-
+    async function resendEmail(){
         try {
-            var response = await axios.post(`${baseURL()}api/authenticate/logout`,{}, config);
+            var response = await authClient.post(`${baseURL()}api/user/resend-email-verification`);
 
-            setUser({ accessToken: '', refreshToken: '', role: 'user', isEmailConfirmed: false })
-            localStorage.removeItem('refresh');
+            notification.info('Verification email resent.');
         }
         catch (error) {
-            if (axios.isAxiosError(error)) {
-
+            if(axios.isAxiosError(error)){
+                notification.error("There is an error with resending the email. Please try again later.")
             }
         }
     }
 
     return (
         <>
-            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-5 dark:bg-gray-800">
-                <div className="flex flex-wrap justify-between items-center">
-                    <div className="flex justify-start items-center">
-                        <Link to='/home' className="text-white">Home</Link>
+            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2 dark:bg-gray-800">
+                <div className="grid grid-cols-3">
+                    <div className="flex justify-center items-center">
+                        <Link to='/' className="text-white">Home</Link>
                     </div>
-                    <div className="flex items-center lg:order-2 space-x-2">
-                        <div>
-                            <LanguageSelector />
-                        </div>
-                        <Toggle checked={isToggled} onChange={(e) => onThemeSwitched(e)} />
-                        {user.accessToken == null || user.accessToken == '' ? (
-                            <Link to='/login' className="text-white bg-blue-600 rounded-full text-center shadow-lg
-                                                        w-20 py-1.5 hover:bg-blue-700">
-                                {t("signIn")}
-                            </Link>) : (
-                            <Link to='/logout' className="text-white bg-blue-600 rounded-full text-center shadow-lg
-                                                         w-20 py-1.5 hover:bg-blue-700"
-                                onClick={onLoggedOut}>
-                                {t("signOut")}
-                            </Link>)}
-
+                    <div className="flex justify-center items-center">
+                        <SearchBar />
+                    </div>
+                    <div className="flex justify-end items-center lg:order-2 space-x-2">
+                        <LanguageSelector />
+                        <Profile />
+                        <ShoppingCart />
                     </div>
                 </div>
             </nav>
             {user.accessToken && !user.isEmailConfirmed &&
                 <div className="grid place-items-center">
-                    <h1 className="text-white">EMAIL NOT CONFIRMED</h1>
+                    <h1 className="text-white">
+                        Email is not confirmed.&nbsp;
+                        <span className="underline hover:text-blue-600 cursor-pointer" onClick={async () => resendEmail()}>Resend Email.</span>
+                    </h1>
                 </div>}
         </>
     )
