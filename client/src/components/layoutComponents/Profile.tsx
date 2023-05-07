@@ -2,36 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ThemeToggle } from "../inputs";
 import Dropdown from "../utilities/Dropdown";
 import { useUser } from "../../contexts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
-import { authClient, baseURL } from "../../utilities";
 
 
 export default function Profile() {
-    const { user, setUser } = useUser();
+    const { user, logout } = useUser();
     const { t } = useTranslation();
 
+    const navigate = useNavigate();
+
     async function onLoggedOut() {
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${user.accessToken}`,
-                RefreshToken: user.refreshToken
-            }
-        };
-
-        try {
-            var response = await authClient.delete(`${baseURL()}api/authenticate/logout`, config);
-        }
-        catch (error) {
-            if (axios.isAxiosError(error)) {
-            }
-        }
-        finally {
-            setUser({ accessToken: '', refreshToken: '', role: 'user', isEmailConfirmed: false })
-            localStorage.removeItem('user');
-        }
+        await logout();
+        navigate('');
     }
 
     function isLoggedIn() {

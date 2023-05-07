@@ -5,7 +5,7 @@ import { Tooltip } from "..";
 interface Props {
     placeholder: string,
     type: HTMLInputTypeAttribute,
-    tabIndex: number,
+    tabIndex?: number,
     disabled?: boolean,
     readOnly?: boolean,
     value: string,

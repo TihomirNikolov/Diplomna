@@ -1,5 +1,5 @@
 import { useTheme, useUser } from "../../contexts";
-import { SearchBar, Profile, LanguageSelector, ShoppingCart } from "..";
+import { SearchBar, Profile, LanguageSelector, ShoppingCart, Favourites } from "..";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useLayoutEffect } from "react";
@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 export default function Layout(props: any) {
-    const { user } = useUser();
+    const { user, isEmailConfirmed } = useUser();
     const { setTheme } = useTheme();
 
     const { t } = useTranslation();
@@ -44,22 +44,22 @@ export default function Layout(props: any) {
         }
     }
 
-    async function resendEmail(){
+    async function resendEmail() {
         try {
             var response = await authClient.post(`${baseURL()}api/user/resend-email-verification`);
 
-            notification.info('Verification email resent.');
+            notification.info(t('resentVerificationEmailSuccess'), 'top-center');
         }
         catch (error) {
-            if(axios.isAxiosError(error)){
-                notification.error("There is an error with resending the email. Please try again later.")
+            if (axios.isAxiosError(error)) {
+                notification.error(t('resentVerificationEmailError'), 'top-center')
             }
         }
     }
 
     return (
         <>
-            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2 dark:bg-gray-800">
+            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2 dark:bg-gray-800 sticky top-0">
                 <div className="grid grid-cols-3">
                     <div className="flex justify-center items-center">
                         <Link to='/' className="text-white">Home</Link>
@@ -69,12 +69,13 @@ export default function Layout(props: any) {
                     </div>
                     <div className="flex justify-end items-center lg:order-2 space-x-2">
                         <LanguageSelector />
+                        <Favourites />
                         <Profile />
                         <ShoppingCart />
                     </div>
                 </div>
             </nav>
-            {user.accessToken && !user.isEmailConfirmed &&
+            {user.accessToken && !isEmailConfirmed &&
                 <div className="grid place-items-center">
                     <h1 className="text-white">
                         Email is not confirmed.&nbsp;

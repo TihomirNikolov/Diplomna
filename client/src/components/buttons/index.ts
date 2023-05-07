@@ -1,3 +1,5 @@
 import LinkButton from "./LinkButton";
+import BlueButton from "./BlueButton";
+import BlackWhiteButton from "./BlackWhiteButton";
 
-export {LinkButton}
+export {LinkButton, BlueButton, BlackWhiteButton}

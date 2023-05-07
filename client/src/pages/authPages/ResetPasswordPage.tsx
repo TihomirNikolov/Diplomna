@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FloatingInput, Spinner, i18n, useGet } from "../../components";
+import { FloatingInput, Spinner, i18n, useGetType } from "../../components";
 import axios from "axios";
-import { baseURL, notification, validatePassword } from "../../utilities";
+import { axiosClient, baseURL, notification, validatePassword } from "../../utilities";
 import { useTranslation } from "react-i18next";
 
 export default function ResetPasswordPage() {
@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const { isLoading, isSuccess } = useGet<boolean>(`${baseURL()}api/authenticate/verify-password-token/${resetToken!}`);
+    const { isLoading, isSuccess } = useGetType<boolean>(`${baseURL()}api/authenticate/verify-password-token/${resetToken!}`);
 
     function onPasswordChanged(value: string) {
         setPassword(value);
@@ -54,12 +54,12 @@ export default function ResetPasswordPage() {
             return;
         }
         try {
-            var response = await axios.post(`${baseURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: password });
+            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: password });
             navigate('/login');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error('There was an error', 'top-center');
+                notification.error(t('resetPasswordError'), 'top-center');
             }
         }
     }

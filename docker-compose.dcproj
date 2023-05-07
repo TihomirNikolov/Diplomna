@@ -6,7 +6,7 @@
     <ProjectGuid>a6b2c0aa-e48e-4299-a307-b91d71f7c6c7</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>authmicroservice</DockerServiceName>
+    <DockerServiceName>usermicroservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -9,15 +9,21 @@ services:
         timeout: 3s
         retries: 10
         start_period: 10s
-  authmicroservice:
-    image: ${DOCKER_REGISTRY-}authmicroservice
+  usermicroservice:
+    image: ${DOCKER_REGISTRY-}usermicroservice
     build:
       context: .
-      dockerfile: AuthMicroservice/Dockerfile
+      dockerfile: UserMicroservice/Dockerfile
     depends_on:
         ms-sql-server:
             condition: service_healthy
+  productsmicroservice:
+     image: ${DOCKER_REGISTRY-}productsmicroservice
+     build:
+        context: .
+        dockerfile: ProductsMicroservice/Dockerfile
   #website:
   #  build:
   #    context: ./client
   #    dockerfile: Dockerfile
+

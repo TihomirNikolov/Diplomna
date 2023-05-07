@@ -35,3 +35,7 @@ export function setAccessToken(accessToken: string) {
 export function setTokenObject(tokenModel: User) {
     localStorage.setItem('user', JSON.stringify({ accessToken: tokenModel.accessToken, refreshToken: tokenModel.refreshToken }))
 }
+
+export function removeTokenObject(){
+    localStorage.removeItem('user');
+}

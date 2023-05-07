@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { FloatingInput } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { baseURL, notification, validateEmail } from "../../utilities";
+import { axiosClient, baseURL, notification, validateEmail } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 
 export default function ForgottenPasswordPage() {
@@ -30,12 +30,12 @@ export default function ForgottenPasswordPage() {
         e.preventDefault();
 
         try {
-            var response = await axios.post(`${baseURL()}api/authenticate/reset-password-token`, {email: email});
+            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password-token`, {email: email});
             navigate('/login');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error("Problem with sending the reset password email.");
+                notification.error(t('resetPasswordEmailError'), 'top-center');
             }
         }
     }

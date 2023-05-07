@@ -1,16 +1,16 @@
 import { FormEvent, useEffect, useReducer } from "react";
-import { FloatingInput, LinkButton } from "../../components";
+import { BlueButton, FloatingInput, LinkButton } from "../../components";
 import { useTranslation } from "react-i18next";
 import {
     RegistrationActionType, IRegistration, registrationReducer,
     RegistrationValidationActionType, IRegistrationValidation, registrationValidationReducer,
     IRegistrationValidationVisible, IRegistrationValidationState, initialState, initialValidationState,
-    baseURL, notification,
+    baseURL, notification, axiosClient,
 } from "../../utilities";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUpPage() {
+export default function RegisterPage() {
     const [reducerRegistrationState, dispatchRegistration] = useReducer(registrationReducer, initialState);
     const [reducerRegistrationValidationState, dispatchRegistrationValidation] = useReducer(registrationValidationReducer, initialValidationState)
 
@@ -47,12 +47,12 @@ export default function SignUpPage() {
         }
 
         try {
-            await axios.post(`${baseURL()}api/authenticate/register`, reducerRegistrationState.registerModel);
+            await axiosClient.post(`${baseURL()}api/authenticate/register`, reducerRegistrationState.registerModel);
             navigate("/login");
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error("User already exists.", "top-center");
+                notification.error(t('userAlreadyExists'), "top-center");
                 console.log(error);
             }
         }
@@ -84,7 +84,7 @@ export default function SignUpPage() {
                         isValidVisible={reducerRegistrationValidationState.validationVisible.isConfirmPasswordValidVisible} />
 
                     <div className="space-y-1">
-                        <button type="submit" tabIndex={6} className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('signUp')}</button>
+                        <BlueButton>{t('signUp')}</BlueButton>
                         <div className="grid place-items-end">
                             <label className="text-sm dark: text-gray-500">{t('alreadyHaveAccount')}<LinkButton link="/login" text={t('logIn')} /></label>
                         </div>

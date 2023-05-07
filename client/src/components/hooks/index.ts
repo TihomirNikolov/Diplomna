@@ -1,5 +1,6 @@
 import useData from "./useData";
-import useGet from "./useGet";
+import { useGetType, useGet } from "./useGet";
 import usePost from "./usePost";
+import usePut from "./usePut";
 
-export { useData, useGet, usePost }
+export { useData, useGetType, useGet, usePost, usePut }

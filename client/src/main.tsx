@@ -10,13 +10,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ErrorBoundary fallback={<>ERROR</>}>
-      <ContextProvider>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </ContextProvider>
-    </ErrorBoundary>
-  </React.StrictMode>,
+  <ErrorBoundary fallback={<>ERROR</>}>
+    <ContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ContextProvider>
+  </ErrorBoundary>,
 )

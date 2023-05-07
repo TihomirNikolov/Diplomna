@@ -46,7 +46,7 @@ export default function LanguageSelector() {
             <>
                 <div className="relative">
                     <Listbox.Button className="relative rounded-md hover:bg-lightBackground hover:dark:bg-gray-700 px-1.5 text-gray-900 dark:text-white sm:text-sm sm:leading-6">
-                        <FontAwesomeIcon icon={["fas", "globe"]} />
+                        <FontAwesomeIcon icon={["fas", "globe"]} size="lg"/>
                     </Listbox.Button>
 
                     <Transition

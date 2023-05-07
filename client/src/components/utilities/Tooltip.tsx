@@ -43,7 +43,7 @@ export default function Tooltip(props: Props) {
 
     function copyTooltipText() {
         navigator.clipboard.writeText(props.text).then(() => {
-            notification.success(t("tooltipCopied"))
+            notification.success(t("tooltipCopied"), 'top-center')
         })
     }
 

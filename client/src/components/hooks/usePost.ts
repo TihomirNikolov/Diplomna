@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { axiosClient } from "../../utilities";
 
 export default function usePost<T>(url: string, body?: any) {
     return useMutation({
         mutationKey: [],
         mutationFn: async () => {
-            const response = await axios.post(url, body != null ? body : "");
+            const response = await axiosClient.post(url, body != null ? body : "");
             return response.data as T;
         }
     })

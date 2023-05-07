@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormEvent, useState } from "react";
-import { Checkbox, FloatingInput, LinkButton } from "../../components";
+import { BlueButton, Checkbox, FloatingInput, LinkButton } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { LoginModel, TokenModel, baseURL, notification, setTokenObject, validateEmail } from "../../utilities";
-import { User, useTheme, useUser } from "../../contexts";
+import { LoginModel, TokenModel, axiosClient, baseURL, notification, setTokenObject, validateEmail } from "../../utilities";
+import { User, useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 
 import './css/LoginPage.css'
@@ -19,7 +19,7 @@ export default function LoginPage() {
     const [isPasswordValidationVisible, setIsPasswordValidationVisible] = useState<boolean>(false);
 
     const { t } = useTranslation();
-    const { setUser } = useUser();
+    const { setUser, setRole, setIsEmailConfirmed } = useUser();
     const navigate = useNavigate();
 
     function onEmailChanged(value: string) {
@@ -65,23 +65,18 @@ export default function LoginPage() {
             return;
         }
 
-        let login: LoginModel = { email, password }
+        let login: LoginModel = { email, password, rememberMe }
         try {
-            var response = await axios.post(`${baseURL()}api/authenticate/login`, login);
+            var response = await axiosClient.post(`${baseURL()}api/authenticate/login`, login);
 
             let data = response.data as TokenModel;
 
             var user: User = {
                 accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-                role: "user",
-                isEmailConfirmed: data.isEmailConfirmed
+                refreshToken: data.refreshToken
             }
-
-            if (rememberMe) {
-                setTokenObject(user);
-            }
-
+            setIsEmailConfirmed(data.isEmailConfirmed);
+            setRole('user');
             setUser(user);
             navigate('/home');
         }
@@ -123,11 +118,14 @@ export default function LoginPage() {
                             <LinkButton link="/forgotpassword" text={t('forgottenPassword')} />
                         </div>
                     </div>
-                    <Checkbox checked={rememberMe} onChange={onChecked} labelText={t('rememberMe') ?? ''} />
+                    <Checkbox id="rememberMe"
+                        checked={rememberMe}
+                        onChange={onChecked}
+                        labelText={t('rememberMe') ?? ''} />
                     <div className="space-y-1">
-                        <button type="submit" tabIndex={3} className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('logIn')}</button>
+                        <BlueButton>{t('signIn')}</BlueButton>
                         <div className="grid place-items-end">
-                            <label className="text-sm dark: text-gray-500">{t('dontHaveAccount')}<LinkButton link="/signup" text={t('signUp')} /></label>
+                            <label className="text-sm dark: text-gray-500">{t('dontHaveAccount')}<LinkButton link="/register" text={t('signUp')} /></label>
                         </div>
                     </div>
                 </form>

@@ -1,3 +1,4 @@
 import authClient from "./AuthAxiosClient";
+import axiosClient from "./AxiosClient";
 
-export { authClient }
+export { authClient,axiosClient }
