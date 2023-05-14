@@ -1,65 +1,49 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FloatingInput, Spinner, i18n, useGetType } from "../../components";
+import { FloatingInput, Spinner, useGetType, useTitle } from "../../components";
 import axios from "axios";
 import { axiosClient, baseURL, notification, validatePassword } from "../../utilities";
 import { useTranslation } from "react-i18next";
+import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
 
 export default function ResetPasswordPage() {
+    const { t } = useTranslation();
+    useTitle(t('title.resetPassword'));
+
     const { resetToken } = useParams();
 
-    const [password, setPassword] = useState<string>("");
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
-    const [isPasswordValidationVisible, setIsPasswordValidationVisible] = useState<boolean>(false);
-    const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState<boolean>(false);
-    const [isConfirmPasswodValidationVisble, setIsConfirmPasswordValidationVisible] = useState<boolean>(false);
-
-    const { t } = useTranslation();
     const navigate = useNavigate();
+
+    const passwordInput = useRef<FloatingInputHandle>(null);
+    const confirmPasswordInput = useRef<FloatingInputHandle>(null);
 
     const { isLoading, isSuccess } = useGetType<boolean>(`${baseURL()}api/authenticate/verify-password-token/${resetToken!}`);
 
-    function onPasswordChanged(value: string) {
-        setPassword(value);
+    function validatePass(value: string) {
+        confirmPasswordInput.current?.showValidation();
+        return validatePassword(value);
     }
 
-    function onPasswordLostFocus(password: string) {
-        if (validatePassword(password)) {
-            setIsPasswordValid(true);
-        } else {
-            setIsPasswordValid(false);
-        }
-        setIsPasswordValidationVisible(true);
-    }
-
-    function onConfirmPasswordChanged(value: string) {
-        setConfirmPassword(value);
+    function validateConfirmPassword(value: string) {
+        return value == passwordInput.current?.value && value != '';
     }
 
     async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        confirmPasswordInput.current?.showValidation();
 
-        if (confirmPassword != password || confirmPassword == '' || !validatePassword(password)) {
-            setIsConfirmPasswordValid(false);
-            setIsConfirmPasswordValidationVisible(true);
-        }
-        else {
-            setIsConfirmPasswordValid(true);
-            setIsConfirmPasswordValidationVisible(true);
-        }
-
-        if (!validatePassword(password) || confirmPassword != password || confirmPassword == '') {
-            setIsPasswordValidationVisible(true);
+        if (!passwordInput.current?.isValid || !confirmPasswordInput.current?.isValid) {
+            passwordInput.current?.showValidation();
+            confirmPasswordInput.current?.showValidation();
             return;
         }
         try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: password });
+            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: passwordInput.current.value });
             navigate('/login');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('resetPasswordError'), 'top-center');
+                notification.error(t('responseErrors.resetPasswordError'), 'top-center');
             }
         }
     }
@@ -78,20 +62,21 @@ export default function ResetPasswordPage() {
                 <div className="space-y-5 mx-4 w-96">
                     <form className="p-6 space-y-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg" onSubmit={e => onSubmit(e)} noValidate>
                         <h1 className="text-xl font-bold text-black dark:text-gray-500">{t('changePassword')}</h1>
-                        <FloatingInput inputId="floating_outlined_2" placeholder={t("password")} tabIndex={2} disabled={false} readOnly={false}
-                            type="password" value={password} isPassword={true}
-                            onChange={(e) => onPasswordChanged(e.target.value)}
-                            onBlur={(e) => onPasswordLostFocus(e.target.value)}
-                            isValid={isPasswordValid}
-                            isValidVisible={isPasswordValidationVisible}
-                            tooltip={t("passwordInfo")!} />
-                        <FloatingInput inputId="floating_outlined_3" placeholder={t("confirmPassword")} tabIndex={3} disabled={false} readOnly={false}
-                            type="password" value={confirmPassword} isPassword={true}
-                            onChange={(e) => onConfirmPasswordChanged(e.target.value)}
-                            isValid={isConfirmPasswordValid}
-                            isValidVisible={isConfirmPasswodValidationVisble} />
+                        <FloatingInput ref={passwordInput}
+                            inputId="floating_outlined_1"
+                            placeholder={t("password")}
+                            type='password' isPassword={true}
+                            validate={validatePass} immediateValdation={true}
+                            validationMessage={t('passwordInfo')!} />
+                        <FloatingInput ref={confirmPasswordInput}
+                            inputId="floating_outlined_2"
+                            placeholder={t("confirmPassword")}
+                            type='password' isPassword={true}
+                            validate={validateConfirmPassword} immediateValdation={true}
+                            validateOnLostFocus={true}
+                            validationMessage={t('errorInput.confirmPasswordInvalid')!} />
                         <div className="space-y-1">
-                            <button type="submit" tabIndex={6} className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('changePassword')}</button>
+                            <button type="submit" className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('changePassword')}</button>
                         </div>
                     </form>
                 </div>
@@ -101,7 +86,7 @@ export default function ResetPasswordPage() {
     else {
         return (
             <div className="grid h-[calc(100vh-50px)] place-items-center">
-                <h1 className="text-black dark:text-white">PASASWORD RESET TOKEN HAS EXPIRED OR IT ISNT VALID</h1>
+                <h1 className="text-black dark:text-white">{t('resetPasswordExpired')}</h1>
             </div>
         )
     }

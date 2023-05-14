@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UserMicroservice.Authentication;
+using UserMicroservice.Models;
 
 #nullable disable
 
@@ -155,7 +155,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.Address", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,24 +163,38 @@ namespace UserMicroservice.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DeliveryMethod")
-                        .HasColumnType("int");
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("HomeAddressId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OfficeAddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -190,20 +204,12 @@ namespace UserMicroservice.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeAddressId")
-                        .IsUnique()
-                        .HasFilter("[HomeAddressId] IS NOT NULL");
-
-                    b.HasIndex("OfficeAddressId")
-                        .IsUnique()
-                        .HasFilter("[OfficeAddressId] IS NOT NULL");
-
                     b.HasIndex("UserInfoId");
 
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ApplicationUser", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -275,7 +281,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ChangeEmailToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ChangeEmailToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -306,7 +312,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("ChangeEmailTokens");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.EmailVerificationToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.EmailVerificationToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -333,49 +339,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("EmailVerificationsTokens");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.HomeAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HomeAddresses");
-                });
-
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.OfficeAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Office")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OfficeAddresses");
-                });
-
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.RefreshToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -405,7 +369,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ResetPasswordToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ResetPasswordToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -432,7 +396,7 @@ namespace UserMicroservice.Migrations
                     b.ToTable("ResetPasswordTokens");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.UserInfo", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.UserInfo", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -461,7 +425,7 @@ namespace UserMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", null)
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +434,7 @@ namespace UserMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", null)
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,7 +449,7 @@ namespace UserMicroservice.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", null)
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,70 +458,56 @@ namespace UserMicroservice.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", null)
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.Address", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.Address", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.HomeAddress", "HomeAddress")
-                        .WithOne("AddressObject")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.Address", "HomeAddressId");
-
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.OfficeAddress", "OfficeAddress")
-                        .WithOne("Address")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.Address", "OfficeAddressId");
-
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.UserInfo", "UserInfo")
+                    b.HasOne("UserMicroservice.Models.Database.UserInfo", null)
                         .WithMany("Addresses")
                         .HasForeignKey("UserInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("HomeAddress");
-
-                    b.Navigation("OfficeAddress");
-
-                    b.Navigation("UserInfo");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ApplicationUser", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ApplicationUser", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.UserInfo", "UserInfo")
+                    b.HasOne("UserMicroservice.Models.Database.UserInfo", "UserInfo")
                         .WithOne("User")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.ApplicationUser", "UserInfoId");
+                        .HasForeignKey("UserMicroservice.Models.Database.ApplicationUser", "UserInfoId");
 
                     b.Navigation("UserInfo");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ChangeEmailToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ChangeEmailToken", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", "User")
                         .WithOne("ChangeEmailToken")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.ChangeEmailToken", "UserId")
+                        .HasForeignKey("UserMicroservice.Models.Database.ChangeEmailToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.EmailVerificationToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.EmailVerificationToken", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", "User")
                         .WithOne("EmailVerificationToken")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.EmailVerificationToken", "UserId")
+                        .HasForeignKey("UserMicroservice.Models.Database.EmailVerificationToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.RefreshToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.RefreshToken", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -566,18 +516,18 @@ namespace UserMicroservice.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ResetPasswordToken", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ResetPasswordToken", b =>
                 {
-                    b.HasOne("UserMicroservice.Authentication.Models.Database.ApplicationUser", "User")
+                    b.HasOne("UserMicroservice.Models.Database.ApplicationUser", "User")
                         .WithOne("ResetPasswordToken")
-                        .HasForeignKey("UserMicroservice.Authentication.Models.Database.ResetPasswordToken", "UserId")
+                        .HasForeignKey("UserMicroservice.Models.Database.ResetPasswordToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.ApplicationUser", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.ApplicationUser", b =>
                 {
                     b.Navigation("ChangeEmailToken")
                         .IsRequired();
@@ -591,19 +541,7 @@ namespace UserMicroservice.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.HomeAddress", b =>
-                {
-                    b.Navigation("AddressObject")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.OfficeAddress", b =>
-                {
-                    b.Navigation("Address")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserMicroservice.Authentication.Models.Database.UserInfo", b =>
+            modelBuilder.Entity("UserMicroservice.Models.Database.UserInfo", b =>
                 {
                     b.Navigation("Addresses");
 

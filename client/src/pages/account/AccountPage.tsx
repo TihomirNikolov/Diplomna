@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { LoginInfo, UserInfo, authClient, baseURL, notification } from "../../utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BlackWhiteButton, ChangeEmail, ChangeName, ChangePassword } from "../../components";
+import { BlackWhiteButton, ChangeEmail, ChangeName, ChangePassword, DeleteAccount, Input, Modal, Tooltip, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const initalUserInfo: UserInfo = {
     email: '',
@@ -14,12 +15,13 @@ const initalUserInfo: UserInfo = {
 }
 
 export default function AccountPage() {
+    const { t } = useTranslation();
+    useTitle(t('title.account'));
+
     const [loginInfo, setLoginInfo] = useState<LoginInfo[]>([])
     const [userInfo, setUserInfo] = useState<UserInfo>(initalUserInfo);
 
     const { user, logout } = useUser();
-
-    const { t } = useTranslation();
 
     const navigate = useNavigate();
 
@@ -47,7 +49,9 @@ export default function AccountPage() {
             var response = await authClient.get(`${baseURL()}api/user/logins`);
 
             var loginInfo = response.data as LoginInfo[];
-
+            loginInfo.forEach(l => {
+                l.createdTime = new Date(l.createdTime);
+            })
             setLoginInfo(loginInfo);
         }
         catch (error) {
@@ -64,7 +68,10 @@ export default function AccountPage() {
             return <FontAwesomeIcon icon={["fab", "chrome"]} size="lg" />
         }
         else if (browser.includes('edge')) {
-            return <FontAwesomeIcon icon={["fas", "edge"]} size="lg" />
+            return <FontAwesomeIcon icon={["fab", "edge"]} size="lg" />
+        }
+        else if (browser.includes('safari')) {
+            return <FontAwesomeIcon icon={["fab", "safari"]} size="lg" />
         }
         else {
             return <FontAwesomeIcon icon={["fas", "browser"]} size="lg" />
@@ -80,7 +87,7 @@ export default function AccountPage() {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('deleteAllSessions'), 'top-center');
+                notification.error(t('responseErrors.deleteAllSessions'), 'top-center');
             }
         }
     }
@@ -99,7 +106,7 @@ export default function AccountPage() {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('deleteSession'), 'top-center');
+                notification.error(t('responseErrors.deleteSession'), 'top-center');
             }
         }
     }
@@ -107,10 +114,9 @@ export default function AccountPage() {
     return (
         <div>
             <div className="mx-1 md:ml-5 md:mr-0 space-y-2">
-                <h1 className="text-black dark:text-white font-bold mb-5">{t('profile')}</h1>
+                <h1 className="text-black dark:text-white font-bold mb-5 text-2xl">{t('profile')}</h1>
                 <div className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
-                    <h1 className=" text-black dark:text-white font-bold">{t('profileData')}</h1>
-
+                    <h1 className="text-black dark:text-white font-bold text-2xl">{t('profileData')}</h1>
                     <ProfileDataItem>
                         <ProfileDataItem.Icon>
                             <FontAwesomeIcon icon={["fas", "user"]} size="lg" />
@@ -118,7 +124,7 @@ export default function AccountPage() {
                         <ProfileDataItem.Content>
                             <h1>{t('name')}</h1>
                             <label>
-                                <span>{userInfo.firstName}</span>
+                                <span>{userInfo.firstName}&nbsp;</span>
                                 <span>{userInfo.lastName}</span>
                             </label>
                         </ProfileDataItem.Content>
@@ -158,32 +164,46 @@ export default function AccountPage() {
                     </ProfileDataItem>
                 </div>
 
-                <div className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
-                    <h1>{t('devices')}</h1>
+                <div className="flex flex-col gap-2 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
+                    <h1 className="font-bold text-2xl">{t('devices')}</h1>
                     <div className="flex w-full md:w-1/3">
-                        <BlackWhiteButton onClick={deleteAllSessions}>{t('exitAllDevices')}</BlackWhiteButton>
+                        <BlackWhiteButton className="w-full" onClick={deleteAllSessions}>{t('exitAllDevices')}</BlackWhiteButton>
                     </div>
                     <div className="py-3 flex flex-wrap gap-3">
 
                         {loginInfo.map((item, key) => {
                             return (
-                                <div key={key} className="flex p-1 border-2 rounded-lg w-40">
-                                    <div>
-                                        {getBrowserImage(item.deviceType)}
+                                <div key={key} className="flex flex-col p-1 border-2 rounded-lg w-full sm:w-64">
+                                    <div className="flex p-1">
+                                        <div>
+                                            {getBrowserImage(item.deviceType)}
+                                        </div>
+                                        <div className="truncate ml-1">
+                                            {item.deviceType}
+                                        </div>
+                                        <div className="ml-auto px-1 hover:bg-gray-300 hover:dark:bg-gray-500">
+                                            <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600 cursor-pointer"
+                                                onClick={() => deleteSession(item.id, item.token)} />
+                                        </div>
                                     </div>
                                     <div>
-                                        {item.deviceType}
-                                    </div>
-                                    <div className="ml-auto">
-                                        <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600 cursor-pointer"
-                                            onClick={() => deleteSession(item.id, item.token)} />
+                                        <div className="flex">
+                                            {t('loggedInOn')}&nbsp;
+                                            {moment(item.createdTime).format("DD-MM-YYYY HH:mm:ss")}
+                                        </div>
                                     </div>
                                 </div>)
                         })}
                     </div>
                 </div>
+                <div className="flex flex-col gap-3 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
+                    <h1 className="font-bold text-2xl text-red-600">{t('deleteAccount')}</h1>
+                    <span>{t('deleteWarning')}</span>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                        <DeleteAccount />
+                    </div>
+                </div>
             </div>
-
         </div>
     )
 }

@@ -1,5 +1,5 @@
-import TokenModel from './TokenModel'
+import LoginResponse from './LoginResponse'
 import LoginModel from './LoginModel'
 import SignUpModel from './SignUpModel'
 
-export type { TokenModel, LoginModel, SignUpModel }
+export type { LoginResponse, LoginModel, SignUpModel }

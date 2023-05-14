@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using UserMicroservice.Authentication.Models.Database;
-using UserMicroservice.Authentication.Models.Responses;
+using UserMicroservice.Models.Database;
+using UserMicroservice.Models.Responses;
 
 namespace UserMicroservice.Mappers
 {

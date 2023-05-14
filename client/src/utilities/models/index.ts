@@ -1,3 +1,3 @@
-import { UserInfo, LoginInfo } from "./account";
+import { UserInfo, LoginInfo, Address } from "./account";
 
-export type { UserInfo, LoginInfo }
+export type { UserInfo, LoginInfo, Address }

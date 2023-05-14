@@ -2,28 +2,36 @@ import './App.css'
 import { Layout, Routes } from './components'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { User, useTheme, useUser } from './contexts'
-import { TokenModel, authClient, axiosClient, baseURL, removeTokenObject } from './utilities'
-import axios, { AxiosRequestConfig } from 'axios'
+import { Role, User, useTheme, useUser } from './contexts'
+import { authClient, axiosClient, baseURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
+import { AxiosRequestConfig } from 'axios'
 
 library.add(fab, fas, far)
 
 function App() {
+
   const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
-  const { setUser, setRole, setIsEmailConfirmed } = useUser();
+  const { setUser, setRoles, setIsEmailConfirmed } = useUser();
   const { theme } = useTheme();
 
   let isRefreshing = false;
-  let refreshSubscribers: ((token: string) => void)[] = [];
+  let refreshSubscribers: ((user: User) => void)[] = [];
 
   useEffect(() => {
+    authClient.interceptors.request.use((config) => {
+      config.headers['Authorization'] = 'Bearer ' + getAccessToken();
+      config.headers['RefreshToken'] = getRefreshToken();
+
+      return config;
+    })
+
     authClient.interceptors.response.use(
       function (response) {
         return response;
@@ -33,9 +41,11 @@ function App() {
         if (error.response?.status === 401) {
           if (isRefreshing) {
             try {
-              const token = await new Promise<string>((resolve) => {
-                refreshSubscribers.push((token) => resolve(token));
+              const user = await new Promise<User>((resolve) => {
+                refreshSubscribers.push(user => resolve(user));
               });
+              config.headers!['Authorization'] = 'Bearer ' + user.accessToken;
+              config.headers!['RefreshToken'] = user.refreshToken;
               return axiosClient.request(config);
             } catch (e) {
               return Promise.reject(e);
@@ -44,11 +54,19 @@ function App() {
 
           isRefreshing = true;
           try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/refresh-token`, { refreshToken: "" });
+            var response = await axiosClient.post(`${baseURL()}api/authenticate/refresh-token`, { refreshToken: "" }, {
+              headers: {
+                Authorization: "Bearer " + getAccessToken(),
+                RefreshToken: getRefreshToken()
+              }
+            });
             var data = response.data as User;
             setUser(data);
+            setTokenObject(data);
+            config.headers!['Authorization'] = 'Bearer ' + data.accessToken;
+            config.headers!['RefreshToken'] = data.refreshToken;
 
-            refreshSubscribers.forEach((subscriber) => subscriber(data.accessToken));
+            refreshSubscribers.forEach((subscriber) => subscriber(data));
             refreshSubscribers = [];
 
             return axiosClient.request(config);
@@ -67,25 +85,46 @@ function App() {
   }, [])
 
   useEffect(() => {
-    async function isLogged() {
-      setIsLoadingState(true);
-      try {
-        var response = await authClient.get(`${baseURL()}api/authenticate/is-logged`);
-        var tokenModel = response.data as TokenModel;
+    setIsLoadingState(true);
+    var userObject = getTokenObject();
+    if (userObject == null) {
+      userObject = { accessToken: '', refreshToken: '' }
+    }
+    setUser(userObject);
+    setIsLoadingState(false);
 
-        const user: User = { accessToken: tokenModel.accessToken, refreshToken: tokenModel.refreshToken }
-        setUser(user);
-        setRole('user');
-        setIsEmailConfirmed(tokenModel.isEmailConfirmed);
+    async function fetchRole() {
+      if (getTokenObject() != null) {
+        try {
+          var response = await authClient.get(`${baseURL()}api/user/roles`);
+          var data = response.data as Role[]
+          setRoles(data);
+        }
+        catch (error) {
+          setRoles(['User'])
+        }
       }
-      catch (error) {
-
+      else {
+        setRoles(['User']);
       }
-
-      setIsLoadingState(false);
     }
 
-    isLogged();
+    async function fetchIsEmailConfirmed() {
+      if (getTokenObject() != null) {
+        try {
+          var response = await authClient.get(`${baseURL()}api/user/emailVerification`);
+          var data = response.data as boolean;
+          setIsEmailConfirmed(data);
+        }
+        catch (error) {
+          setIsEmailConfirmed(false);
+        }
+      } else {
+        setIsEmailConfirmed(false);
+      }
+    }
+    fetchRole();
+    fetchIsEmailConfirmed();
   }, [])
 
   return (

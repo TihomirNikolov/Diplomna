@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Role, User, UserContext } from ".";
-import { authClient, baseURL, notification } from "../../utilities";
+import { authClient, baseURL, removeTokenObject } from "../../utilities";
 import axios from "axios";
 
 const initialUser: User = {
@@ -10,27 +10,29 @@ const initialUser: User = {
 
 export default function UserProvider(props: any) {
     const [user, setUser] = useState<User>(initialUser);
-    const [role, setRole] = useState<Role>('user');
+    const [roles, setRoles] = useState<Role[]>([]);
     const [isEmailConfirmed, setIsEmailConfirmed] = useState<boolean>(false);
 
     async function logout() {
         try {
             var response = await authClient.delete(`${baseURL()}api/authenticate/logout`);
-            setUser({ accessToken: '', refreshToken: '' });
-            setRole('user');
+            setUser(initialUser);
+            setRoles(['User']);
             setIsEmailConfirmed(false);
+            removeTokenObject();
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
                 setUser(initialUser);
-                setRole('user');
+                setRoles(['User']);
                 setIsEmailConfirmed(false);
+                removeTokenObject();
             }
         }
     }
 
     return (
-        <UserContext.Provider value={{ user: user, setUser: setUser, role, setRole, isEmailConfirmed, setIsEmailConfirmed, logout: logout }}>
+        <UserContext.Provider value={{ user: user, setUser: setUser, roles, setRoles, isEmailConfirmed, setIsEmailConfirmed, logout: logout }}>
             {props.children}
         </UserContext.Provider>
     )

@@ -1,33 +1,28 @@
 import { User } from "../../contexts";
 
-interface LocalStorageToken {
-    refreshToken: string;
-    accessToken: string;
-};
-
 export function getRefreshToken() {
-    var tokenModel: LocalStorageToken = JSON.parse(localStorage.getItem("user")!);
+    var tokenModel: User = JSON.parse(localStorage.getItem("user")!);
     return tokenModel.refreshToken;
 }
 
 export function getAccessToken() {
-    var tokenModel: LocalStorageToken = JSON.parse(localStorage.getItem("user")!);
+    var tokenModel: User = JSON.parse(localStorage.getItem("user")!);
     return tokenModel.accessToken;
 }
 
 export function getTokenObject() {
-    return JSON.parse(localStorage.getItem("user")!) as LocalStorageToken;
+    return JSON.parse(localStorage.getItem("user")!) as User;
 
 }
 
 export function setRefreshToken(refreshToken: string) {
-    var oldToken: LocalStorageToken = getTokenObject();
+    var oldToken: User = getTokenObject();
     oldToken.refreshToken = refreshToken;
     localStorage.setItem('user', JSON.stringify(oldToken));
 }
 
 export function setAccessToken(accessToken: string) {
-    var oldToken: LocalStorageToken = getTokenObject();
+    var oldToken: User = getTokenObject();
     oldToken.accessToken = accessToken;
     localStorage.setItem('user', JSON.stringify(oldToken));
 }

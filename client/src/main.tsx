@@ -2,10 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { ContextProvider } from './contexts';
-import './index.css'
-import "/node_modules/flag-icons/css/flag-icons.min.css";
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import './index.css'
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 const queryClient = new QueryClient();
 

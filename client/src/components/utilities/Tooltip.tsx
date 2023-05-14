@@ -56,7 +56,7 @@ export default function Tooltip(props: Props) {
                 {props.children}
             </div>
             {showTooltip && (
-                <div className={`absolute ${getWideClass()} z-10 px-2 py-1 text-white bg-gray-800 dark:bg-gray-500 rounded-md text-sm ${getPositionClass()}`}>
+                <div className={`absolute z-10 px-2 py-1 text-white bg-gray-800 dark:bg-gray-500 rounded-md text-sm ${getPositionClass()}`}>
                     {props.text}
                 </div>
             )}

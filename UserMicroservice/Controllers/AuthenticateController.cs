@@ -1,21 +1,20 @@
-﻿using UserMicroservice.Authentication.Models.Responses;
-using Azure.Core;
+﻿using Azure.Core;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
 using UAParser;
-using UserMicroservice.Authentication;
-using UserMicroservice.Authentication.Helpers;
-using UserMicroservice.Authentication.Models.Database;
-using UserMicroservice.Authentication.Models.Requests;
 using UserMicroservice.Extensions;
+using UserMicroservice.Helpers;
 using UserMicroservice.Helpers.Constants;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Database;
+using UserMicroservice.Models;
+using UserMicroservice.Models.Database;
+using UserMicroservice.Models.Requests;
+using UserMicroservice.Models.Responses;
 
 namespace UserMicroservice.Controllers
 {
@@ -156,7 +155,9 @@ namespace UserMicroservice.Controllers
                     });
 
                     await _userManager.UpdateAsync(user);
+
                     var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                    var roles = (await _userManager.GetRolesAsync(user)).ToList();
 
                     var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -175,10 +176,11 @@ namespace UserMicroservice.Controllers
                     {
                         AccessToken = accessToken,
                         RefreshToken = refreshToken,
-                        IsEmailConfirmed = isEmailConfirmed
+                        IsEmailConfirmed = isEmailConfirmed,
+                        Roles = roles
                     });
                 }
-                return NotFound();
+                return Forbid();
             }
             return BadRequest();
         }
@@ -200,13 +202,15 @@ namespace UserMicroservice.Controllers
                     UserName = model.Email,
                     UserInfo = new UserInfo
                     {
-                        FirstName = "",
-                        LastName = "",
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
                     }
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (!result.Succeeded)
                     return StatusCode(StatusCodes.Status500InternalServerError);
+
+                await _userManager.AddToRoleAsync(user, "User");
 
                 var emailVerificationToken = _authHelper.GenerateToken();
 
@@ -248,7 +252,22 @@ namespace UserMicroservice.Controllers
                 oldRefreshToken = tokenModel.RefreshToken;
             }
 
-            var user = await _userManager.Users.Include(u => u.RefreshTokens.Where(r => r.Token == oldRefreshToken)).FirstOrDefaultAsync();
+            var oldAccessToken = Request.GetAuthorizationToken();
+
+            if (!string.IsNullOrEmpty(oldAccessToken))
+            {
+
+            }
+
+            var principal = _authHelper.GetPrincipalFromToken(oldAccessToken);
+            if (principal == null)
+            {
+                return BadRequest("Invalid access token");
+            }
+
+            var email = principal.Identity.Name;
+
+            var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
 
             if (user == null || user.RefreshTokens.FirstOrDefault(t => t.Token == oldRefreshToken && t.TokenExpiryTime >= DateTime.Now) == null)
             {
@@ -266,15 +285,16 @@ namespace UserMicroservice.Controllers
             var uaParser = Parser.GetDefault();
             ClientInfo clientInfo = uaParser.Parse(userAgent);
 
-            user.RefreshTokens.Add(new RefreshToken()
-            {
-                Token = newRefreshToken,
-                TokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays),
-                CreatedTime = DateTime.Now,
-                DeviceType = clientInfo.UA.Family + " " + clientInfo.UA.Major + "." + clientInfo.UA.Minor,
-            });
+            var rToken = user.RefreshTokens.FirstOrDefault(t => t.Token == oldRefreshToken);
 
-            _context.RefreshTokens.Remove(user.RefreshTokens.FirstOrDefault(t => t.Token == oldRefreshToken));
+            if (rToken != null)
+            {
+                rToken.Token = newRefreshToken;
+                rToken.TokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
+                rToken.DeviceType = clientInfo.UA.Family + " " + clientInfo.UA.Major + "." + clientInfo.UA.Minor;
+            }
+
+            _context.Users.Update(user);
             await _userManager.UpdateAsync(user);
 
             var newAccesTokenString = new JwtSecurityTokenHandler().WriteToken(newAccessToken);

@@ -1,10 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Spinner, usePut } from "../../components";
+import { Spinner, useTitle } from "../../components";
 import { axiosClient, baseURL } from "../../utilities";
 import { useEffect, useState } from "react";
 import { useUser } from "../../contexts";
+import { useTranslation } from "react-i18next";
 
 export default function ChangeEmailPage() {
+    const { t } = useTranslation();
+    useTitle(t('title.changeEmail'));
+
     const { emailChangeToken } = useParams();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,14 +49,14 @@ export default function ChangeEmailPage() {
     if (isSuccess) {
         return (
             <div className="grid h-[calc(100vh-50px)] place-items-center">
-                <h1 className="text-black dark:text-white">SUCESSFULLY CHANGED EMAIL</h1>
+                <h1 className="text-black dark:text-white">{t('successfullyChangedEmail')}</h1>
             </div>
         )
     }
     else {
         return (
             <div className="grid h-[calc(100vh-50px)] place-items-center">
-                <h1 className="text-black dark:text-white">EMAIL CHANGE TOKEN HAS EXPIRED OR IT ISNT VALID</h1>
+                <h1 className="text-black dark:text-white">{t('changeEmailExpired')}</h1>
             </div>
         )
     }

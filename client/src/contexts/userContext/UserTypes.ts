@@ -3,13 +3,13 @@ export type User = {
     refreshToken: string
 }
 
-export type Role = 'admin' | 'user';
+export type Role = 'Owner' | 'Administrator' | 'Moderator' |  'User';
 
 export type UserContextType = {
     user: User,
     setUser: (user: User) => void,
-    role: Role,
-    setRole: (role: Role) => void,
+    roles: Role[],
+    setRoles: (roles: Role[]) => void,
     isEmailConfirmed: boolean,
     setIsEmailConfirmed: (isEmailConfirmed: boolean) => void,
     logout: () => Promise<void>;

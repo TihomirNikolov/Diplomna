@@ -1,51 +1,54 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, FloatingInput, Modal } from "..";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { authClient, baseURL, notification, validatePassword } from "../../utilities";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { FloatingInputHandle } from "../inputs/FloatingInput";
 
-interface Props{
+interface Props {
     refreshLogins: () => Promise<void>
 }
 
 export default function ChangePassword(props: Props) {
-    const [oldPassword, setOldPassword] = useState<string>('');
-    const [newPassword, setNewPassword] = useState<string>('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
-
-    const [isOldPasswordValid, setIsOldPasswordValid] = useState<boolean>(false);
-    const [isNewPasswordValid, setIsNewPasswordValid] = useState<boolean>(false);
-    const [isConfirmNewPasswordValid, setIsConfirmNewPasswordValid] = useState<boolean>(false);
-
-    const [isOldPasswordValidationVisible, setIsOldPasswordValidationVisible] = useState<boolean>(false);
-    const [isNewPasswordValidationVisible, setIsNewPasswordValidationVisible] = useState<boolean>(false);
-    const [isConfirmNewPasswordValidationVisible, setIsConfirmNewPasswordValidationVisible] = useState<boolean>(false);
+    const oldPasswordInput = useRef<FloatingInputHandle>(null);
+    const newPasswordInput = useRef<FloatingInputHandle>(null);
+    const confirmNewPasswordInput = useRef<FloatingInputHandle>(null);
 
     const { t } = useTranslation();
 
-    async function onSubmit() {
-        if (confirmNewPassword != newPassword) {
-            setIsConfirmNewPasswordValid(false);
-            setIsConfirmNewPasswordValidationVisible(true);
-            return false;
-        }
+    function validateOldPassword(value: string) {
+        return value.length >= 8;
+    }
 
-        if (!validatePassword(oldPassword) || !validatePassword(newPassword) || confirmNewPassword != newPassword) {
-            setIsOldPasswordValidationVisible(true);
-            setIsNewPasswordValidationVisible(true);
-            setIsConfirmNewPasswordValidationVisible(true);
+    function validatePass(value: string) {
+        confirmNewPasswordInput.current?.showValidation();
+        return validatePassword(value);
+    }
+
+    function validateConfirmPassword(value: string) {
+
+        return value == newPasswordInput.current?.value && value != '';
+    }
+
+    async function onSubmit() {
+        confirmNewPasswordInput.current?.showValidation();
+
+        if (!oldPasswordInput.current?.isValid || !newPasswordInput.current?.isValid || !confirmNewPasswordInput.current?.isValid) {
+            oldPasswordInput.current?.showValidation();
+            newPasswordInput.current?.showValidation();
+            confirmNewPasswordInput.current?.showValidation();
             return false;
         }
 
         try {
-            var response = await authClient.put(`${baseURL()}api/user/change-password`, {oldPassword: oldPassword, newPassword: newPassword})
-            notification.success(t('changePasswordSuccess'), 'top-center');
+            var response = await authClient.put(`${baseURL()}api/user/change-password`, { oldPassword: oldPasswordInput.current?.value, newPassword: newPasswordInput.current?.value })
+            notification.success(t('responseErrors.changePasswordSuccess'), 'top-center');
             props.refreshLogins();
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('changePasswordError'), 'top-center')
+                notification.error(t('responseErrors.changePasswordError'), 'top-center')
                 return false;
             }
         }
@@ -53,58 +56,37 @@ export default function ChangePassword(props: Props) {
         return true;
     }
 
-    function onOldPasswordChanged(value: string) {
-        setOldPassword(value);
-    }
-
-    function onNewPasswordChanged(value: string) {
-        setNewPassword(value);
-    }
-
-    function onConfirmNewPasswordChanged(value: string) {
-        setConfirmNewPassword(value);
-    }
-
-    function onOldPasswordLostFocus(oldPassword: string) {
-        if (validatePassword(oldPassword)) {
-            setIsOldPasswordValid(true);
-        } else {
-            setIsOldPasswordValid(false);
-        }
-        setIsOldPasswordValidationVisible(true);
-    }
-
-    function onNewPasswordLostFocus(newPassword: string) {
-        if (validatePassword(newPassword)) {
-            setIsNewPasswordValid(true);
-        } else {
-            setIsNewPasswordValid(false);
-        }
-        setIsNewPasswordValidationVisible(true);
-    }
-
     return (
         <Modal submit={onSubmit}>
             <Modal.Button>
-                <BlackWhiteButton> {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} /></BlackWhiteButton>
+                <BlackWhiteButton className="w-full"> {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} /></BlackWhiteButton>
             </Modal.Button>
             <Modal.Content>
                 <form className="space-y-5">
-                    <FloatingInput placeholder={`${t('currentPassword')}`} type='password' inputId="oldPasswordInput"
-                        onChange={(e) => onOldPasswordChanged(e.target.value)} value={oldPassword}
-                        onBlur={(e) => onOldPasswordLostFocus(e.target.value)}
-                        isValid={isOldPasswordValid} isPassword={true}
-                        isValidVisible={isOldPasswordValidationVisible} />
-                    <FloatingInput placeholder={`${t('newPassword')}`} type='password' inputId="newPasswordInput"
-                        onChange={(e) => onNewPasswordChanged(e.target.value)} value={newPassword}
-                        onBlur={(e) => onNewPasswordLostFocus(e.target.value)}
-                        isValid={isNewPasswordValid} isPassword={true}
-                        isValidVisible={isNewPasswordValidationVisible}
-                        tooltip={t("passwordInfo")!} />
-                    <FloatingInput placeholder={`${t('confirmPassword')}`} type='password' inputId="confirmNewPasswordInput"
-                        onChange={(e) => onConfirmNewPasswordChanged(e.target.value)} value={confirmNewPassword}
-                        isValid={isConfirmNewPasswordValid} isPassword={true}
-                        isValidVisible={isConfirmNewPasswordValidationVisible} />
+                    <FloatingInput ref={oldPasswordInput}
+                        inputId="oldPasswordInput"
+                        placeholder={`${t('currentPassword')}`}
+                        type="password" isPassword={true}
+                        validate={validateOldPassword} immediateValdation={true}
+                        validateOnLostFocus={true}
+                        validationMessage={t('errorInput.eightCharactersRequired')!}
+                    />
+                    <FloatingInput ref={newPasswordInput}
+                        inputId="newPasswordInput"
+                        placeholder={`${t('newPassword')}`}
+                        type="password" isPassword={true}
+                        validate={validatePass} immediateValdation={true}
+                        validateOnLostFocus={true}
+                        validationMessage={t('passwordInfo')!}
+                    />
+                    <FloatingInput ref={confirmNewPasswordInput}
+                        inputId="confirmNewPasswordInput"
+                        placeholder={`${t('confirmPassword')}`}
+                        type="password" isPassword={true}
+                        validate={validateConfirmPassword} immediateValdation={true}
+                        validateOnLostFocus={true}
+                        validationMessage={t("errorInput.confirmPasswordInvalid")!}
+                    />
                 </form>
             </Modal.Content>
         </Modal>

@@ -48,11 +48,11 @@ export default function Layout(props: any) {
         try {
             var response = await authClient.post(`${baseURL()}api/user/resend-email-verification`);
 
-            notification.info(t('resentVerificationEmailSuccess'), 'top-center');
+            notification.info(t('responseErrors.resentVerificationEmailSuccess'), 'top-center');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('resentVerificationEmailError'), 'top-center')
+                notification.error(t('responseErrors.resentVerificationEmailError'), 'top-center')
             }
         }
     }
@@ -69,17 +69,17 @@ export default function Layout(props: any) {
                     </div>
                     <div className="flex justify-end items-center lg:order-2 space-x-2">
                         <LanguageSelector />
-                        <Favourites />
+                        {user.accessToken.length > 0 && <Favourites />}
                         <Profile />
                         <ShoppingCart />
                     </div>
                 </div>
             </nav>
-            {user.accessToken && !isEmailConfirmed &&
+            {user.accessToken.length > 0 && !isEmailConfirmed &&
                 <div className="grid place-items-center">
-                    <h1 className="text-white">
-                        Email is not confirmed.&nbsp;
-                        <span className="underline hover:text-blue-600 cursor-pointer" onClick={async () => resendEmail()}>Resend Email.</span>
+                    <h1 className="text-black dark:text-white">
+                        {t('emailNotConfirmed')}&nbsp;
+                        <span className="underline hover:text-blue-600 cursor-pointer" onClick={async () => resendEmail()}>{t('resendEmail')}</span>
                     </h1>
                 </div>}
         </>

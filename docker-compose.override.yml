@@ -11,10 +11,20 @@ services:
     volumes:
       - ./sqlserver-data:/var/opt/mssql/data
     restart: always
+  cache:
+    restart: always
+    ports:
+        - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass MySecretRedisP@ss0rd
+    volumes: 
+        - cache:/data
   usermicroservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=MySecretRedisP@ss0rd
     ports:
       - "44317:80"
       - "44318:443"
@@ -26,8 +36,18 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "80"
-      - "443"
+      - "44319:80"
+      - "44320:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  paymentsmicroservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "44321:80"
+      - "44322:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -38,3 +58,6 @@ services:
   #    - "5173:5173"
   #  container_name: website
 
+volumes:
+    cache:
+        driver: local

@@ -46,7 +46,7 @@ export default function LanguageSelector() {
             <>
                 <div className="relative">
                     <Listbox.Button className="relative rounded-md hover:bg-lightBackground hover:dark:bg-gray-700 px-1.5 text-gray-900 dark:text-white sm:text-sm sm:leading-6">
-                        <FontAwesomeIcon icon={["fas", "globe"]} size="lg"/>
+                        <FontAwesomeIcon icon={["fas", "globe"]} size="lg" />
                     </Listbox.Button>
 
                     <Transition
@@ -62,9 +62,7 @@ export default function LanguageSelector() {
                                     className={({ active }) =>
                                         classNames(
                                             active ? 'bg-gray-500 dark:bg-lightBackground' : '',
-                                            'relative cursor-pointer select-none py-2 pl-3 pr-9'
-                                        )
-                                    }
+                                            'relative cursor-pointer select-none py-2 pl-3 pr-9')}
                                     value={lang} onClick={() => i18n.changeLanguage(lang.code)}>
 
                                     {({ selected, active }) => (
@@ -79,11 +77,9 @@ export default function LanguageSelector() {
                                             {selected ? (
                                                 <span className={classNames(
                                                     active ? 'text-white dark:text-gray-900' : 'text-gray-900 dark:text-white',
-                                                    'absolute inset-y-0 right-0 flex items-center pr-4'
-                                                )}>
+                                                    'absolute inset-y-0 right-0 flex items-center pr-4')}>
                                                     <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                </span>
-                                            ) : null}
+                                                </span>) : null}
                                         </>
                                     )}
                                 </Listbox.Option>

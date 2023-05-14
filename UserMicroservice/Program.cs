@@ -9,9 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text;
-using UserMicroservice.Authentication;
-using UserMicroservice.Authentication.Helpers;
-using UserMicroservice.Authentication.Models.Database;
 using UserMicroservice.Helpers;
 using UserMicroservice.Helpers.Constants;
 using UserMicroservice.Interfaces.Services;
@@ -19,6 +16,11 @@ using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Mappers;
 using UserMicroservice.Services;
 using UserMicroservice.Services.Database;
+using StackExchange.Redis;
+using UserMicroservice;
+using UserMicroservice.Models.Database;
+using UserMicroservice.Models;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +28,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
+var REDIS_HOST = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_HOST);
+var REDIS_PORT = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PORT);
+var REDIS_PASSWORD = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PASSWORD);
+
 builder.Services.AddScoped<AuthenticationHelper>();
 builder.Services.AddScoped<HangfireHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
+
+var multiplexer = ConnectionMultiplexer.Connect($"{REDIS_HOST}:{REDIS_PORT},password={REDIS_PASSWORD}");
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")));
 
@@ -51,6 +60,7 @@ builder.Services.AddAutoMapper(
     (options) =>
     {
         options.AddProfile<RefreshTokenProfile>();
+        options.AddProfile<AddressProfile>();
     });
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -60,7 +70,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://192.168.0.133:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                          policy.WithOrigins("https://192.168.0.133:5173", "http://192.168.0.133:5173", "http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                       });
 });
 
@@ -108,7 +118,11 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -165,5 +179,7 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>(
     var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
     context?.Database.Migrate();
 }
+
+await DatabaseSeeder.SeedAsync(app.Services);
 
 app.Run();

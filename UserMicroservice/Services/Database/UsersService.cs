@@ -1,5 +1,5 @@
-﻿using UserMicroservice.Authentication;
-using UserMicroservice.Interfaces.Services.Database;
+﻿using UserMicroservice.Interfaces.Services.Database;
+using UserMicroservice.Models;
 
 namespace UserMicroservice.Services.Database
 {

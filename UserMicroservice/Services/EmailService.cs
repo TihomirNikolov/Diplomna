@@ -46,6 +46,29 @@ namespace UserMicroservice.Services
             }
         }
 
+        public bool ResendConfirmEmail(string destinationEmail, string confirmEmaiLink)
+        {
+            try
+            {
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress(fromEmail);
+                msg.To.Add(new MailAddress(destinationEmail));
+
+                msg.Subject = "Email Confirmation";
+                msg.IsBodyHtml = true;
+                var template = Path.Combine(_env.ContentRootPath, "Templates/Email/EmailConfirmResend.html");
+                var templateText = File.ReadAllText(template);
+                msg.Body = string.Format(templateText, confirmEmaiLink);
+
+                client.Send(msg);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool SendPasswordResetEmail(string destinationEmail, string resetPasswordLink)
         {
             try

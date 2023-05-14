@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
-    AccountPage, AddNewAddressPage, ChangeEmailPage, ConfrimEmailPage, ForgottenPasswordPage, HomePage, LoginPage,
+    AccountPage, AddressPage, ChangeEmailPage, ConfirmEmailPage, ForgottenPasswordPage, HomePage, LoginPage,
     MyAddressesPage, MyOrdersPage, NotFoundPage, PaymentCardsPage, RegisterPage,
     ResetPasswordPage, ShoppingCartPage, WishlistPage
 } from '../../pages'
@@ -24,7 +24,7 @@ export default function Router(props: Props) {
             <Route path={''} element={<HomePage />} />
             {homeRoutes()}
             <Route path='/checkout/cart' element={<ShoppingCartPage />} />
-            <Route path='/email/verify/:emailConfirmToken' element={<ConfrimEmailPage />} />
+            <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
             <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
             <Route element={<AuthRoute isLoading={props.isLoading} />}>
                 <Route path='/login' element={<LoginPage />} />
@@ -38,10 +38,11 @@ export default function Router(props: Props) {
                 <Route path='/payments/cards' element={<AccountLayout><PaymentCardsPage /></AccountLayout>} />
                 <Route path='/account/history' element={<AccountLayout><MyOrdersPage /></AccountLayout>} />
                 <Route path='/wishlist' element={<AccountLayout><WishlistPage /></AccountLayout>} />
-                <Route path='/account/address/add' element={<AccountLayout><AddNewAddressPage /></AccountLayout>} />
+                <Route path='/account/address/add' element={<AccountLayout><AddressPage /></AccountLayout>} />
+                <Route path='/account/address/edit/id/:id' element={<AccountLayout><AddressPage /></AccountLayout>} />
             </Route>
             <Route path='/404' element={<NotFoundPage />} />
-            <Route path='*' element={<Navigate to='/404' />} />
+            <Route path='*' element={<NotFoundPage />} />
         </Routes>
     )
 }

@@ -9,6 +9,8 @@ services:
         timeout: 3s
         retries: 10
         start_period: 10s
+  cache:
+    image: redis:6.2-alpine
   usermicroservice:
     image: ${DOCKER_REGISTRY-}usermicroservice
     build:
@@ -22,8 +24,13 @@ services:
      build:
         context: .
         dockerfile: ProductsMicroservice/Dockerfile
+  paymentsmicroservice:
+     image: ${DOCKER_REGISTRY-}paymentsmicroservice
+     build:
+        context: .
+        dockerfile: PaymentsMicroservice/Dockerfile
   #website:
   #  build:
-  #    context: ./client
-  #    dockerfile: Dockerfile
+  #      context: ./client
+  #      dockerfile: Dockerfile
 

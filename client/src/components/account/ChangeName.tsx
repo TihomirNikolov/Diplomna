@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, FloatingInput, Modal } from "..";
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { UserInfo, authClient, baseURL, notification } from "../../utilities";
+import { UserInfo, authClient, baseURL, notification, validateFirstName, validateLastName } from "../../utilities";
 import axios from "axios";
+import { FloatingInputHandle } from "../inputs/FloatingInput";
 
 interface Props {
     userInfo: UserInfo,
@@ -11,90 +12,70 @@ interface Props {
 }
 
 export default function ChangeName(props: Props) {
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [isFirstNameValid, setIsFirstNameValid] = useState<boolean>(false);
-    const [isLastNameValid, setIsLastNameValid] = useState<boolean>(false);
-    const [isFirstNameValidationVisible, setIsFirstNameValidationVisible] = useState<boolean>(false);
-    const [isLastNameValidationVisible, setIsLastNameValidationVisible] = useState<boolean>(false);
+
+    const firstNameInput = useRef<FloatingInputHandle>(null);
+    const lastNameInput = useRef<FloatingInputHandle>(null);
+
+    const [initialFirstName, setInitialFirstName] = useState<string>('');
+    const [initialLastName, setInitialLastName] = useState<string>('');
 
     const { t } = useTranslation();
 
     useEffect(() => {
-        setFirstName(props.userInfo.firstName);
-        setLastName(props.userInfo.lastName)
+        setInitialFirstName(props.userInfo.firstName);
+        setInitialLastName(props.userInfo.lastName);
     }, [props.userInfo])
 
     async function onSubmit() {
-        if (firstName.length < 1 || lastName.length < 1) {
-            setIsFirstNameValidationVisible(true);
-            setIsLastNameValidationVisible(true);
+        if (!firstNameInput.current?.isValid || !lastNameInput.current?.isValid) {
+            firstNameInput.current?.showValidation();
+            lastNameInput.current?.showValidation();
             return false;
         }
         try {
-            var response = await authClient.put(`${baseURL()}api/user/change-name`, { firstName: firstName, lastName: lastName });
+            var response = await authClient.put(`${baseURL()}api/user/change-name`, { firstName: firstNameInput.current?.value, lastName: lastNameInput.current?.value });
             props.setUserInfo((prev: UserInfo) => {
-                return{
+                return {
                     ...prev,
-                    firstName: firstName,
-                    lastName: lastName
+                    firstName: firstNameInput.current?.value!,
+                    lastName: lastNameInput.current?.value!
                 }
             })
-            notification.success(t('changeNamesSuccess'), 'top-center');
+            notification.success(t('responseErrors.changeNamesSuccess'), 'top-center');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                notification.error(t('changeNamesError'), 'top-center');
+                notification.error(t('responseErrors.changeNamesError'), 'top-center');
             }
             return false;
         }
         return true;
     }
 
-    function onFirstNameChanged(value: string) {
-        setFirstName(value);
-    }
-
-    function onLastNameChanged(value: string) {
-        setLastName(value);
-    }
-
-    function onFirstNameLostFocus(firstName: string) {
-        if (firstName.length > 1) {
-            setIsFirstNameValid(true);
-        } else {
-            setIsFirstNameValid(false);
-        }
-        setIsFirstNameValidationVisible(true);
-    }
-
-    function onLastNameLostFocus(lastName: string) {
-        if (lastName.length > 1) {
-            setIsLastNameValid(true);
-        } else {
-            setIsLastNameValid(false);
-        }
-        setIsLastNameValidationVisible(true);
-    }
-
     return (
         <Modal submit={onSubmit}>
             <Modal.Button>
-                <BlackWhiteButton> {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} /></BlackWhiteButton>
+                <BlackWhiteButton className="w-full"> {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} /></BlackWhiteButton>
             </Modal.Button>
             <Modal.Content>
                 <form className="space-y-5">
-                    <FloatingInput placeholder={`${t('firstName')}`} type='text' inputId="firstNameInput"
-                        onChange={(e) => onFirstNameChanged(e.target.value)} value={firstName}
-                        onBlur={(e) => onFirstNameLostFocus(e.target.value)}
-                        isValid={isFirstNameValid}
-                        isValidVisible={isFirstNameValidationVisible} />
+                    <FloatingInput ref={firstNameInput}
+                        inputId="firstNameInput"
+                        placeholder={`${t('firstName')}`}
+                        type='text'
+                        initialValue={initialFirstName}
+                        validate={validateFirstName} immediateValdation={true}
+                        validateOnLostFocus={true}
+                        validationMessage={t('errorInput.threeCharactersRequired')!} />
 
-                    <FloatingInput placeholder={`${t('lastName')}`} type='text' inputId="lastNameInput"
-                        onChange={(e) => onLastNameChanged(e.target.value)} value={lastName}
-                        onBlur={(e) => onLastNameLostFocus(e.target.value)}
-                        isValid={isLastNameValid}
-                        isValidVisible={isLastNameValidationVisible} />
+                    <FloatingInput ref={lastNameInput}
+                        inputId="lastNameInput"
+                        placeholder={`${t('lastName')}`}
+                        type='text'
+                        initialValue={initialLastName}
+                        validate={validateLastName} immediateValdation={true}
+                        validateOnLostFocus={true}
+                        validationMessage={t('errorInput.threeCharactersRequired')!} />
                 </form>
             </Modal.Content>
         </Modal>
