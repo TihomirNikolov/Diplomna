@@ -18,6 +18,16 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass MySecretRedisP@ss0rd
     volumes: 
         - cache:/data
+  rabbitmq:
+     container_name: 'rabbitmq'
+     ports:
+         - 5672:5672
+         - 15672:15672
+     volumes:
+         - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+         - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+     networks:
+         - rabbitmq_go_net
   usermicroservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -41,6 +51,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ./ProductsMicroservice/Files:/src/ProductsMicroservice
   paymentsmicroservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -48,6 +59,36 @@ services:
     ports:
       - "44321:80"
       - "44322:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  ordersmicroservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "44323:80"
+      - "44324:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  shoppingcartmicroservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "44325:80"
+      - "44326:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  locationmicroservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "44327:80"
+      - "44328:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -61,3 +102,7 @@ services:
 volumes:
     cache:
         driver: local
+
+networks:
+  rabbitmq_go_net:
+    driver: bridge

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../../contexts";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AccountLayout(props: any) {
     const { isEmailConfirmed } = useUser();
@@ -22,27 +24,58 @@ export default function AccountLayout(props: any) {
 
 
     return (
-        <div className={`grid ${isEmailConfirmed ? 'min-h-[calc(100vh-50px)]' : 'min-h-[calc(100vh-74px)]'}`}>
-            <div className="grid md:grid-cols-5 bg-lightBackground dark:bg-gray-900 text-black dark:text-white rounded-lg md:p-4">
-                <button data-collapse-toggle="navbar-default" type="button"
-                    className="inline-flex items-center text-gray-500 dark:text-gray-400 rounded-lg md:hidden
-                 hover:bg-gray-100 hover:dark:bg-gray-700" aria-controls="navbar-default" aria-expanded="false">
-                    <span className="sr-only">Open main menu</span>
-                    <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
-                </button>
-                <nav className="hidden md:flex flex-col" id="navbar-default">
-                    <div className="grid grid-cols-2">
-                        <div className="sm:flex flex-col ml-0 col-start-2">
-                            {paths.map((item, i) => {
-                                return <Link key={i} className={`py-4 border-b-2 hover:text-blue-500 hover:border-b-blue-500 ${isSelected(item.path) ? 'text-orange-600 border-b-orange-600' : ''}`}
-                                    to={item.path}>{t(item.translate)}</Link>
-                            })}
-                        </div>
+        <div className="md:grid md:grid-cols-5 text-black dark:text-white rounded-lg md:p-4">
+            <nav className="hidden md:flex flex-col">
+                <div className="grid grid-cols-2">
+                    <div className="sm:flex flex-col ml-0 col-start-2">
+                        {paths.map((item, i) => {
+                            return <Link key={i} className={`py-4 border-b-2 hover:text-blue-500 hover:border-b-blue-500 ${isSelected(item.path) ? 'text-orange-500 border-b-orange-500' : ''}`}
+                                to={item.path}>{t(item.translate)}</Link>
+                        })}
                     </div>
-                </nav>
-                <div className="md:col-span-4 rounded-lg">
-                    {props.children}
                 </div>
+            </nav>
+            <div className="sm:hidden">
+                <Menu>
+                    {({ open }) => (
+                        <>
+                            <Menu.Button className='px-5 py-2'>
+                                <FontAwesomeIcon icon={['fas', 'bars']} />
+                            </Menu.Button>
+
+                            <Transition
+                                show={open}
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 translate-y-1"
+                                enterTo="opacity-100 translate-y-0"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 translate-y-0"
+                                leaveTo="opacity-0 translate-y-1">
+
+                                <Menu.Items className='absolute bg-lightBackground dark:bg-darkBackground-900
+                                                   z-10 mt-2 bottom pl-5
+                                                   w-full tranform md:w-2/3 text-black dark:text-white'>
+                                    <div className="flex flex-col">
+                                        {paths.map((item, i) => {
+                                            return (
+                                                <Menu.Item key={i}>
+                                                    <Link className={`py-4 border-b-2 hover:text-blue-500 hover:border-b-blue-500 ${isSelected(item.path) ? 'text-orange-500 border-b-orange-500' : ''}`}
+                                                        to={item.path}>{t(item.translate)}
+                                                    </Link>
+                                                </Menu.Item>
+                                            )
+                                        })}
+                                    </div>
+                                </Menu.Items>
+                            </Transition>
+                        </>
+                    )}
+                </Menu>
             </div>
-        </div>)
+            <div className="md:col-span-4 rounded-lg">
+                {props.children}
+            </div>
+        </div>
+    )
 }

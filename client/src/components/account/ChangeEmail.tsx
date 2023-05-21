@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, FloatingInput, Modal } from "..";
 import { Dispatch, useEffect, useRef, useState } from "react";
-import { UserInfo, authClient, baseURL, notification, validateEmail } from "../../utilities";
+import { UserInfo, authClient, baseUserURL, notification, validateEmail } from "../../utilities";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { FloatingInputHandle } from "../inputs/FloatingInput";
@@ -30,7 +30,7 @@ export default function ChangeEmail(props: Props) {
         }
 
         try {
-            var response = await authClient.post(`${baseURL()}api/user/request-change-email`, { email: emailInput.current?.value });
+            var response = await authClient.post(`${baseUserURL()}api/user/request-change-email`, { email: emailInput.current?.value });
 
             notification.success(t('responseErrors.changeEmailSuccess'), 'top-center');
         }

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, FloatingInput, Modal } from "..";
 import { Dispatch, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { UserInfo, authClient, baseURL, notification, validateFirstName, validateLastName } from "../../utilities";
+import { UserInfo, authClient, baseUserURL, notification, validateFirstName, validateLastName } from "../../utilities";
 import axios from "axios";
 import { FloatingInputHandle } from "../inputs/FloatingInput";
 
@@ -33,7 +33,7 @@ export default function ChangeName(props: Props) {
             return false;
         }
         try {
-            var response = await authClient.put(`${baseURL()}api/user/change-name`, { firstName: firstNameInput.current?.value, lastName: lastNameInput.current?.value });
+            var response = await authClient.put(`${baseUserURL()}api/user/change-name`, { firstName: firstNameInput.current?.value, lastName: lastNameInput.current?.value });
             props.setUserInfo((prev: UserInfo) => {
                 return {
                     ...prev,
@@ -61,7 +61,7 @@ export default function ChangeName(props: Props) {
                 <form className="space-y-5">
                     <FloatingInput ref={firstNameInput}
                         inputId="firstNameInput"
-                        placeholder={`${t('firstName')}`}
+                        placeholder={`${t('address.firstName')}`}
                         type='text'
                         initialValue={initialFirstName}
                         validate={validateFirstName} immediateValdation={true}
@@ -70,7 +70,7 @@ export default function ChangeName(props: Props) {
 
                     <FloatingInput ref={lastNameInput}
                         inputId="lastNameInput"
-                        placeholder={`${t('lastName')}`}
+                        placeholder={`${t('address.lastName')}`}
                         type='text'
                         initialValue={initialLastName}
                         validate={validateLastName} immediateValdation={true}

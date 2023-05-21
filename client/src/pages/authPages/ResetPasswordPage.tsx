@@ -2,7 +2,7 @@ import { FormEvent, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FloatingInput, Spinner, useGetType, useTitle } from "../../components";
 import axios from "axios";
-import { axiosClient, baseURL, notification, validatePassword } from "../../utilities";
+import { axiosClient, baseUserURL, notification, validatePassword } from "../../utilities";
 import { useTranslation } from "react-i18next";
 import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
 
@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
     const passwordInput = useRef<FloatingInputHandle>(null);
     const confirmPasswordInput = useRef<FloatingInputHandle>(null);
 
-    const { isLoading, isSuccess } = useGetType<boolean>(`${baseURL()}api/authenticate/verify-password-token/${resetToken!}`);
+    const { isLoading, isSuccess } = useGetType<boolean>(`${baseUserURL()}api/authenticate/verify-password-token/${resetToken!}`);
 
     function validatePass(value: string) {
         confirmPasswordInput.current?.showValidation();
@@ -38,7 +38,7 @@ export default function ResetPasswordPage() {
             return;
         }
         try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: passwordInput.current.value });
+            var response = await axiosClient.post(`${baseUserURL()}api/authenticate/reset-password`, { resetToken: resetToken, password: passwordInput.current.value });
             navigate('/login');
         }
         catch (error) {

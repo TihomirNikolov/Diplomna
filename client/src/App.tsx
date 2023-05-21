@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Role, User, useTheme, useUser } from './contexts'
-import { authClient, axiosClient, baseURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
+import { authClient, axiosClient, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
 import { AxiosRequestConfig } from 'axios'
 
 library.add(fab, fas, far)
@@ -54,7 +54,7 @@ function App() {
 
           isRefreshing = true;
           try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/refresh-token`, { refreshToken: "" }, {
+            var response = await axiosClient.post(`${baseUserURL()}api/authenticate/refresh-token`, { refreshToken: "" }, {
               headers: {
                 Authorization: "Bearer " + getAccessToken(),
                 RefreshToken: getRefreshToken()
@@ -96,7 +96,7 @@ function App() {
     async function fetchRole() {
       if (getTokenObject() != null) {
         try {
-          var response = await authClient.get(`${baseURL()}api/user/roles`);
+          var response = await authClient.get(`${baseUserURL()}api/user/roles`);
           var data = response.data as Role[]
           setRoles(data);
         }
@@ -112,7 +112,7 @@ function App() {
     async function fetchIsEmailConfirmed() {
       if (getTokenObject() != null) {
         try {
-          var response = await authClient.get(`${baseURL()}api/user/emailVerification`);
+          var response = await authClient.get(`${baseUserURL()}api/user/emailVerification`);
           var data = response.data as boolean;
           setIsEmailConfirmed(data);
         }
@@ -130,7 +130,7 @@ function App() {
   return (
     <div className='dark:bg-darkBackground-900 transition-colors duration-300 bg-lightBackground'>
       <BrowserRouter>
-        <Layout />
+        <Layout isLoading={isLoadingState} />
         <Routes isLoading={isLoadingState} />
         <ToastContainer theme={theme} />
       </BrowserRouter>

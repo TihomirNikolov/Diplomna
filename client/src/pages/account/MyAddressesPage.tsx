@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { AddNewAddressCard, AddressCard, useTitle } from "../../components";
 import { useEffect, useState } from "react";
-import { Address, authClient, baseURL } from "../../utilities";
+import { Address, authClient, baseUserURL } from "../../utilities";
 import axios from "axios";
 
 export default function MyAddressesPage() {
@@ -13,7 +13,7 @@ export default function MyAddressesPage() {
     useEffect(() => {
         async function fetchAddresses() {
             try {
-                var response = await authClient.get(`${baseURL()}api/user/addresses`);
+                var response = await authClient.get(`${baseUserURL()}api/user/addresses`);
                 var data = response.data as Address[];
 
                 setAddresses(data);

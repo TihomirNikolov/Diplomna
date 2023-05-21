@@ -3,7 +3,7 @@ import { FloatingInput, Input } from "../inputs";
 import { Modal } from "../modals";
 import { useRef } from "react";
 import { FloatingInputHandle } from "../inputs/FloatingInput";
-import { authClient, baseURL, notification, validateEmail } from "../../utilities";
+import { authClient, baseUserURL, notification, validateEmail } from "../../utilities";
 import axios from "axios";
 import { useUser } from "../../contexts";
 
@@ -29,7 +29,7 @@ export default function DeleteAccount() {
         }
 
         try {
-            var response = await authClient.post(`${baseURL()}api/user/delete`, { email: emailInput.current.value, password: passwordInput.current.value });
+            var response = await authClient.post(`${baseUserURL()}api/user/delete`, { email: emailInput.current.value, password: passwordInput.current.value });
             logout();
             return true;
         }

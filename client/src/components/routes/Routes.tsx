@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
-    AccountPage, AddressPage, ChangeEmailPage, ConfirmEmailPage, ForgottenPasswordPage, HomePage, LoginPage,
-    MyAddressesPage, MyOrdersPage, NotFoundPage, PaymentCardsPage, RegisterPage,
+    AccountPage, AddressPage, CategoryPage, ChangeEmailPage, ConfirmEmailPage, ForgottenPasswordPage, HomePage, LoginPage,
+    MyAddressesPage, MyOrdersPage, NotFoundPage, PaymentCardsPage, ProductPage, RegisterPage,
     ResetPasswordPage, ShoppingCartPage, WishlistPage
 } from '../../pages'
 import ProtectedRoute from './ProtectedRoute'
@@ -26,6 +26,8 @@ export default function Router(props: Props) {
             <Route path='/checkout/cart' element={<ShoppingCartPage />} />
             <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
             <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
+            <Route path='/category/*' element={<CategoryPage />} />
+            <Route path='/product/*' element={<ProductPage></ProductPage>} />
             <Route element={<AuthRoute isLoading={props.isLoading} />}>
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />

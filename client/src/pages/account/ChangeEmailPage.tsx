@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner, useTitle } from "../../components";
-import { axiosClient, baseURL } from "../../utilities";
+import { axiosClient, baseUserURL } from "../../utilities";
 import { useEffect, useState } from "react";
 import { useUser } from "../../contexts";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,7 @@ export default function ChangeEmailPage() {
         async function fetch() {
             try {
                 setIsLoading(true);
-                var response = await axiosClient.put(`${baseURL()}api/user/change-email/${emailChangeToken!}`);
+                var response = await axiosClient.put(`${baseUserURL()}api/user/change-email/${emailChangeToken!}`);
                 setIsSuccess(true);
                 await logout();
                 navigate('');

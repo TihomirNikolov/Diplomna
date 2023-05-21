@@ -30,7 +30,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductsMicroservice", "Pro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserMicroservice", "UserMicroservice\UserMicroservice.csproj", "{FD36A491-2464-47D5-AD19-3EE42C011A42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentsMicroservice", "PaymentsMicroservice\PaymentsMicroservice.csproj", "{09720579-47FB-47E1-A368-C9C8EE48D8FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentsMicroservice", "PaymentsMicroservice\PaymentsMicroservice.csproj", "{09720579-47FB-47E1-A368-C9C8EE48D8FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersMicroservice", "OrdersMicroservice\OrdersMicroservice.csproj", "{1496F470-ED2A-409F-8F27-699BE743FF3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartMicroservice", "ShoppingCartMicroservice\ShoppingCartMicroservice.csproj", "{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationMicroservice", "LocationMicroservice\LocationMicroservice.csproj", "{CFDC2027-C000-451F-93E5-0AF0AF93709B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +64,18 @@ Global
 		{09720579-47FB-47E1-A368-C9C8EE48D8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09720579-47FB-47E1-A368-C9C8EE48D8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09720579-47FB-47E1-A368-C9C8EE48D8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1496F470-ED2A-409F-8F27-699BE743FF3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1496F470-ED2A-409F-8F27-699BE743FF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1496F470-ED2A-409F-8F27-699BE743FF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1496F470-ED2A-409F-8F27-699BE743FF3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

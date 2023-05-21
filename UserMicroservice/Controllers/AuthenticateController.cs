@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -206,11 +205,6 @@ namespace UserMicroservice.Controllers
                         LastName = model.LastName,
                     }
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (!result.Succeeded)
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-
-                await _userManager.AddToRoleAsync(user, "User");
 
                 var emailVerificationToken = _authHelper.GenerateToken();
 
@@ -227,7 +221,11 @@ namespace UserMicroservice.Controllers
 
                 if (_emailService.SendConfirmEmail(model.Email, confirmEmailLink))
                 {
-                    await _userManager.UpdateAsync(user);
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (!result.Succeeded)
+                        return StatusCode(StatusCodes.Status500InternalServerError);
+
+                    await _userManager.AddToRoleAsync(user, "User");
 
                     BackgroundJob.Schedule<IUsersService>(service => service.DeleteEmailVerification(emailVerificationToken), TimeSpan.FromHours(24));
                     return Ok();

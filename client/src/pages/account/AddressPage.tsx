@@ -5,7 +5,7 @@ import validator from 'validator';
 import { InputHandle } from "../../components/inputs/Input";
 import { CountriesComboboxHandle } from "../../components/inputs/CountriesComboBox";
 import {
-    authClient, baseURL, Address, notification, validateCity, validateFirstName, validateLastName,
+    authClient, baseUserURL, Address, notification, validateCity, validateFirstName, validateLastName,
     validateMobileNumber, validateRegion, validateStreetAddress
 } from "../../utilities";
 import axios from "axios";
@@ -50,7 +50,7 @@ export default function AddressPage() {
     if (id != undefined) {
         async function fetchAddress() {
             try {
-                var response = await authClient.get(`${baseURL()}api/user/address/id/${id}`);
+                var response = await authClient.get(`${baseUserURL()}api/user/address/id/${id}`);
                 var data = response.data as Address;
                 setInitial(data);
                 setIsDefaultAddressLocked(data.isDefault);
@@ -137,7 +137,7 @@ export default function AddressPage() {
         }
 
         try {
-            var response = await authClient.put(`${baseURL()}api/user/edit-address`, address);
+            var response = await authClient.put(`${baseUserURL()}api/user/edit-address`, address);
             setIsDefaultAddressLocked(true);
             notification.success('Successfully eddited your address', 'top-center');
         }
@@ -166,7 +166,7 @@ export default function AddressPage() {
         }
 
         try {
-            var response = await authClient.post(`${baseURL()}api/user/add-new-address`, address);
+            var response = await authClient.post(`${baseUserURL()}api/user/add-new-address`, address);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {

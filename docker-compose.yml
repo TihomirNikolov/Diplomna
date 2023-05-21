@@ -11,6 +11,8 @@ services:
         start_period: 10s
   cache:
     image: redis:6.2-alpine
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
   usermicroservice:
     image: ${DOCKER_REGISTRY-}usermicroservice
     build:
@@ -29,6 +31,21 @@ services:
      build:
         context: .
         dockerfile: PaymentsMicroservice/Dockerfile
+  ordersmicroservice:
+     image: ${DOCKER_REGISTRY-}ordersmicroservice
+     build:
+        context: .
+        dockerfile: OrdersMicroservice/Dockerfile
+  shoppingcartmicroservice:
+     image: ${DOCKER_REGISTRY-}shoppingcartmicroservice
+     build:
+        context: .
+        dockerfile: ShoppingCartMicroservice/Dockerfile
+  locationmicroservice:
+     image: ${DOCKER_REGISTRY-}locationmicroservice
+     build:
+        context: .
+        dockerfile: LocationMicroservice/Dockerfile
   #website:
   #  build:
   #      context: ./client

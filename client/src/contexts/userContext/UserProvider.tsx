@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Role, User, UserContext } from ".";
-import { authClient, baseURL, removeTokenObject } from "../../utilities";
+import { authClient, baseUserURL, removeTokenObject } from "../../utilities";
 import axios from "axios";
 
 const initialUser: User = {
@@ -15,7 +15,7 @@ export default function UserProvider(props: any) {
 
     async function logout() {
         try {
-            var response = await authClient.delete(`${baseURL()}api/authenticate/logout`);
+            var response = await authClient.delete(`${baseUserURL()}api/authenticate/logout`);
             setUser(initialUser);
             setRoles(['User']);
             setIsEmailConfirmed(false);

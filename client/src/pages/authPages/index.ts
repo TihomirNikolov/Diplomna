@@ -4,4 +4,7 @@ import ForgottenPasswordPage from "./ForgottenPasswordPage";
 import ResetPasswordPage from "./ResetPasswordPage";
 import ConfirmEmailPage from "./ConfirmEmailPage";
 
-export {LoginPage, RegisterPage, ForgottenPasswordPage, ResetPasswordPage, ConfirmEmailPage}
+export {
+    LoginPage, RegisterPage, ForgottenPasswordPage,
+    ResetPasswordPage, ConfirmEmailPage
+}

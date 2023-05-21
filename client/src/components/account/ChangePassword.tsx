@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, FloatingInput, Modal } from "..";
 import { useRef, useState } from "react";
-import { authClient, baseURL, notification, validatePassword } from "../../utilities";
+import { authClient, baseUserURL, notification, validatePassword } from "../../utilities";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { FloatingInputHandle } from "../inputs/FloatingInput";
@@ -42,7 +42,7 @@ export default function ChangePassword(props: Props) {
         }
 
         try {
-            var response = await authClient.put(`${baseURL()}api/user/change-password`, { oldPassword: oldPasswordInput.current?.value, newPassword: newPasswordInput.current?.value })
+            var response = await authClient.put(`${baseUserURL()}api/user/change-password`, { oldPassword: oldPasswordInput.current?.value, newPassword: newPasswordInput.current?.value })
             notification.success(t('responseErrors.changePasswordSuccess'), 'top-center');
             props.refreshLogins();
         }

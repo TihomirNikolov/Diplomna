@@ -21,6 +21,7 @@ using UserMicroservice;
 using UserMicroservice.Models.Database;
 using UserMicroservice.Models;
 using Newtonsoft.Json;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,12 +57,7 @@ builder.Services.AddHangfire(options => options
 
 builder.Services.AddHangfireServer();
 
-builder.Services.AddAutoMapper(
-    (options) =>
-    {
-        options.AddProfile<RefreshTokenProfile>();
-        options.AddProfile<AddressProfile>();
-    });
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

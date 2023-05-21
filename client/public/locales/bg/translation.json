@@ -56,9 +56,6 @@
     },
     "firstName": "Име",
     "lastName": "Фамилия",
-    "loginGoogle": "Вход с Google",
-    "loginFacebook": "Вход с Facebook",
-    "loginTwitter": "Вход с Twitter",
     "signUp": "Регистрация",
     "signIn": "Вход",
     "signOut": "Изход",
@@ -104,5 +101,16 @@
     "confirmYourPassword": "Потвърдете паролата си",
     "sorry": "Съжаляваме",
     "notFoundPage": "не можахме да намерим тази страница",
-    "goToHome": "Отиване към главната страница."
+    "goToHome": "Отиване към главната страница.",
+    "categories": "Категории",
+    "category": "Категория",
+    "viewAll": "Виж всички",
+    "sortBy": "Сортирай по",
+    "showBy": "Покажи по",
+    "foundResults": "Намерени резултати",
+    "lowestPrice": "Най-ниска цена",
+    "highestPrice": "Най-висока цена",
+    "newest": "Най-нови",
+    "mostSold": "Най-продавани",
+    "mostCommented": "Най-коментирани"
 }

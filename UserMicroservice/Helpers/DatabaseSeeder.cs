@@ -48,7 +48,7 @@ namespace UserMicroservice.Helpers
             if (!context.Users.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<ApplicationUser>();
-                var hashed = password.HashPassword(user, "Micr0!nvest");
+                var hashed = password.HashPassword(user, "Adm!n123");
                 user.PasswordHash = hashed;
 
                 var userStore = new UserStore<ApplicationUser>(context);

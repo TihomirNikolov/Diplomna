@@ -6,19 +6,20 @@ namespace UserMicroservice.Services
 {
     public class EmailService : IEmailService
     {
-        private const string fromEmail = "";
+        private readonly string fromEmail = "";
 
         private SmtpClient client;
         private IWebHostEnvironment _env;
 
-        public EmailService(IWebHostEnvironment env)
+        public EmailService(IWebHostEnvironment env, IConfiguration configuration)
         {
+            fromEmail = configuration["EmailCredentials:Email"];
             client = new SmtpClient();
             client.UseDefaultCredentials = false;
             client.EnableSsl = true;
             client.Host = "smtp.gmail.com";
             client.Port = 587;
-            client.Credentials = new NetworkCredential("", "");
+            client.Credentials = new NetworkCredential(configuration["EmailCredentials:Email"], configuration["EmailCredentials:Password"]);
 
             _env = env;
         }

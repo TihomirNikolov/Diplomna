@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoginInfo, UserInfo, authClient, baseURL, notification } from "../../utilities";
+import { LoginInfo, UserInfo, authClient, baseUserURL, notification } from "../../utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlackWhiteButton, ChangeEmail, ChangeName, ChangePassword, DeleteAccount, Input, Modal, Tooltip, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ export default function AccountPage() {
 
         async function fetchUserInfo() {
             try {
-                var response = await authClient.get(`${baseURL()}api/user/userinfo`);
+                var response = await authClient.get(`${baseUserURL()}api/user/userinfo`);
 
                 var userInfo = response.data as UserInfo;
 
@@ -46,7 +46,7 @@ export default function AccountPage() {
 
     async function fetchLoginInfo() {
         try {
-            var response = await authClient.get(`${baseURL()}api/user/logins`);
+            var response = await authClient.get(`${baseUserURL()}api/user/logins`);
 
             var loginInfo = response.data as LoginInfo[];
             loginInfo.forEach(l => {
@@ -80,7 +80,7 @@ export default function AccountPage() {
 
     async function deleteAllSessions() {
         try {
-            var response = await authClient.delete(`${baseURL()}api/user/revoke-all`);
+            var response = await authClient.delete(`${baseUserURL()}api/user/revoke-all`);
             setLoginInfo([]);
             await logout();
             navigate('');
@@ -94,7 +94,7 @@ export default function AccountPage() {
 
     async function deleteSession(sessionId: string, sessionToken: string) {
         try {
-            var response = await authClient.delete(`${baseURL()}api/user/revoke/${sessionId}`);
+            var response = await authClient.delete(`${baseUserURL()}api/user/revoke/${sessionId}`);
             setLoginInfo(loginInfo.filter((session) => {
                 return session.id !== sessionId;
             }));

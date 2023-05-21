@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using ProductsMicroservice.Interfaces;
+using ProductsMicroservice.Models.Products;
 
 namespace ProductsMicroservice.Controllers
 {
@@ -11,14 +13,15 @@ namespace ProductsMicroservice.Controllers
     {
         #region Declarations
 
-
+        private IProductsService _productsService;
 
         #endregion
 
         #region Constructor
 
-        public ProductsController()
+        public ProductsController(IProductsService productsService)
         {
+            _productsService = productsService;
         }
 
         #endregion
@@ -26,25 +29,37 @@ namespace ProductsMicroservice.Controllers
         #region Get Methods
 
         [HttpGet]
-        [Route("products/all")]
+        [Route("")]
         public async Task<IActionResult> GetAll()
         {
-            const string connectionUri = "";
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            // Set the ServerApi field of the settings object to Stable API version 1
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            // Create a new client and connect to the server
-            var client = new MongoClient(settings);
+            return Ok(await _productsService.GetProductsAsync());
+        }
 
-            var db = client.GetDatabase("MongoDB");
+        [HttpGet]
+        [Route("cover")]
+        public async Task<IActionResult> GetCoverProducts()
+        {
+            return Ok(await _productsService.GetCoverProductsAsync());
+        }
 
-            var products = db.GetCollection<BsonDocument>("Products");
+        [HttpGet]
+        [Route("{category}")]
+        public async Task<IActionResult> GetCoverProductsByCategory(string category)
+        {
+            var products = await _productsService.GetCoverProductsByCategoryAsync(category);
+            return Ok(products);
+        }
 
-            var foundProducts = (await products.FindAsync(Builders<BsonDocument>.Filter.Exists("name"))).ToList();
+        #endregion
 
-            var jsonProducts = foundProducts.ToJson();
+        #region Post Methods
 
-            return Ok(jsonProducts);
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateProduct([FromBody] Product product)
+        {
+            await _productsService.CreateProductAsync(product);
+            return Ok();
         }
 
         #endregion

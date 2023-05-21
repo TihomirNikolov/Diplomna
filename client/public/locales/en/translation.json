@@ -29,8 +29,6 @@
         "passwordInvalid": "The password is invalid"
     },
     "address": {
-        "firstName": "Name",
-        "lastName": "Last name",
         "addNewAddress": "Add a new address",
         "mobileTelephoneNumber": "Mobile telephone number",
         "useDefaultOffice": "Use as default office",
@@ -39,7 +37,7 @@
         "city": "City",
         "region": "Region"
     },
-    "responseErrors":{
+    "responseErrors": {
         "changeEmailSuccess": "An email confirmation for changing your email was sent to your current email.",
         "changeEmailError": "There was an error in updating the user's names.",
         "changeNamesSuccess": "Successfully updated user's names.",
@@ -56,9 +54,8 @@
         "loginError": "Wrong email or password.",
         "serverError": "There was an error in connection with the server. Please try again later."
     },
-    "loginGoogle": "Log in with Google",
-    "loginFacebook": "Log in with Facebook",
-    "loginTwitter": "Log in with Twitter",
+    "firstName": "Name",
+    "lastName": "Last name",
     "signUp": "Sign up",
     "signIn": "Sign in",
     "signOut": "Sign out",
@@ -105,5 +102,16 @@
     "confirmYourPassword": "Confirm your password",
     "sorry": "Sorry",
     "notFoundPage": "we couldn't find this page",
-    "goToHome": "Go to home page."
+    "goToHome": "Go to home page.",
+    "categories": "Categories",
+    "category": "Category",
+    "viewAll": "View all",
+    "sortBy": "Sort by",
+    "showBy": "Show by",
+    "foundResults": "Found results",
+    "lowestPrice": "Lowest price",
+    "highestPrice": "Highest price",
+    "newest": "Newest",
+    "mostSold": "Most sold",
+    "mostCommented": "Most commented"
 }

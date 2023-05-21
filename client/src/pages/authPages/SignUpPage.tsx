@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from "react";
 import { BlueButton, FloatingInput, LinkButton, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
-import { baseURL, notification, axiosClient, validateLastName, validateFirstName, validateEmail, validatePassword } from "../../utilities";
+import { baseUserURL, notification, axiosClient, validateLastName, validateFirstName, validateEmail, validatePassword } from "../../utilities";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
@@ -42,7 +42,7 @@ export default function RegisterPage() {
             return;
         }
         try {
-            await axiosClient.post(`${baseURL()}api/authenticate/register`, {
+            await axiosClient.post(`${baseUserURL()}api/authenticate/register`, {
                 email: emailInput.current.value, password: passwordInput.current.value,
                 firstName: firstNameInput.current.value, lastName: lastNameInput.current.value
             });

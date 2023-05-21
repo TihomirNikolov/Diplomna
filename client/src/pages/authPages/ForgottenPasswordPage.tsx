@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from "react";
 import { FloatingInput, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { axiosClient, baseURL, notification, validateEmail } from "../../utilities";
+import { axiosClient, baseUserURL, notification, validateEmail } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
 
@@ -18,7 +18,7 @@ export default function ForgottenPasswordPage() {
         e.preventDefault();
 
         try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/reset-password-token`, { email: emailInput.current?.value });
+            var response = await axiosClient.post(`${baseUserURL()}api/authenticate/reset-password-token`, { email: emailInput.current?.value });
             navigate('/login');
         }
         catch (error) {

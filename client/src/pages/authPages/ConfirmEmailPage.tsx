@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { baseURL } from "../../utilities";
+import { baseUserURL } from "../../utilities";
 import { Spinner, useGetType, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,7 @@ export default function ConfirmEmailPage() {
 
     const { emailConfirmToken } = useParams();
 
-    const { isLoading, isSuccess } = useGetType<boolean>(`${baseURL()}api/user/verify-email/${emailConfirmToken!}`);
+    const { isLoading, isSuccess } = useGetType<boolean>(`${baseUserURL()}api/user/verify-email/${emailConfirmToken!}`);
 
     if (isLoading) {
         return (

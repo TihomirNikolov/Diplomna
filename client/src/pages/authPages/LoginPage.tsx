@@ -3,11 +3,9 @@ import { FormEvent, useRef, useState } from "react";
 import { BlueButton, Checkbox, FloatingInput, LinkButton, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { LoginModel, LoginResponse, axiosClient, baseURL, notification, setTokenObject, validateEmail } from "../../utilities";
+import { LoginModel, LoginResponse, axiosClient, baseUserURL, notification, setTokenObject, validateEmail } from "../../utilities";
 import { User, useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
-
-import './css/LoginPage.css'
 import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
 
 export default function LoginPage() {
@@ -41,7 +39,7 @@ export default function LoginPage() {
 
         let login: LoginModel = { email: emailInput.current.value, password: passwordInput.current.value, rememberMe }
         try {
-            var response = await axiosClient.post(`${baseURL()}api/authenticate/login`, login);
+            var response = await axiosClient.post(`${baseUserURL()}api/authenticate/login`, login);
 
             let data = response.data as LoginResponse;
 
@@ -57,10 +55,10 @@ export default function LoginPage() {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                if(error.response?.status == 403){
+                if (error.response?.status == 403) {
                     notification.error(t('responseErrors.loginError'), "top-center");
                 }
-                else{
+                else {
                     notification.error(t('responseErrors.serverError'), 'top-center')
                 }
             }
@@ -70,15 +68,6 @@ export default function LoginPage() {
     return (
         <div className="grid h-[calc(100vh-50px)] place-items-center">
             <div className="space-y-5 mx-4 w-auto md:w-96">
-                <button className="text-black w-full rounded-lg py-1 bg-white hover:bg-gray-200 shadow-lg" >
-                    <i className="fab fa-google fa-1x"></i> <label className="hover:cursor-pointer">{t('loginGoogle')}</label>
-                </button>
-                <button className="text-white w-full rounded-lg py-1 bg-facebook hover:bg-facebookHover shadow-lg">
-                    <FontAwesomeIcon icon={['fab', 'facebook']} /> <label className="hover:cursor-pointer">{t('loginFacebook')}</label>
-                </button>
-                <button className="text-white w-full rounded-lg py-1 bg-twitter hover:bg-twitterHover shadow-lg">
-                    <FontAwesomeIcon icon={['fab', 'twitter']} /> <label className="hover:cursor-pointer">{t('loginTwitter')}</label>
-                </button>
                 <form className="p-6 space-y-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg" onSubmit={e => onSubmit(e)} >
                     <h1 className="text-xl font-bold text-black dark:text-gray-500">{t('signIn')}</h1>
                     <FloatingInput ref={emailInput}
