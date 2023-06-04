@@ -30,6 +30,18 @@ namespace ProductsMicroservice.Services
             return _mapper.Map<List<ProductDocument>, List<ProductDTO>>(collection);
         }
 
+        public async Task<List<ProductDTO>> GetProductsByUrlsAsync(List<string> productUrls)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var collection = await db.GetCollection<ProductDocument>(CollectionName)
+                .Find(Builders<ProductDocument>.Filter.Where(p => productUrls.Contains(p.ProductUrl))).ToListAsync();
+
+            return _mapper.Map<List<ProductDTO>>(collection);
+        }
+
         public async Task<bool> CreateProductAsync(Product product)
         {
             await CreateCollectionIfDoesntExistAsync();
@@ -48,7 +60,10 @@ namespace ProductsMicroservice.Services
             var db = GetDatabase();
 
             var collection = await db.GetCollection<ProductDocument>(CollectionName).Find(Builders<ProductDocument>.Filter.Empty).ToListAsync();
-            return _mapper.Map<List<ProductDocument>, List<CoverProductDTO>>(collection);
+
+            var mappedProducts = _mapper.Map<List<ProductDocument>, List<CoverProductDTO>>(collection);
+
+            return mappedProducts;
         }
 
         public async Task<List<CoverProductDTO>> GetCoverProductsByCategoryAsync(string categoryName)
@@ -58,9 +73,63 @@ namespace ProductsMicroservice.Services
             var db = GetDatabase();
 
             var collection = await db.GetCollection<ProductDocument>(CollectionName)
-                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories, c => c.DisplayName.ToLower() == categoryName.ToLower())).ToListAsync();
+                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories,
+                c => c.DisplayName["bg"] == categoryName || c.DisplayName["en"] == categoryName)).ToListAsync();
 
             return _mapper.Map<List<CoverProductDTO>>(collection);
+        }
+
+        public async Task<bool> CheckIfProductExists(string url)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var product = await db.GetCollection<ProductDocument>(CollectionName)
+                .Find(Builders<ProductDocument>.Filter.Eq("ProductUrl", url)).FirstOrDefaultAsync();
+
+            return product != null;
+        }
+
+        public async Task<ProductDTO> GetProductByUrl(string url)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var product = await db.GetCollection<ProductDocument>(CollectionName)
+                .Find(Builders<ProductDocument>.Filter.Eq("ProductUrl", url)).FirstOrDefaultAsync();
+
+            return _mapper.Map<ProductDTO>(product);
+        }
+
+        public async Task<bool> AddReview(ProductReview review, string productUrl)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            review.Id = Guid.NewGuid().ToString();
+
+            var filter = Builders<ProductDocument>.Filter.Eq(p => p.ProductUrl, productUrl);
+            var update = Builders<ProductDocument>.Update.Push(p => p.Reviews, review);
+
+            await db.GetCollection<ProductDocument>(CollectionName).FindOneAndUpdateAsync(filter, update);
+
+            return true;
+        }
+
+        public async Task<bool> RemoveReview(ProductReview review, string productUrl)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filter = Builders<ProductDocument>.Filter.Where(p => p.ProductUrl == productUrl);
+            var update = Builders<ProductDocument>.Update.PullFilter(p => p.Reviews, Builders<ProductReview>.Filter.Where(r => r.Id == review.Id));
+            await db.GetCollection<ProductDocument>(CollectionName).UpdateOneAsync(filter, update);
+
+            return true;
         }
     }
 }

@@ -61,7 +61,7 @@ export default function ChangeName(props: Props) {
                 <form className="space-y-5">
                     <FloatingInput ref={firstNameInput}
                         inputId="firstNameInput"
-                        placeholder={`${t('address.firstName')}`}
+                        placeholder={`${t('firstName')}`}
                         type='text'
                         initialValue={initialFirstName}
                         validate={validateFirstName} immediateValdation={true}
@@ -70,7 +70,7 @@ export default function ChangeName(props: Props) {
 
                     <FloatingInput ref={lastNameInput}
                         inputId="lastNameInput"
-                        placeholder={`${t('address.lastName')}`}
+                        placeholder={`${t('lastName')}`}
                         type='text'
                         initialValue={initialLastName}
                         validate={validateLastName} immediateValdation={true}

@@ -30,8 +30,8 @@ export default function MyAddressesPage() {
 
     return (
         <div>
-            <div className="mx-1 md:ml-5 md:mr-0">
-                <h1 className="text-black dark:text-white font-bold mb-5">Моите адреси</h1>
+            <div className="mx-1 md:ml-0 md:mr-0">
+                <h1 className="text-black dark:text-white font-bold mb-5">{t('myAddresses')}</h1>
                 <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
                     <AddNewAddressCard />
                     {addresses.sort((a, b) => a.isDefault && !b.isDefault ? -1

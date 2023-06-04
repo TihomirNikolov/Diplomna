@@ -4,44 +4,20 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 import i18n from "../utilities/i18next";
 import { classNames } from "../../utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-interface Language {
-    name: string,
-    code: string,
-    icon: string
-}
-
-const Languages: Language[] = [
-    {
-        name: 'English',
-        code: 'en',
-        icon: 'gb'
-    },
-    {
-        name: 'Български',
-        code: 'bg',
-        icon: 'bg'
-    }
-]
-
-const defaultLanguage: Language = {
-    name: 'English',
-    code: 'en',
-    icon: 'uk'
-}
+import { Languages, useLanguage } from "../../contexts";
 
 export default function LanguageSelector() {
-    const [selected, setSelected] = useState<Language>(defaultLanguage);
+    const { language, setLanguage } = useLanguage();
 
     useLayoutEffect(() => {
         const lang = localStorage.getItem("i18nextLng");
         if (lang != null) {
             var selectedLang = Languages.filter(e => e.code === lang)[0]
-            setSelected(selectedLang);
+            setLanguage(selectedLang);
         }
     }, []);
 
-    return (<Listbox value={selected} onChange={setSelected}>
+    return (<Listbox value={language} onChange={setLanguage}>
         {({ open }) => (
             <>
                 <div className="relative">

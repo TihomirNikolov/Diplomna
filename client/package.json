@@ -24,6 +24,7 @@
     "@types/react-virtualized": "^9.21.21",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
+    "@types/uuid": "^9.0.1",
     "@types/validator": "^13.7.17",
     "axios": "^1.2.6",
     "flag-icons": "^6.6.6",
@@ -42,6 +43,7 @@
     "react-toastify": "^9.1.2",
     "react-virtualized-auto-sizer": "^1.0.15",
     "react-window": "^1.8.9",
+    "uuid": "^9.0.0",
     "validator": "^13.9.0",
     "vite-plugin-mkcert": "^1.15.0"
   },

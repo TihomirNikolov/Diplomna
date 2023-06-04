@@ -1,7 +1,10 @@
 using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
+using ProductsMicroservice;
+using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Services;
+using StackExchange.Redis;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
- string connectionUri = configuration.GetConnectionString("MongoDBConnectionString")!;
+var REDIS_HOST = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_HOST);
+var REDIS_PORT = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PORT);
+var REDIS_PASSWORD = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PASSWORD);
+
+var multiplexer = ConnectionMultiplexer.Connect($"{REDIS_HOST}:{REDIS_PORT},password={REDIS_PASSWORD}");
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+
+string connectionUri = configuration.GetConnectionString("MongoDBConnectionString")!;
 
 var settings = MongoClientSettings.FromConnectionString(connectionUri);
 settings.ServerApi = new ServerApi(ServerApiVersion.V1);
@@ -18,6 +28,11 @@ builder.Services.AddSingleton<IMongoClient>(new MongoClient(connectionUri));
 
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IFavouritesService, FavouritesService>();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<HttpRequestHelper>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

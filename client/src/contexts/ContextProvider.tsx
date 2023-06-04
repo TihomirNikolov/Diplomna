@@ -1,12 +1,19 @@
-import { ThemeProvider, UserProvider } from ".";
+import { FavouritesProvider, LanguageProvider, ThemeProvider, UserProvider } from ".";
+import ShoppingCardProvider from "./shoppingCartContext/ShoppingCartProvider";
 
 export default function ContextProvider(props: any) {
 
     return (
-        <UserProvider>
-            <ThemeProvider>
-                {props.children}
-            </ThemeProvider>
-        </UserProvider>
+        <LanguageProvider>
+            <UserProvider>
+                <ThemeProvider>
+                    <ShoppingCardProvider>
+                        <FavouritesProvider>
+                            {props.children}
+                        </FavouritesProvider>
+                    </ShoppingCardProvider>
+                </ThemeProvider>
+            </UserProvider>
+        </LanguageProvider>
     )
 }

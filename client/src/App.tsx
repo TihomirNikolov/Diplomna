@@ -1,5 +1,5 @@
 import './App.css'
-import { Layout, Routes } from './components'
+import { Footer, Layout, Routes, ScrollToTop } from './components'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -8,9 +8,10 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Role, User, useTheme, useUser } from './contexts'
-import { authClient, axiosClient, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
+import { FavouritesItem, Role, User, useFavourites, useTheme, useUser } from './contexts'
+import { authClient, axiosClient, baseProductsURL, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
 import { AxiosRequestConfig } from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 
 library.add(fab, fas, far)
 
@@ -19,10 +20,18 @@ function App() {
   const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
   const { setUser, setRoles, setIsEmailConfirmed } = useUser();
+  const { setFavourites } = useFavourites();
   const { theme } = useTheme();
 
   let isRefreshing = false;
   let refreshSubscribers: ((user: User) => void)[] = [];
+
+  function checkForUserId() {
+    if (localStorage.getItem('uuid') == null) {
+      var userId = uuidv4();
+      localStorage.setItem('uuid', userId);
+    }
+  }
 
   useEffect(() => {
     authClient.interceptors.request.use((config) => {
@@ -123,15 +132,39 @@ function App() {
         setIsEmailConfirmed(false);
       }
     }
+
+    async function fetchFavourites() {
+      if (getTokenObject() != null) {
+        if (getTokenObject() != null) {
+          try {
+            var response = await authClient.get(`${baseProductsURL()}api/favourites`);
+            var data = response.data as string[];
+            setFavourites(data);
+          }
+          catch (error) {
+            setFavourites([]);
+          }
+        } else {
+          setFavourites([]);
+        }
+      }
+    }
+
     fetchRole();
     fetchIsEmailConfirmed();
+    fetchFavourites();
+    checkForUserId();
   }, [])
 
   return (
-    <div className='dark:bg-darkBackground-900 transition-colors duration-300 bg-lightBackground'>
+    <div>
       <BrowserRouter>
-        <Layout isLoading={isLoadingState} />
-        <Routes isLoading={isLoadingState} />
+        <ScrollToTop />
+        <div className='min-h-screen'>
+          <Layout isLoading={isLoadingState} />
+          <Routes isLoading={isLoadingState} />
+        </div>
+        <Footer />
         <ToastContainer theme={theme} />
       </BrowserRouter>
     </div>

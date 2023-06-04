@@ -62,7 +62,7 @@ export default function Layout(props: Props) {
 
     return (
         <>
-            <nav className="bg-white border-gray-200 dark:bg-gray-800 sticky top-0 z-50">
+            <nav className="bg-white border-gray-200 dark:bg-gray-800 sticky top-0 z-40">
                 <div className="grid grid-cols-2 sm:grid-cols-3 py-4">
                     <div className="grid grid-cols-4 items-center">
                         <div className="md:hidden">
@@ -82,7 +82,7 @@ export default function Layout(props: Props) {
                         <ShoppingCart />
                     </div>
                 </div>
-                <div className="md:grid md:grid-cols-12 hidden bg-gray-100 dark:bg-gray-700 shadow-lg">
+                <div className="md:grid md:grid-cols-12 hidden shadow-lg">
                     <div className="col-start-3 col-span-2">
                         <CategoriesComponent />
                     </div>

@@ -8,7 +8,8 @@ interface Props {
     validate?: (value: string) => boolean,
     validateOnLostFocus?: boolean,
     immediateValdation?: boolean,
-    validationMessage?: string
+    validationMessage?: string,
+    className? : string
 }
 
 export type InputHandle = {
@@ -58,7 +59,7 @@ const Input = forwardRef<InputHandle, Props>((props: Props, ref) => {
     }
 
     function onLostFocus(value: string) {
-        if (props.validateOnLostFocus || value.length == 0) {
+        if ((props.validateOnLostFocus || value.length == 0) && props.validate !== undefined) {
             validate(value);
             setIsValidationVisible(true);
         }
@@ -77,7 +78,7 @@ const Input = forwardRef<InputHandle, Props>((props: Props, ref) => {
             </label>
             <input type={props.type} className={`rounded-lg border-2 bg-transparent focus:ring-0 text-gray-800 dark:text-white
                  ${isValidationVisible ? (isValid ? 'border-green-500 dark:border-green-500'
-                    : 'border-red-500 dark:border-red-500') : 'border-gray-300  dark:border-gray-600'}`}
+                    : 'border-red-500 dark:border-red-500') : 'border-gray-300  dark:border-gray-600'} ${props.className}`}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={(e) => onLostFocus(e.target.value)} />

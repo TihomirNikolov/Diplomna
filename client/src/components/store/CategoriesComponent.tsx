@@ -7,9 +7,10 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
+import { useLanguage } from "../../contexts";
 
 const InitialCategory: CategoryDTO = {
-    displayName: '',
+    displayName: {},
     urlPath: '',
     icon: '',
     categoryId: '',
@@ -20,6 +21,8 @@ export default function CategoriesComponent() {
     const [selectedCategory, setSelectedCategory] = useState<CategoryDTO>(InitialCategory);
 
     const { t } = useTranslation();
+
+    const { language } = useLanguage();
 
     useEffect(() => {
         async function fetchCategories() {
@@ -78,7 +81,7 @@ export default function CategoriesComponent() {
                                                     <Menu.Item>
                                                         <Link to={`category/${item.urlPath}`} className="flex gap-1 items-center ">
                                                             <FontAwesomeIcon icon={['fas', item.icon as IconName]} />
-                                                            <span>{item.displayName}</span>
+                                                            <span>{item.displayName[language.code]}</span>
                                                         </Link>
                                                     </Menu.Item>
                                                 </div>
@@ -91,7 +94,7 @@ export default function CategoriesComponent() {
                                                 <div key={index}>
                                                     <Menu.Item>
                                                         <Link to={`category/${item.urlPath}`}
-                                                            className="text-lg font-bold text-orange-500 hover:text-orange-400">{item.displayName}</Link>
+                                                            className="text-lg font-bold text-orange-500 hover:text-orange-400">{item.displayName[language.code]}</Link>
                                                     </Menu.Item>
                                                     {item.subCategories?.map((subItem, index) => {
                                                         return (
@@ -99,7 +102,7 @@ export default function CategoriesComponent() {
                                                                 <Menu.Item>
                                                                     <Link to={`category/${subItem.urlPath}`}
                                                                         className="cursor-pointer hover:text-orange-500">
-                                                                        {subItem.displayName}
+                                                                        {subItem.displayName[language.code]}
                                                                     </Link>
                                                                 </Menu.Item>
                                                             </div>
@@ -122,7 +125,7 @@ export default function CategoriesComponent() {
                                                                     <Disclosure.Button className='flex w-full justify-between'>
                                                                         <div className="flex gap-1 items-center">
                                                                             <FontAwesomeIcon icon={['fas', 'book']} />
-                                                                            <span>{category.displayName}</span>
+                                                                            <span>{category.displayName[language.code]}</span>
                                                                         </div>
                                                                         <ChevronDownIcon
                                                                             className={`${open ? 'rotate-180 transform' : ''}
@@ -149,7 +152,7 @@ export default function CategoriesComponent() {
                                                                                             {({ open }) => (
                                                                                                 <>
                                                                                                     <Disclosure.Button className='flex w-full justify-between'>
-                                                                                                        <span>{subCategory.displayName}</span>
+                                                                                                        <span>{subCategory.displayName[language.code]}</span>
                                                                                                         <ChevronDownIcon
                                                                                                             className={`${open ? 'rotate-180 transform' : ''}
                                                                                                                                  h-5 w-5 text-gray-500`} />
@@ -173,7 +176,7 @@ export default function CategoriesComponent() {
                                                                                                                     <div key={index}>
                                                                                                                         <Menu.Item>
                                                                                                                             <Link to={`category/${subSubCategory.urlPath}`}>
-                                                                                                                                {subSubCategory.displayName}
+                                                                                                                                {subSubCategory.displayName[language.code]}
                                                                                                                             </Link>
                                                                                                                         </Menu.Item>
                                                                                                                     </div>

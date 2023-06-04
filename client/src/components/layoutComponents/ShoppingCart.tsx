@@ -1,14 +1,34 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { useShoppingCart } from "../../contexts";
+import { useEffect, useState } from "react";
 
 export default function ShoppingCart() {
     const navigate = useNavigate();
 
+    const [sum, setSum] = useState<number>(0);
+    const { shoppingCartItems } = useShoppingCart();
+
+    useEffect(() => {
+        var sum = 0;
+        shoppingCartItems.forEach(item => {
+            sum += item.price;
+        });
+        setSum(sum);
+    }, [shoppingCartItems])
+
     return (
         <div className="flex gap-2 cursor-pointer" onClick={() => navigate('/checkout/cart')}>
-            <FontAwesomeIcon icon={["fas", "cart-shopping"]} size="lg" className="text-gray-900 dark:text-white" />
+            <div className="relative">
+                <FontAwesomeIcon id="shoppingCart" icon={["fas", "cart-shopping"]} size="lg" className="text-gray-900 dark:text-white" />
+                <label htmlFor="shoppingCart"
+                    className="absolute -top-2 -right-3 px-2 py-0 rounded-lg
+                 bg-orange-500 dark:bg-orange-500 cursor-pointer">
+                    {shoppingCartItems.length}
+                </label>
+            </div>
             <span className="border-l-2 border-l-white" />
-            <span className="text-gray-900 dark:text-white">0.00</span>
+            <span className="text-gray-900 dark:text-white">{sum}</span>
         </div>
     )
 }

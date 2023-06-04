@@ -4,14 +4,16 @@ namespace ProductsMicroservice.Models.Products
 {
     public class ProductDTO
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public Dictionary<string, string> Name { get; set; } = default!;
+        public Dictionary<string, string> Description { get; set; } = default!;
         public string ProductUrl { get; set; } = string.Empty;
+        public string CoverImageUrl { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public List<string> PictureUrls { get; set; } = default!;
         public List<string> VideoUrls { get; set; } = default!;
-        public List<ProductReview> Reviews { get; set; } = default!;
-        public Dictionary<string, string> Tags { get; set; } = default!;
+        public List<ProductReview>? Reviews { get; set; }
+        public Dictionary<string, Dictionary<string, string>> Tags { get; set; } = default!;
+        public Dictionary<string, Dictionary<string, string>> CoverTags { get; set; } = default!;
         public List<BaseCategory> Categories { get; set; } = default!;
     }
 }

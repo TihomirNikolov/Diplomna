@@ -2,7 +2,7 @@
 {
     public class BaseCategory
     {
-        public string DisplayName { get; set; } = string.Empty;
+        public Dictionary<string, string> DisplayName { get; set; } = default!;
         public string UrlPath { get; set; } = string.Empty;
     }
 }

@@ -5,7 +5,7 @@ export default function NotFoundComponent() {
     const { t } = useTranslation();
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full flex items-center justify-center">
             <div className="flex flex-col text-black dark:text-white text-2xl items-center">
                 <h1>{t('sorry').toUpperCase()}</h1>
                 <h2>{t('notFoundPage')}</h2>

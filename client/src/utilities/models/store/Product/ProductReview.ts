@@ -1,6 +1,10 @@
 
-export default interface ProductReview{
+export default interface ProductReview {
+    id: string,
     rating: number,
+    name: string,
+    title: string,
     comment: string,
-    userEmail: string
+    addedDate: Date,
+    avatarColor: string
 }

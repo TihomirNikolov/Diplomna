@@ -176,7 +176,7 @@ export default function AddressPage() {
     }
 
     return (
-        <div className="grid grid-cols-4 mx-1 md:ml-5 md:mr-0">
+        <div className="grid grid-cols-4 mx-1 md:ml-0 md:mr-0">
             <div className="col-span-4 lg:col-span-2">
                 <h1 className="text-black dark:text-white font-bold mb-5">{t('address.addNewAddress')}</h1>
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">

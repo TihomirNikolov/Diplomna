@@ -24,10 +24,10 @@ export default function AccountLayout(props: any) {
 
 
     return (
-        <div className="md:grid md:grid-cols-5 text-black dark:text-white rounded-lg md:p-4">
-            <nav className="hidden md:flex flex-col">
-                <div className="grid grid-cols-2">
-                    <div className="sm:flex flex-col ml-0 col-start-2">
+        <div className="md:grid md:grid-cols-12 text-black dark:text-white rounded-lg">
+            <nav className="hidden md:flex flex-col col-span-2 pl-2 pr-4">
+                <div className="">
+                    <div className="sm:flex flex-col">
                         {paths.map((item, i) => {
                             return <Link key={i} className={`py-4 border-b-2 hover:text-blue-500 hover:border-b-blue-500 ${isSelected(item.path) ? 'text-orange-500 border-b-orange-500' : ''}`}
                                 to={item.path}>{t(item.translate)}</Link>
@@ -35,7 +35,7 @@ export default function AccountLayout(props: any) {
                     </div>
                 </div>
             </nav>
-            <div className="sm:hidden">
+            <div className="md:hidden">
                 <Menu>
                     {({ open }) => (
                         <>
@@ -73,7 +73,7 @@ export default function AccountLayout(props: any) {
                     )}
                 </Menu>
             </div>
-            <div className="md:col-span-4 rounded-lg">
+            <div className="md:col-span-8 rounded-lg">
                 {props.children}
             </div>
         </div>

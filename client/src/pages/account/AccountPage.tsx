@@ -113,7 +113,7 @@ export default function AccountPage() {
 
     return (
         <div>
-            <div className="mx-1 md:ml-5 md:mr-0 space-y-2">
+            <div className="mx-1 md:ml-0 md:mr-0 space-y-2">
                 <h1 className="text-black dark:text-white font-bold mb-5 text-2xl">{t('profile')}</h1>
                 <div className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
                     <h1 className="text-black dark:text-white font-bold text-2xl">{t('profileData')}</h1>
@@ -181,8 +181,8 @@ export default function AccountPage() {
                                         <div className="truncate ml-1">
                                             {item.deviceType}
                                         </div>
-                                        <div className="ml-auto px-1 hover:bg-gray-300 hover:dark:bg-gray-500">
-                                            <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600 cursor-pointer"
+                                        <div className="ml-auto px-1 hover:bg-gray-300 hover:dark:bg-gray-500 cursor-pointer">
+                                            <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600"
                                                 onClick={() => deleteSession(item.id, item.token)} />
                                         </div>
                                     </div>

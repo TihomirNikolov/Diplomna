@@ -31,3 +31,11 @@ export function validateRegion(value: string) {
 export function validateCity(value: string) {
     return value.length >= 2;
 }
+
+export function validateTitle(value: string) {
+    return value.length >= 3;
+}
+
+export function validateComment(value: string) {
+    return value.length >= 3;
+}

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProductsMicroservice.Extensions;
+using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Products;
+using ProductsMicroservice.Models.Requests;
 
 namespace ProductsMicroservice.Controllers
 {
@@ -13,27 +13,22 @@ namespace ProductsMicroservice.Controllers
     {
         #region Declarations
 
-        private IProductsService _productsService;
+        private readonly IProductsService _productsService;
+        private readonly HttpRequestHelper _httpRequestHelper;
 
         #endregion
 
         #region Constructor
 
-        public ProductsController(IProductsService productsService)
+        public ProductsController(IProductsService productsService, HttpRequestHelper httpRequestHelper)
         {
             _productsService = productsService;
+            _httpRequestHelper = httpRequestHelper;
         }
 
         #endregion
 
         #region Get Methods
-
-        [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _productsService.GetProductsAsync());
-        }
 
         [HttpGet]
         [Route("cover")]
@@ -43,11 +38,32 @@ namespace ProductsMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("{category}")]
+        [Route("category/{category}")]
         public async Task<IActionResult> GetCoverProductsByCategory(string category)
         {
             var products = await _productsService.GetCoverProductsByCategoryAsync(category);
             return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("exists/{url}")]
+        public async Task<IActionResult> CheckIfProductExists(string url)
+        {
+            var result = await _productsService.CheckIfProductExists(url);
+
+            if (result)
+                return Ok();
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
+        [Route("{url}")]
+        public async Task<IActionResult> GetProductByUrl(string url)
+        {
+            var product = await _productsService.GetProductByUrl(url);
+
+            return Ok(product);
         }
 
         #endregion
@@ -60,6 +76,48 @@ namespace ProductsMicroservice.Controllers
         {
             await _productsService.CreateProductAsync(product);
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("add-review")]
+        public async Task<IActionResult> AddReview([FromBody] AddReviewRequest request)
+        {
+            if (request == null || request.Review == null || string.IsNullOrEmpty(request.ProductUrl))
+            {
+                return BadRequest();
+            }
+
+            var token = Request.GetAuthorizationToken();
+
+            var email = await _httpRequestHelper.GetUserEmailAsync(token);
+            request.Review.UserEmail = email;
+
+            await _productsService.AddReview(request.Review, request.ProductUrl);
+
+            return Ok(request.Review);
+        }
+
+        [HttpPost]
+        [Route("remove-review")]
+        public async Task<IActionResult> RemoveReview([FromBody] RemoveReviewRequest request)
+        {
+            await _productsService.RemoveReview(request.Review, request.ProductUrl);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("get-by-urls")]
+        public async Task<IActionResult> GetByProductUrls([FromBody] GetByProductUrlsRequest request)
+        {
+            if (request == null || request.ProductUrls == null)
+            {
+                return BadRequest();
+            }
+
+            var products = await _productsService.GetProductsByUrlsAsync(request.ProductUrls);
+
+            return Ok(products);
         }
 
         #endregion

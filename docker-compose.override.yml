@@ -20,6 +20,9 @@ services:
         - cache:/data
   rabbitmq:
      container_name: 'rabbitmq'
+     environment:
+        - RABBITMQ_DEFAULT_USER=admin
+        - RABBITMQ_DEFAULT_PASS=123456
      ports:
          - 5672:5672
          - 15672:15672
@@ -32,9 +35,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - REDIS_HOST=cache
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=MySecretRedisP@ss0rd
     ports:
       - "44317:80"
       - "44318:443"
@@ -45,6 +45,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=MySecretRedisP@ss0rd
     ports:
       - "44319:80"
       - "44320:443"

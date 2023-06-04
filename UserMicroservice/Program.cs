@@ -1,27 +1,22 @@
-using UserMicroservice.Hangfire.Filters;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.Dashboard.BasicAuthorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.Reflection;
 using System.Text;
+using UserMicroservice.Hangfire.Filters;
 using UserMicroservice.Helpers;
 using UserMicroservice.Helpers.Constants;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Database;
-using UserMicroservice.Mappers;
+using UserMicroservice.Models;
+using UserMicroservice.Models.Database;
 using UserMicroservice.Services;
 using UserMicroservice.Services.Database;
-using StackExchange.Redis;
-using UserMicroservice;
-using UserMicroservice.Models.Database;
-using UserMicroservice.Models;
-using Newtonsoft.Json;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,17 +24,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-var REDIS_HOST = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_HOST);
-var REDIS_PORT = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PORT);
-var REDIS_PASSWORD = Environment.GetEnvironmentVariable(EnvironmentVariables.REDIS_PASSWORD);
-
 builder.Services.AddScoped<AuthenticationHelper>();
 builder.Services.AddScoped<HangfireHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-
-var multiplexer = ConnectionMultiplexer.Connect($"{REDIS_HOST}:{REDIS_PORT},password={REDIS_PASSWORD}");
-builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")));
 

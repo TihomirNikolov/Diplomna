@@ -7,8 +7,10 @@ import RadioButton from "./RadioButton";
 import Input from "./Input";
 import CountriesComboBox from "./CountriesComboBox";
 import ComboBox from "./ComboBox";
+import Textarea from "./Textarea";
 
 export {
     FloatingInput, Checkbox, Toggle, SearchBar,
     ThemeToggle, RadioButton, Input, ComboBox, CountriesComboBox,
+    Textarea
 }

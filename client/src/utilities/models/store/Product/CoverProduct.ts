@@ -1,11 +1,11 @@
 import { Dictionary } from "../../..";
 
 export default interface CoverProduct {
-    name: string,
+    name: Dictionary<string>,
     coverImageUrl: string,
     productUrl: string,
     price: number,
-    coverTags: Dictionary<string>,
+    coverTags: Dictionary<Dictionary<string>>,
     addedDate: Date,
     rating: number,
     comments: number,

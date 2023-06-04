@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using Azure.Core;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -114,6 +115,27 @@ namespace UserMicroservice.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("get-user-email/{token}")]
+        public async Task<IActionResult> GetTokenInfo(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var principal = _authHelper.GetPrincipalFromToken(token);
+            if (principal == null)
+            {
+                return BadRequest("Invalid access token");
+            }
+
+            string email = principal.Identity.Name;
+
+
+            return Ok(email);
         }
 
         #endregion

@@ -7,6 +7,7 @@ import {
 import ProtectedRoute from './ProtectedRoute'
 import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
+import CategoryContextLayout from './CategoryContextLayout'
 
 interface Props {
     isLoading: boolean
@@ -26,8 +27,10 @@ export default function Router(props: Props) {
             <Route path='/checkout/cart' element={<ShoppingCartPage />} />
             <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
             <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
-            <Route path='/category/*' element={<CategoryPage />} />
-            <Route path='/product/*' element={<ProductPage></ProductPage>} />
+            <Route element={<CategoryContextLayout />}>
+                <Route path='/category/*' element={<CategoryPage />} />
+                <Route path='/product/:productUrl' element={<ProductPage></ProductPage>} />
+            </Route>
             <Route element={<AuthRoute isLoading={props.isLoading} />}>
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />

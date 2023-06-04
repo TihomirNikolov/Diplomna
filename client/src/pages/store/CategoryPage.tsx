@@ -6,10 +6,7 @@ import { Link, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Listbox, Transition } from "@headlessui/react"
 import { useTranslation } from "react-i18next"
-
-const sortings = ['lowestPrice', 'highestPrice', 'newest', 'mostSold', 'mostCommented'] as const
-
-type SortType = typeof sortings[number]
+import { SortType, sortings, useCategory, useLanguage } from "../../contexts"
 
 export default function CategoryPage() {
     const { t } = useTranslation();
@@ -25,12 +22,13 @@ export default function CategoryPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
+    const { currentPage, itemsPerPage, setCurrentPage, setItemsPerPage, setSorting, sorting, resetCategory } = useCategory();
 
-    const [sorting, setSorting] = useState<SortType>('mostSold')
+    const [isInitialRender, setIsInitialRender] = useState<boolean>(true);
 
     const location = useLocation();
+
+    const { language } = useLanguage();
 
     useEffect(() => {
         async function fetchData() {
@@ -41,14 +39,22 @@ export default function CategoryPage() {
                 await fetchProducts(categoryDTO);
             }
         }
+
+        if (!isInitialRender) {
+            resetCategory();
+        }
+        else {
+            setIsInitialRender(false);
+        }
+
         fetchData();
     }, [location.pathname])
 
     async function fetchProducts(category: CategoryDTO | null) {
         try {
-            var response = await axiosClient.get(`${baseProductsURL()}api/products/${category?.displayName}`);
+            var response = await axiosClient.get(`${baseProductsURL()}api/products/category/${category?.displayName[language.code]}`);
             var products = response.data as CoverProduct[];
-            var sortedProducts: CoverProduct[] = sortProducts(sorting, products);
+            var sortedProducts: CoverProduct[] = sortProducts(sorting, products)!;
             setProducts(sortedProducts);
             calculateProductsToShow(sortedProducts, 1, itemsPerPage);
         }
@@ -167,14 +173,14 @@ export default function CategoryPage() {
                                 <Link to={`/category/${subCategory.urlPath}`}
                                     className={`hover:text-orange-500 hover:dark:text-orange-500 
                                 ${selectedCategory?.displayName == subCategory.displayName ? 'text-orange-500 dark:text-orange-500' : ''}`}>
-                                    {subCategory.displayName}
+                                    {subCategory.displayName[language.code]}
                                 </Link>
                             </div>
                         </div>)
                 })}
             </div>
             <div className="md:col-start-5 md:col-span-6 col-start-2 col-span-10">
-                <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">{category?.displayName}</h1>
+                <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">{category?.displayName[language.code]}</h1>
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-4 pb-2 border-b">
                         <div className="flex gap-4 items-center justify-center">
@@ -268,7 +274,7 @@ export default function CategoryPage() {
                         </div>
 
                         <div className="flex items-center justify-start text-black dark:text-white">
-                            <span>Намерени резултати: &nbsp;</span>
+                            <span>{t('foundResults')}: &nbsp;</span>
                             <span>{products.length}</span>
                         </div>
                     </div>
