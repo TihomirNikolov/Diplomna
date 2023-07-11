@@ -1,8 +1,15 @@
-﻿namespace UserMicroservice.Models.Responses
+﻿using UserMicroservice.Enums;
+
+namespace UserMicroservice.Models.Responses
 {
+    public class Response<TData> : Response
+    {
+        public TData? Data { get; set; }
+    }
+
     public class Response
     {
-        public string? Status { get; set; }
+        public StatusEnum Status { get; set; }
 
         public string? Message { get; set; }
     }

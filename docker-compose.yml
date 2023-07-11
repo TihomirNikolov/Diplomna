@@ -9,6 +9,8 @@ services:
         timeout: 3s
         retries: 10
         start_period: 10s
+  mongodb:
+    image: mongo
   cache:
     image: redis:6.2-alpine
   rabbitmq:

@@ -1,8 +1,9 @@
 ﻿using Hangfire;
+using UserMicroservice.Interfaces.Helpers;
 
 namespace UserMicroservice.Helpers
 {
-    public class HangfireHelper
+    public class HangfireHelper : IHangfireHelper
     {
         public void DeleteJobByArgument(string argument)
         {

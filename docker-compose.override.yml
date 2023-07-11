@@ -6,11 +6,18 @@ services:
         ACCEPT_EULA: "Y"
         SA_PASSWORD: "MyP@sswordSQL"
     container_name: sqlserver
+    restart: always
     ports:
       - "1433:1433"    
     volumes:
       - ./sqlserver-data:/var/opt/mssql/data
+  mongodb:
+    container_name: mongodb
     restart: always
+    ports:
+        - '27017:27017'
+    volumes:
+        - ./mongodb-data:/data/db
   cache:
     restart: always
     ports:

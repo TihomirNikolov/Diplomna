@@ -4,11 +4,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Models.Database;
 
 namespace UserMicroservice.Helpers
 {
-    public class AuthenticationHelper
+    public class AuthenticationHelper : IAuthenticationHelper
     {
         #region Declarations
         /// <summary>
@@ -76,7 +77,20 @@ namespace UserMicroservice.Helpers
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
+        }
 
+        public string GetEmailFromAccessToken(string accessToken)
+        {
+            var principal = GetPrincipalFromToken(accessToken);
+
+            if (principal == null || principal.Identity == null || string.IsNullOrEmpty(principal.Identity.Name))
+            {
+                return string.Empty;
+            }
+
+            string email = principal.Identity.Name;
+
+            return email;
         }
 
         /// <summary>

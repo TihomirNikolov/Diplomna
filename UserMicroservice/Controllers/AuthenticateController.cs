@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using UAParser;
+using UserMicroservice.Enums;
 using UserMicroservice.Extensions;
 using UserMicroservice.Helpers;
 using UserMicroservice.Helpers.Constants;
+using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
+using UserMicroservice.Interfaces.Services.Authentication;
 using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
 using UserMicroservice.Models.Database;
@@ -24,13 +27,15 @@ namespace UserMicroservice.Controllers
     {
         #region Declarations 
 
-        private readonly AuthenticationHelper _authHelper;
-        private readonly HangfireHelper _hangfireHelper;
+        private readonly IAuthenticationHelper _authHelper;
+        private readonly IHangfireHelper _hangfireHelper;
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IEmailService _emailService;
+        private readonly IAuthenticationService _authService;
+        private readonly ITokenService _tokenService;
 
         private readonly IConfiguration _configuration;
 
@@ -38,19 +43,23 @@ namespace UserMicroservice.Controllers
 
         #region Constructor
 
-        public AuthenticateController(UserManager<ApplicationUser> userManager,
-                                      IConfiguration configuration,
-                                      AuthenticationHelper authHelper,
+        public AuthenticateController(IAuthenticationHelper authHelper,
+                                      IHangfireHelper hangfireHelper,
+                                      UserManager<ApplicationUser> userManager,
                                       ApplicationDbContext context,
                                       IEmailService emailService,
-                                      HangfireHelper hangfireHelper)
+                                      IAuthenticationService authService,
+                                      ITokenService tokenService,
+                                      IConfiguration configuration)
         {
-            _userManager = userManager;
-            _configuration = configuration;
             _authHelper = authHelper;
+            _hangfireHelper = hangfireHelper;
+            _userManager = userManager;
             _context = context;
             _emailService = emailService;
-            _hangfireHelper = hangfireHelper;
+            _authService = authService;
+            _tokenService = tokenService;
+            _configuration = configuration;
         }
 
         #endregion
@@ -64,20 +73,13 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> VerifyPasswordToken(string token)
         {
             if (string.IsNullOrEmpty(token))
-            {
                 return BadRequest(false);
-            }
 
-            var resetPasswordToken = await _context.ResetPasswordTokens.FirstOrDefaultAsync(t => t.Token == token);
+            var result = await _tokenService.VerifyPasswordTokenAsync(token);
 
-            if (resetPasswordToken != null)
-            {
-                return Ok(true);
-            }
-            else
-            {
+            if (result.Status == StatusEnum.NotFound)
                 return NotFound(false);
-            }
+            return Ok(true);
         }
 
         [Authorize]
@@ -86,54 +88,30 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> IsLogged()
         {
             var accessToken = Request.GetAuthorizationToken();
-
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                return BadRequest("Access token is missing.");
-            }
-
             var refreshToken = Request.GetRefreshToken();
 
+            if (string.IsNullOrEmpty(accessToken))
+                return BadRequest("Access token is missing.");
+
             if (string.IsNullOrEmpty(refreshToken))
-            {
                 return BadRequest("Refresh token is missing .");
-            }
 
-            var refreshTokenObject = await _context.RefreshTokens.Include(u => u.User).FirstOrDefaultAsync(r => r.Token == refreshToken);
+            var result = await _authService.IsLoggedAsync(accessToken, refreshToken);
 
-            if (refreshTokenObject != null && refreshTokenObject.User != null)
-            {
-                var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(refreshTokenObject.User);
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                return Ok(new LoginResponse()
-                {
-                    AccessToken = accessToken,
-                    RefreshToken = refreshToken,
-                    IsEmailConfirmed = isEmailConfirmed
-
-                });
-            }
-
-            return NotFound();
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("get-user-email/{token}")]
-        public async Task<IActionResult> GetTokenInfo(string token)
+        public IActionResult GetTokenInfo(string token)
         {
-            if (string.IsNullOrEmpty(token))
-            {
-                return BadRequest();
-            }
+            var email = _authHelper.GetEmailFromAccessToken(token);
 
-            var principal = _authHelper.GetPrincipalFromToken(token);
-            if (principal == null)
-            {
-                return BadRequest("Invalid access token");
-            }
-
-            string email = principal.Identity.Name;
-
+            if (string.IsNullOrEmpty(email))
+                return NotFound();
 
             return Ok(email);
         }
@@ -146,114 +124,53 @@ namespace UserMicroservice.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest model)
         {
-            if (model != null)
-            {
-                var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => model.Email.ToLower() == u.Email.ToLower());
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-                {
-                    var authClaims = await _authHelper.GetClaims(user);
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest();
 
-                    var token = _authHelper.CreateToken(authClaims);
-                    var refreshToken = _authHelper.GenerateToken();
+            var result = await _authService.LoginAsync(model.Email, model.Password);
 
-                    _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
-
-                    if (user.RefreshTokens == null)
-                    {
-                        user.RefreshTokens = new List<RefreshToken>();
-                    }
-
-                    var userAgent = Request.Headers["User-Agent"];
-                    var uaParser = Parser.GetDefault();
-                    ClientInfo clientInfo = uaParser.Parse(userAgent);
-
-                    user.RefreshTokens.Add(new RefreshToken()
-                    {
-                        Token = refreshToken,
-                        TokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays),
-                        CreatedTime = DateTime.Now,
-                        DeviceType = clientInfo.UA.Family + " " + clientInfo.UA.Major + "." + clientInfo.UA.Minor,
-                    });
-
-                    await _userManager.UpdateAsync(user);
-
-                    var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-                    var roles = (await _userManager.GetRolesAsync(user)).ToList();
-
-                    var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-                    if (model.RememberMe)
-                    {
-                        Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, accessToken);
-                        Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, refreshToken);
-                    }
-                    else
-                    {
-                        Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, accessToken, 1);
-                        Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, refreshToken, 1);
-                    }
-
-                    return Ok(new LoginResponse
-                    {
-                        AccessToken = accessToken,
-                        RefreshToken = refreshToken,
-                        IsEmailConfirmed = isEmailConfirmed,
-                        Roles = roles
-                    });
-                }
+            if (result.Status == StatusEnum.Failure || result.Data == null)
                 return Forbid();
+
+            if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            if (model.RememberMe)
+            {
+                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
             }
-            return BadRequest();
+            else
+            {
+                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
+            }
+
+            return Ok(new LoginResponse
+            {
+                AccessToken = result.Data.AccessToken,
+                RefreshToken = result.Data.RefreshToken,
+                IsEmailConfirmed = result.Data.IsEmailConfirmed,
+                Roles = result.Data.Roles
+            });
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            if (model != null)
-            {
-                var userExists = await _userManager.FindByEmailAsync(model.Email);
-                if (userExists != null)
-                    return Conflict();
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password) ||
+                string.IsNullOrEmpty(model.FirstName) || string.IsNullOrEmpty(model.LastName))
+                return BadRequest();
 
-                ApplicationUser user = new()
-                {
-                    Email = model.Email,
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = model.Email,
-                    UserInfo = new UserInfo
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                    }
-                };
+            var result = await _authService.RegisterAsync(model.Email, model.Password, model.FirstName, model.LastName);
 
-                var emailVerificationToken = _authHelper.GenerateToken();
+            if (result.Status == StatusEnum.Conflict)
+                return Conflict();
+            else if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                user.EmailVerificationToken = new EmailVerificationToken()
-                {
-                    Token = emailVerificationToken,
-                    TokenExpiryTime = DateTime.Now.AddDays(1),
-                    CreatedTime = DateTime.Now,
-                };
-
-                var clientDomain = Request.Headers["Origin"].ToString();
-
-                var confirmEmailLink = clientDomain + "/email/verify/" + emailVerificationToken;
-
-                if (_emailService.SendConfirmEmail(model.Email, confirmEmailLink))
-                {
-                    var result = await _userManager.CreateAsync(user, model.Password);
-                    if (!result.Succeeded)
-                        return StatusCode(StatusCodes.Status500InternalServerError);
-
-                    await _userManager.AddToRoleAsync(user, "User");
-
-                    BackgroundJob.Schedule<IUsersService>(service => service.DeleteEmailVerification(emailVerificationToken), TimeSpan.FromHours(24));
-                    return Ok();
-                }
-            }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpPost]
@@ -261,79 +178,34 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest tokenModel)
         {
             var oldRefreshToken = Request.GetRefreshToken();
-
-            if (tokenModel is null || string.IsNullOrEmpty(tokenModel.RefreshToken) && string.IsNullOrEmpty(oldRefreshToken))
-            {
-                return BadRequest("Invalid client request");
-            }
-
-            if (string.IsNullOrEmpty(oldRefreshToken))
-            {
-                oldRefreshToken = tokenModel.RefreshToken;
-            }
-
             var oldAccessToken = Request.GetAuthorizationToken();
 
-            if (!string.IsNullOrEmpty(oldAccessToken))
-            {
+            if (tokenModel is null || (string.IsNullOrEmpty(tokenModel.RefreshToken) &&
+                string.IsNullOrEmpty(oldRefreshToken)) || string.IsNullOrEmpty(oldAccessToken))
+                return BadRequest("Invalid client request");
 
-            }
+            if (string.IsNullOrEmpty(oldRefreshToken))
+                oldRefreshToken = tokenModel.RefreshToken;
 
-            var principal = _authHelper.GetPrincipalFromToken(oldAccessToken);
-            if (principal == null)
-            {
-                return BadRequest("Invalid access token");
-            }
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            var email = principal.Identity.Name;
-
-            var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-
-            if (user == null || user.RefreshTokens.FirstOrDefault(t => t.Token == oldRefreshToken && t.TokenExpiryTime >= DateTime.Now) == null)
-            {
-                return BadRequest("Invalid access token or refresh token");
-            }
-
-            var authClaims = await _authHelper.GetClaims(user);
-
-            var newAccessToken = _authHelper.CreateToken(authClaims);
-            var newRefreshToken = _authHelper.GenerateToken();
-
-            _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
-
-            var userAgent = Request.Headers["User-Agent"];
-            var uaParser = Parser.GetDefault();
-            ClientInfo clientInfo = uaParser.Parse(userAgent);
-
-            var rToken = user.RefreshTokens.FirstOrDefault(t => t.Token == oldRefreshToken);
-
-            if (rToken != null)
-            {
-                rToken.Token = newRefreshToken;
-                rToken.TokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
-                rToken.DeviceType = clientInfo.UA.Family + " " + clientInfo.UA.Major + "." + clientInfo.UA.Minor;
-            }
-
-            _context.Users.Update(user);
-            await _userManager.UpdateAsync(user);
-
-            var newAccesTokenString = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
+            var result = await _tokenService.RefreshTokenAsync(email, oldRefreshToken, oldAccessToken);
 
             if (string.IsNullOrEmpty(oldRefreshToken))
             {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, newAccesTokenString);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, newRefreshToken);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
             }
             else
             {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, newAccesTokenString, 1);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, newRefreshToken, 1);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
+                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
             }
 
             return Ok(new TokenResponse()
             {
-                AccessToken = newAccesTokenString,
-                RefreshToken = newRefreshToken
+                AccessToken = result.Data.AccessToken,
+                RefreshToken = result.Data.RefreshToken
             });
         }
 
@@ -342,42 +214,16 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> GenerateResetPasswordToken([FromBody] GenerateResetPasswordTokenRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email))
-            {
                 return BadRequest();
-            }
 
-            var user = await _context.Users.Include(u => u.ResetPasswordToken).FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
+            var result = await _tokenService.GenerateResetPasswordTokenAsync(request.Email);
 
-            if (user != null)
-            {
-                if (user.ResetPasswordToken != null)
-                {
-                    _context.ResetPasswordTokens.Remove(user.ResetPasswordToken);
-                    await _context.SaveChangesAsync();
-                }
-                var resetPasswordToken = _authHelper.GenerateToken();
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
+            else if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                user.ResetPasswordToken = new ResetPasswordToken()
-                {
-                    Token = resetPasswordToken,
-                    TokenExpiryTime = DateTime.Now.AddMinutes(60),
-                    CreatedTime = DateTime.Now,
-                };
-
-                var clientDomain = Request.Headers["Origin"].ToString();
-
-                var resetPasswordLink = clientDomain + "/password/reset/" + resetPasswordToken;
-
-                if (_emailService.SendPasswordResetEmail(request.Email, resetPasswordLink))
-                {
-                    await _userManager.UpdateAsync(user);
-
-                    BackgroundJob.Schedule<IUsersService>(service => service.DeletePasswordVerification(resetPasswordToken), TimeSpan.FromMinutes(5));
-                    return Ok();
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
 
@@ -386,35 +232,16 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.ResetToken))
-            {
                 return BadRequest();
-            }
 
-            var user = await _context.Users.Include(u => u.ResetPasswordToken).FirstOrDefaultAsync(u => u.ResetPasswordToken.Token == request.ResetToken);
+            var result = await _authService.ResetPasswordAsync(request.ResetToken, request.Password);
 
-            if (user != null)
-            {
-                try
-                {
-                    await _userManager.RemovePasswordAsync(user);
-                    await _userManager.AddPasswordAsync(user, request.Password);
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
+            else if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                    var resetPasswordToken = await _context.ResetPasswordTokens.FirstOrDefaultAsync(r => r.Token == request.ResetToken);
-
-                    _context.Remove(resetPasswordToken);
-                    await _context.SaveChangesAsync();
-
-                    _hangfireHelper.DeleteJobByArgument(request.ResetToken);
-
-                    return Ok();
-                }
-                catch
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         #endregion
@@ -427,31 +254,16 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> Logout()
         {
             var accessToken = Request.GetAuthorizationToken();
+            var refreshToken = Request.GetRefreshToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token or refresh token");
-                }
+            if (string.IsNullOrEmpty(accessToken))
+                return BadRequest();
 
-                string email = principal.Identity.Name;
+            if (string.IsNullOrEmpty(refreshToken))
+                return BadRequest("Refresh Token missing.");
 
-                var refreshToken = Request.GetRefreshToken();
-
-                if (string.IsNullOrEmpty(refreshToken))
-                {
-                    return BadRequest("Refresh Token missing.");
-                }
-
-                var refreshTokens = _context.RefreshTokens.Include(t => t.User).ToList();
-
-                var tokensToDelete = refreshTokens.Where(t => t.User.Email.ToLower() == email.ToLower() && t.Token == refreshToken);
-
-                _context.RefreshTokens.RemoveRange(tokensToDelete);
-                await _context.SaveChangesAsync();
-            }
+            var result = await _authService.LogoutAsync(email, accessToken, refreshToken);
 
             Response.Cookies.Delete(CookieConstants.AccessToken);
             Response.Cookies.Delete(CookieConstants.RefreshToken);

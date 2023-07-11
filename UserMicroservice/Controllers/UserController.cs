@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserMicroservice.Extensions;
 using UserMicroservice.Helpers;
+using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
@@ -21,8 +22,8 @@ namespace UserMicroservice.Controllers
     {
         #region Declarations
 
-        private readonly AuthenticationHelper _authHelper;
-        private readonly HangfireHelper _hangfireHelper;
+        private readonly IAuthenticationHelper _authHelper;
+        private readonly IHangfireHelper _hangfireHelper;
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -35,12 +36,12 @@ namespace UserMicroservice.Controllers
 
         #region Constructor
 
-        public UserController(AuthenticationHelper authHelper,
+        public UserController(IAuthenticationHelper authHelper,
+                              IHangfireHelper hangfireHelper,
                               ApplicationDbContext context,
-                              IMapper mapper,
                               UserManager<ApplicationUser> userManager,
-                              HangfireHelper hangfireHelper,
-                              IEmailService emailService)
+                              IEmailService emailService,
+                              IMapper mapper)
         {
             _authHelper = authHelper;
             _context = context;

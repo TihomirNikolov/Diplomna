@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using UserMicroservice.Helpers.Constants;
+using UserMicroservice.Interfaces.Helpers;
 
 namespace UserMicroservice.Extensions
 {
@@ -16,7 +17,7 @@ namespace UserMicroservice.Extensions
             if (!string.IsNullOrEmpty(refreshTokenHeader))
             {
                 AuthenticationHeaderValue.TryParse(refreshTokenHeader, out var headerValue);
-                accessToken = headerValue.Parameter;
+                accessToken = headerValue.Parameter!;
             }
             else
             {
@@ -50,6 +51,25 @@ namespace UserMicroservice.Extensions
             }
 
             return refreshToken;
+        }
+
+        public static string GetEmailFromRequest(this HttpRequest request, IAuthenticationHelper authHelper)
+        {
+            var accessToken = GetAuthorizationToken(request);
+            if (accessToken == null)
+            {
+                return string.Empty;
+            }
+
+            var principal = authHelper.GetPrincipalFromToken(accessToken);
+            if (principal == null || principal.Identity == null || string.IsNullOrEmpty(principal.Identity.Name))
+            {
+                return string.Empty;
+            }
+
+            string email = principal.Identity.Name;
+
+            return email;
         }
 
         #endregion
