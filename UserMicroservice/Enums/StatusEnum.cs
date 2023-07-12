@@ -6,6 +6,7 @@
         Success,
         Conflict,
         InternalError,
-        NotFound
+        NotFound,
+        Forbid
     }
 }

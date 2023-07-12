@@ -14,12 +14,10 @@ using UserMicroservice.Helpers.Constants;
 using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Authentication;
-using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
 using UserMicroservice.Models.Database;
 using UserMicroservice.Services;
 using UserMicroservice.Services.Authentication;
-using UserMicroservice.Services.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +28,7 @@ var configuration = builder.Configuration;
 builder.Services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 builder.Services.AddScoped<IHangfireHelper, HangfireHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IHangfireService, HangfireService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();

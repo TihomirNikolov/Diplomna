@@ -1,6 +1,6 @@
-﻿namespace UserMicroservice.Interfaces.Services.Database
+﻿namespace UserMicroservice.Interfaces.Services
 {
-    public interface IUsersService
+    public interface IHangfireService
     {
         void DeleteEmailVerification(string deleteEmailVerificationToken);
         void DeletePasswordVerification(string deletePasswordVerificationToken);

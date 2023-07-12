@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using UserMicroservice.Enums;
 using UserMicroservice.Extensions;
-using UserMicroservice.Helpers;
 using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
-using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
 using UserMicroservice.Models.Database;
 using UserMicroservice.Models.Requests;
@@ -23,12 +24,8 @@ namespace UserMicroservice.Controllers
         #region Declarations
 
         private readonly IAuthenticationHelper _authHelper;
-        private readonly IHangfireHelper _hangfireHelper;
 
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        private readonly IEmailService _emailService;
+        private readonly IUsersService _userService;
 
         private readonly IMapper _mapper;
 
@@ -37,18 +34,12 @@ namespace UserMicroservice.Controllers
         #region Constructor
 
         public UserController(IAuthenticationHelper authHelper,
-                              IHangfireHelper hangfireHelper,
-                              ApplicationDbContext context,
-                              UserManager<ApplicationUser> userManager,
-                              IEmailService emailService,
+                              IUsersService usersService,
                               IMapper mapper)
         {
             _authHelper = authHelper;
-            _context = context;
+            _userService = usersService;
             _mapper = mapper;
-            _userManager = userManager;
-            _hangfireHelper = hangfireHelper;
-            _emailService = emailService;
         }
 
         #endregion
@@ -62,24 +53,17 @@ namespace UserMicroservice.Controllers
         [Route("logins")]
         public async Task<IActionResult> GetLogins()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.GetLoginsAsync(email);
 
-                var refreshTokens = _mapper.Map<List<RefreshToken>, List<RefreshTokenDTO>>(await _context.RefreshTokens.Include(t => t.User).Where(t => t.User.Email == email).ToListAsync());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                return Ok(refreshTokens);
-            }
-
-            return NotFound();
+            return Ok(result.Data);
         }
 
         [Authorize]
@@ -87,34 +71,17 @@ namespace UserMicroservice.Controllers
         [Route("userinfo")]
         public async Task<IActionResult> GetUserInfo()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.GetUserInfoAsync(email);
 
-                var userInfo = await _context.UserInfos.Include(u => u.User).FirstOrDefaultAsync(u => u.User.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (userInfo != null)
-                {
-                    var response = new GetUserInfoResponse
-                    {
-                        Email = userInfo.User.Email,
-                        FirstName = userInfo.FirstName,
-                        LastName = userInfo.LastName,
-                    };
-
-                    return Ok(response);
-                }
-            }
-
-            return NotFound();
+            return Ok(result.Data);
         }
 
         [Authorize]
@@ -122,25 +89,17 @@ namespace UserMicroservice.Controllers
         [Route("emailVerification")]
         public async Task<IActionResult> GetEmailVerification()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.GetEmailVerificationAsync(email);
 
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-                if (user != null)
-                {
-                    return Ok(user.EmailConfirmed);
-                }
-            }
-            return BadRequest();
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
+
+            return Ok(result.Data);
         }
 
         [Authorize]
@@ -148,26 +107,17 @@ namespace UserMicroservice.Controllers
         [Route("roles")]
         public async Task<IActionResult> GetUserRoles()
         {
-            var accessToken = Request.GetAuthorizationToken();
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-                string email = principal.Identity.Name;
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user != null)
-                {
-                    var userRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userService.GetUserRolesAsync(email);
 
-                    return Ok(userRoles);
-                }
-            }
-            return NotFound();
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
+
+            return Ok(result.Data);
         }
 
         [HttpGet]
@@ -178,27 +128,13 @@ namespace UserMicroservice.Controllers
             {
                 return BadRequest();
             }
-            var emailVerification = await _context.EmailVerificationsTokens.Include(e => e.User).Where(e => e.Token == emailToken && e.TokenExpiryTime > DateTime.Now).FirstOrDefaultAsync();
-            if (emailVerification != null)
-            {
-                try
-                {
-                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == emailVerification.User.Id);
-                    user.EmailConfirmed = true;
-                    _context.EmailVerificationsTokens.Remove(emailVerification);
-                    await _context.SaveChangesAsync();
 
-                    _hangfireHelper.DeleteJobByArgument(emailToken);
+            var result = await _userService.VerifyEmailAsync(emailToken);
 
-                    return Ok(true);
-                }
-                catch
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound(false);
 
-            return NotFound(false);
+            return Ok(true);
         }
 
         [Authorize]
@@ -206,27 +142,17 @@ namespace UserMicroservice.Controllers
         [Route("addresses")]
         public async Task<IActionResult> GetAddresses()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var email = principal.Identity.Name;
+            var result = await _userService.GetAddressesAsync(email);
 
-                var userInfo = await _context.UserInfos.Include(u => u.User).Include(a => a.Addresses).FirstOrDefaultAsync(u => u.User.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (userInfo != null)
-                {
-                    return Ok(userInfo.Addresses);
-                }
-            }
-
-            return NotFound();
+            return Ok(result.Data);
         }
 
         [Authorize]
@@ -235,37 +161,22 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> GetAddressById(string id)
         {
             if (string.IsNullOrEmpty(id))
-            {
                 return BadRequest();
-            }
 
             if (!int.TryParse(id, out int parsedId))
-            {
                 return BadRequest();
-            }
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var email = principal.Identity.Name;
+            var result = await _userService.GetAddressByIdAsync(email, parsedId);
 
-                var userInfo = await _context.UserInfos.Include(u => u.User).Include(a => a.Addresses).FirstOrDefaultAsync(u => u.User.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (userInfo != null && userInfo.Addresses != null)
-                {
-                    var address = userInfo.Addresses.FirstOrDefault(a => a.Id == parsedId);
-                    return Ok(address);
-                }
-            }
-
-            return NotFound();
+            return Ok(result.Data);
         }
 
         #endregion
@@ -277,48 +188,20 @@ namespace UserMicroservice.Controllers
         [Route("resend-email-verification")]
         public async Task<IActionResult> ResendVerification()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var user = await _context.Users.Include(u => u.EmailVerificationToken).FirstOrDefaultAsync(u => u.Email.ToLower() == principal.Identity.Name.ToLower());
+            var result = await _userService.ResendEmailVerificationAsync(email);
 
-                if (user != null)
-                {
-                    if (user.EmailVerificationToken != null)
-                    {
-                        _context.EmailVerificationsTokens.Remove(user.EmailVerificationToken);
-                        await _context.SaveChangesAsync();
-                    }
-                    var emailVerificationToken = _authHelper.GenerateToken();
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                    user.EmailVerificationToken = new EmailVerificationToken()
-                    {
-                        Token = emailVerificationToken,
-                        TokenExpiryTime = DateTime.Now.AddDays(1),
-                        CreatedTime = DateTime.Now,
-                    };
+            if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                    var clientDomain = Request.Headers["Origin"].ToString();
-
-                    var confirmEmailLink = clientDomain + "/email/verify/" + emailVerificationToken;
-
-                    if (_emailService.ResendConfirmEmail(user.Email, confirmEmailLink))
-                    {
-                        await _userManager.UpdateAsync(user);
-
-                        BackgroundJob.Schedule<IUsersService>(service => service.DeleteEmailVerification(emailVerificationToken), TimeSpan.FromHours(24));
-                        return Ok();
-                    }
-                }
-            }
-            return BadRequest();
+            return Ok();
         }
 
         [Authorize]
@@ -326,54 +209,20 @@ namespace UserMicroservice.Controllers
         [Route("request-change-email")]
         public async Task<IActionResult> ReqeustChangeEmail([FromBody] ChangeEmailRequest request)
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var email = principal.Identity.Name;
+            var result = await _userService.RequestChangeEmailAsync(email, request.Email);
 
-                var user = await _context.Users.Include(u => u.ChangeEmailToken).FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (user != null)
-                {
-                    if (user.ChangeEmailToken != null)
-                    {
-                        _context.ChangeEmailTokens.Remove(user.ChangeEmailToken);
-                        await _context.SaveChangesAsync();
-                    }
+            if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                    var changeEmailToken = _authHelper.GenerateToken();
-
-                    user.ChangeEmailToken = new ChangeEmailToken
-                    {
-                        Token = changeEmailToken,
-                        CreatedTime = DateTime.Now,
-                        NewEmail = request.Email,
-                        TokenExpiryTime = DateTime.Now.AddHours(1)
-                    };
-
-                    var clientDomain = Request.Headers["Origin"].ToString();
-
-                    var changeEmailLink = clientDomain + "/email/change/" + changeEmailToken;
-
-                    if (_emailService.SendChangeEmail(email, changeEmailLink))
-                    {
-                        _context.Users.Update(user);
-                        await _context.SaveChangesAsync();
-
-                        BackgroundJob.Schedule<IUsersService>(service => service.DeleteChangeEmailRequest(changeEmailToken), TimeSpan.FromHours(1));
-                        return Ok();
-                    }
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         [Authorize]
@@ -384,45 +233,17 @@ namespace UserMicroservice.Controllers
             if (request == null)
                 return BadRequest();
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var email = principal.Identity.Name;
+            var result = await _userService.AddAddressAsync(email, _mapper.Map<Address>(request));
 
-                var userInfo = await _context.UserInfos.Include(u => u.Addresses).Include(u => u.User).FirstOrDefaultAsync(u => u.User.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (userInfo != null)
-                {
-                    var address = _mapper.Map<Address>(request);
-
-                    if (address != null)
-                    {
-                        if (userInfo.Addresses == null)
-                        {
-                            userInfo.Addresses = new List<Address>();
-                        }
-                        if (address.IsDefault)
-                        {
-                            foreach (var userAddress in userInfo.Addresses)
-                            {
-                                userAddress.IsDefault = false;
-                            }
-                        }
-                        userInfo.Addresses.Add(address);
-                        await _context.SaveChangesAsync();
-                        return Ok();
-                    }
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         [Authorize]
@@ -433,39 +254,23 @@ namespace UserMicroservice.Controllers
             if (request == null)
                 return BadRequest();
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                var email = principal.Identity.Name;
+            if (email != request.Email)
+                return Forbid();
 
-                if(email != request.Email)
-                {
-                    return Forbid();
-                }
+            var result = await _userService.DeleteAccountAsync(request.Email, request.Password);
 
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-                if (user != null)
-                {
-                    var result = await _userManager.CheckPasswordAsync(user, request.Password);
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                    if (result)
-                    {
-                        await _userManager.DeleteAsync(user);
+            if (result.Status == StatusEnum.Failure)
+                return Forbid();
 
-                        return Ok();
-                    }
-                    return Forbid();
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         #endregion
@@ -478,39 +283,19 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> ChangeName([FromBody] ChangeNameRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.FirstName) || string.IsNullOrEmpty(request.LastName))
-            {
                 return BadRequest();
-            }
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token or refresh token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.ChangeNameAsync(email, request.FirstName, request.LastName);
 
-                var user = await _context.Users.Include(u => u.UserInfo).FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-                if (user != null)
-                {
-                    if (user.UserInfo == null)
-                    {
-                        user.UserInfo = new UserInfo();
-                    }
-                    user.UserInfo.FirstName = request.FirstName;
-                    user.UserInfo.LastName = request.LastName;
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                    _context.Users.Update(user);
-                    await _context.SaveChangesAsync();
-                    return Ok();
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         [Authorize]
@@ -519,54 +304,19 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> EditAddress([FromBody] EditAddressRequest request)
         {
             if (request == null)
-            {
                 return BadRequest();
-            }
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token or refresh token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.EditAddressAsync(email, _mapper.Map<Address>(request));
 
-                var userInfo = _context.UserInfos.Include(u => u.Addresses).Include(u => u.Addresses).FirstOrDefault(u => u.User.Email.ToLower() == email.ToLower());
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-                if (userInfo != null && userInfo.Addresses != null)
-                {
-                    var address = userInfo.Addresses.FirstOrDefault(a => a.Id == request.Id);
-                    if (address != null)
-                    {
-                        if (request.IsDefault)
-                        {
-                            foreach (var userAddress in userInfo.Addresses)
-                            {
-                                userAddress.IsDefault = false;
-                            }
-                        }
-
-                        address.StreetAddress = request.StreetAddress;
-                        address.City = request.City;
-                        address.Region = request.Region;
-                        address.PostalCode = request.PostalCode;
-                        address.Country = request.Country;
-                        address.PhoneNumber = request.PhoneNumber;
-                        address.FirstName = request.FirstName;
-                        address.LastName = request.LastName;
-                        address.IsDefault = request.IsDefault;
-                        _context.UserInfos.Update(userInfo);
-                        await _context.SaveChangesAsync();
-                        return Ok();
-                    }
-                }
-            }
-
-            return NotFound();
+            return Ok();
         }
 
         [HttpPut]
@@ -578,22 +328,10 @@ namespace UserMicroservice.Controllers
                 return BadRequest();
             }
 
-            var changeEmail = await _context.ChangeEmailTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.Token == changeEmailToken);
+            var result = await _userService.ChangeEmailAsync(changeEmailToken);
 
-            if (changeEmail == null)
-            {
+            if (result.Status == StatusEnum.NotFound)
                 return NotFound();
-            }
-
-            changeEmail.User.Email = changeEmail.NewEmail;
-            changeEmail.User.NormalizedEmail = changeEmail.NewEmail.ToUpper();
-            changeEmail.User.UserName = changeEmail.NewEmail;
-            changeEmail.User.NormalizedUserName = changeEmail.NewEmail.ToUpper();
-            _context.Users.Update(changeEmail.User);
-            _context.Remove(changeEmail);
-            await _context.SaveChangesAsync();
-
-            _hangfireHelper.DeleteJobByArgument(changeEmailToken);
 
             return Ok();
         }
@@ -604,44 +342,29 @@ namespace UserMicroservice.Controllers
         [Route("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest passwordModel)
         {
-            var accessToken = Request.GetAuthorizationToken();
+            if (passwordModel == null || string.IsNullOrEmpty(passwordModel.OldPassword) || string.IsNullOrEmpty(passwordModel.NewPassword))
+                return BadRequest();
 
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                return BadRequest("Refresh Token missing.");
-            }
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            var principal = _authHelper.GetPrincipalFromToken(accessToken);
-            if (principal == null)
-            {
-                return BadRequest("Invalid access token or refresh token");
-            }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-            string email = principal.Identity.Name;
+            var result = await _userService.ChangePasswordAsync(email, passwordModel.OldPassword, passwordModel.NewPassword);
 
-            var user = await _userManager.FindByEmailAsync(email);
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-            var result = await _userManager.CheckPasswordAsync(user, passwordModel.OldPassword);
-            if (result)
-            {
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
-                if (!changePasswordResult.Succeeded)
-                {
-                    return BadRequest();
-                }
+            if (result.Status == StatusEnum.InternalError)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-                var refreshToken = Request.GetRefreshToken();
-                if (!string.IsNullOrEmpty(refreshToken))
-                {
-                    var refreshTokensToDelete = _context.RefreshTokens.Include(r => r.User).Where(r => r.User.Email == email && r.Token != refreshToken);
-                    _context.RefreshTokens.RemoveRange(refreshTokensToDelete);
-                    await _context.SaveChangesAsync();
-                }
+            if (result.Status == StatusEnum.Failure)
+                return BadRequest();
 
-                return Ok();
-            }
+            if (result.Status == StatusEnum.Forbid)
+                return Forbid();
 
-            return BadRequest("Password not valid.");
+            return Ok();
         }
 
         #endregion
@@ -653,25 +376,14 @@ namespace UserMicroservice.Controllers
         [Route("revoke-all")]
         public async Task<IActionResult> Revoke()
         {
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token or refresh token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            await _userService.RevokeAllAsync(email);
 
-                var refreshTokens = await _context.RefreshTokens.Include(t => t.User).Where(t => t.User.Email == email).ToListAsync();
-                _context.RefreshTokens.RemoveRange(refreshTokens);
-                await _context.SaveChangesAsync();
-
-                return Ok();
-            }
-            return NotFound();
+            return Ok();
         }
 
         [Authorize]
@@ -680,32 +392,22 @@ namespace UserMicroservice.Controllers
         public async Task<IActionResult> RevokeBySessionId(string id)
         {
             if (id == null || string.IsNullOrEmpty(id))
-            {
                 return BadRequest();
-            }
 
-            var accessToken = Request.GetAuthorizationToken();
+            var email = Request.GetEmailFromRequest(_authHelper);
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                var principal = _authHelper.GetPrincipalFromToken(accessToken);
-                if (principal == null)
-                {
-                    return BadRequest("Invalid access token or refresh token");
-                }
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
 
-                string email = principal.Identity.Name;
+            var result = await _userService.RevokeByIdAsync(email, id);
 
-                var refreshTokenToDelete = _context.RefreshTokens.FirstOrDefault(t => t.Id == id);
-                if (refreshTokenToDelete != null)
-                {
-                    _context.RefreshTokens.RemoveRange(refreshTokenToDelete);
-                    await _context.SaveChangesAsync();
-                    return Ok();
-                }
-            }
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
 
-            return NotFound();
+            if (result.Status == StatusEnum.Forbid)
+                return Forbid();
+
+            return Ok();
         }
 
         #endregion

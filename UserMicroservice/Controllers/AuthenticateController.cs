@@ -1,21 +1,10 @@
-﻿using Azure.Core;
-using Hangfire;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using UAParser;
 using UserMicroservice.Enums;
 using UserMicroservice.Extensions;
-using UserMicroservice.Helpers;
 using UserMicroservice.Helpers.Constants;
 using UserMicroservice.Interfaces.Helpers;
-using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Authentication;
-using UserMicroservice.Interfaces.Services.Database;
-using UserMicroservice.Models;
-using UserMicroservice.Models.Database;
 using UserMicroservice.Models.Requests;
 using UserMicroservice.Models.Responses;
 
@@ -28,38 +17,20 @@ namespace UserMicroservice.Controllers
         #region Declarations 
 
         private readonly IAuthenticationHelper _authHelper;
-        private readonly IHangfireHelper _hangfireHelper;
-
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        private readonly IEmailService _emailService;
         private readonly IAuthenticationService _authService;
         private readonly ITokenService _tokenService;
-
-        private readonly IConfiguration _configuration;
 
         #endregion
 
         #region Constructor
 
         public AuthenticateController(IAuthenticationHelper authHelper,
-                                      IHangfireHelper hangfireHelper,
-                                      UserManager<ApplicationUser> userManager,
-                                      ApplicationDbContext context,
-                                      IEmailService emailService,
                                       IAuthenticationService authService,
-                                      ITokenService tokenService,
-                                      IConfiguration configuration)
+                                      ITokenService tokenService)
         {
             _authHelper = authHelper;
-            _hangfireHelper = hangfireHelper;
-            _userManager = userManager;
-            _context = context;
-            _emailService = emailService;
             _authService = authService;
             _tokenService = tokenService;
-            _configuration = configuration;
         }
 
         #endregion

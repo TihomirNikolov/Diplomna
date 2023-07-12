@@ -10,7 +10,6 @@ using UserMicroservice.Helpers;
 using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Authentication;
-using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
 using UserMicroservice.Models.Database;
 using UserMicroservice.Models.Responses;
@@ -60,10 +59,11 @@ namespace UserMicroservice.Services.Authentication
         public async Task<Response<LoginResponse>> LoginAsync(string email, string password)
         {
             var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => email.ToLower() == u.Email.ToLower());
-            if (user != null)
+            if (user == null || !await _userManager.CheckPasswordAsync(user, password))
             {
                 return new Response<LoginResponse> { Status = StatusEnum.Failure, Message = "User not found" };
             }
+
             var authClaims = await _authHelper.GetClaims(user);
 
             var token = _authHelper.CreateToken(authClaims);
@@ -73,10 +73,8 @@ namespace UserMicroservice.Services.Authentication
 
             user.RefreshTokens ??= new List<RefreshToken>();
 
-            if (_httpContextAccessor.HttpContext == null)
-            {
+            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null)
                 return new Response<LoginResponse> { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
-            }
 
             var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
             var uaParser = Parser.GetDefault();
@@ -137,25 +135,25 @@ namespace UserMicroservice.Services.Authentication
                 CreatedTime = DateTime.Now,
             };
 
-            if (_httpContextAccessor.HttpContext == null)
-            {
+            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null)
                 return new Response { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
-            }
+
 
             var clientDomain = _httpContextAccessor.HttpContext.Request.Headers["Origin"].ToString();
 
             var confirmEmailLink = clientDomain + "/email/verify/" + emailVerificationToken;
 
-            if (_emailService.SendConfirmEmail(email, confirmEmailLink))
-            {
-                var result = await _userManager.CreateAsync(user, password);
-                if (!result.Succeeded)
-                    return new Response { Status = StatusEnum.InternalError, Message = "Internal error" };
+            if (!_emailService.SendConfirmEmail(email, confirmEmailLink))
+                return new Response { Status = StatusEnum.InternalError, Message = "Email could not be sent" };
 
-                await _userManager.AddToRoleAsync(user, "User");
+            var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+                return new Response { Status = StatusEnum.InternalError, Message = "Internal error" };
 
-                BackgroundJob.Schedule<IUsersService>(service => service.DeleteEmailVerification(emailVerificationToken), TimeSpan.FromHours(24));
-            }
+            await _userManager.AddToRoleAsync(user, "User");
+
+            BackgroundJob.Schedule<IHangfireService>(service => service.DeleteEmailVerification(emailVerificationToken), TimeSpan.FromHours(24));
+
 
             return new Response { Status = StatusEnum.Success };
         }

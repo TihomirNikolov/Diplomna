@@ -8,7 +8,6 @@ using UserMicroservice.Enums;
 using UserMicroservice.Interfaces.Helpers;
 using UserMicroservice.Interfaces.Services;
 using UserMicroservice.Interfaces.Services.Authentication;
-using UserMicroservice.Interfaces.Services.Database;
 using UserMicroservice.Models;
 using UserMicroservice.Models.Database;
 using UserMicroservice.Models.Responses;
@@ -67,10 +66,7 @@ namespace UserMicroservice.Services.Authentication
 
             _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
-            if (_httpContextAccessor == null)
-                return new Response<TokenResponse> { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
-
-            if (_httpContextAccessor == null)
+            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null)
                 return new Response<TokenResponse> { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
 
             var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
@@ -108,12 +104,11 @@ namespace UserMicroservice.Services.Authentication
             if (user == null)
                 return new Response { Status = StatusEnum.NotFound, Message = "User not found" };
 
-            if (user.ResetPasswordToken == null)
-                return new Response { Status = StatusEnum.NotFound, Message = "Reset pasasword token not found" };
-
-            _dbContext.ResetPasswordTokens.Remove(user.ResetPasswordToken);
-            await _dbContext.SaveChangesAsync();
-
+            if (user.ResetPasswordToken != null)
+            {
+                _dbContext.ResetPasswordTokens.Remove(user.ResetPasswordToken);
+                await _dbContext.SaveChangesAsync();
+            }
             var resetPasswordToken = _authHelper.GenerateToken();
 
             user.ResetPasswordToken = new ResetPasswordToken()
@@ -123,10 +118,8 @@ namespace UserMicroservice.Services.Authentication
                 CreatedTime = DateTime.Now,
             };
 
-            if (_httpContextAccessor.HttpContext == null)
-            {
-                return new Response<bool> { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
-            }
+            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null)
+                return new Response { Status = StatusEnum.InternalError, Message = "Cannot access HttpContext" };
 
             var clientDomain = _httpContextAccessor.HttpContext.Request.Headers["Origin"].ToString();
             var resetPasswordLink = clientDomain + "/password/reset/" + resetPasswordToken;
@@ -136,10 +129,9 @@ namespace UserMicroservice.Services.Authentication
 
             await _userManager.UpdateAsync(user);
 
-            BackgroundJob.Schedule<IUsersService>(service => service.DeletePasswordVerification(resetPasswordToken), TimeSpan.FromMinutes(5));
+            BackgroundJob.Schedule<IHangfireService>(service => service.DeletePasswordVerification(resetPasswordToken), TimeSpan.FromMinutes(5));
 
             return new Response { Status = StatusEnum.Success };
-
         }
 
         public async Task<Response> VerifyPasswordTokenAsync(string token)
