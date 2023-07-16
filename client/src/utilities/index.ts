@@ -14,7 +14,7 @@ import {
 } from './validations';
 import {
     UserInfo, LoginInfo, Address, CategoryDTO,
-    Category, BaseCategory, Product, CoverProduct, ProductReview
+    Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType, sortings
 } from './models';
 import { Dictionary, KeyValuePair } from './types';
 
@@ -24,11 +24,11 @@ export {
     getAccessToken, getRefreshToken, getTokenObject, setAccessToken, setRefreshToken, setTokenObject, removeTokenObject,
     validateEmail, validatePassword, validateCity, validateFirstName,
     validateLastName, validateMobileNumber, validateStreetAddress,
-    validateRegion
+    validateRegion, sortings
 };
 export type {
     LoginResponse, LoginModel, SignUpModel,
     UserInfo, LoginInfo, Address,
-    CategoryDTO, Category, BaseCategory, Product, CoverProduct, ProductReview,
+    CategoryDTO, Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType,
     Dictionary, KeyValuePair
 };

@@ -1,4 +1,5 @@
-import { Category, BaseCategory, CategoryDTO } from "./Category";
+import { Category, BaseCategory, CategoryDTO, Filter, SortType, sortings } from "./Category";
 import { Product, CoverProduct, ProductReview } from "./Product";
 
-export type { Category, BaseCategory, CategoryDTO, Product, CoverProduct, ProductReview }
+export { sortings }
+export type { Category, BaseCategory, CategoryDTO, Product, CoverProduct, ProductReview, Filter, SortType }

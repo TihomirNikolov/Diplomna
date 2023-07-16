@@ -6,6 +6,7 @@ export default interface CoverProduct {
     productUrl: string,
     price: number,
     coverTags: Dictionary<Dictionary<string>>,
+    tags: Dictionary<Dictionary<string>>,
     addedDate: Date,
     rating: number,
     comments: number,

@@ -113,7 +113,7 @@ export default function AccountPage() {
 
     return (
         <div>
-            <div className="mx-1 md:ml-0 md:mr-0 space-y-2">
+            <div className="mx-1 md:ml-0 md:mr-0 space-y-2 mb-2 md:mb-0">
                 <h1 className="text-black dark:text-white font-bold mb-5 text-2xl">{t('profile')}</h1>
                 <div className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
                     <h1 className="text-black dark:text-white font-bold text-2xl">{t('profileData')}</h1>

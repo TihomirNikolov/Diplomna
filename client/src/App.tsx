@@ -157,7 +157,7 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div className='bg-lightBackground dark:bg-darkBackground-900'>
       <BrowserRouter>
         <ScrollToTop />
         <div className='min-h-screen'>

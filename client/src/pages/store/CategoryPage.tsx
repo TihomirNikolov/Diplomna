@@ -1,18 +1,20 @@
 import { Fragment, useEffect, useState } from "react"
-import { CategoryDTO, CoverProduct, axiosClient, baseProductsURL } from "../../utilities"
+import { CategoryDTO, CoverProduct, Dictionary, Filter, SortType, axiosClient, baseProductsURL, sortings } from "../../utilities"
 import axios from "axios"
-import { CoverProductCard, NotFoundComponent, Pagination, Spinner, useTitle } from "../../components"
-import { Link, useLocation } from "react-router-dom"
+import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, Spinner, useTitle } from "../../components"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Listbox, Transition } from "@headlessui/react"
 import { useTranslation } from "react-i18next"
-import { SortType, sortings, useCategory, useLanguage } from "../../contexts"
+import { useLanguage } from "../../contexts"
+import { Separator } from "@/components/ui/separator"
 
 export default function CategoryPage() {
     const { t } = useTranslation();
     useTitle(t('category'));
 
     const [products, setProducts] = useState<CoverProduct[]>([])
+    const [filteredProducts, setFilteredProducts] = useState<CoverProduct[]>([]);
     const [category, setCategory] = useState<CategoryDTO>();
 
     const [showProducts, setShowProducts] = useState<CoverProduct[]>([]);
@@ -22,10 +24,11 @@ export default function CategoryPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-    const { currentPage, itemsPerPage, setCurrentPage, setItemsPerPage, setSorting, sorting, resetCategory } = useCategory();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
+    const [sorting, setSorting] = useState<SortType>('newest');
 
-    const [isInitialRender, setIsInitialRender] = useState<boolean>(true);
-
+    const navigate = useNavigate();
     const location = useLocation();
 
     const { language } = useLanguage();
@@ -40,15 +43,12 @@ export default function CategoryPage() {
             }
         }
 
-        if (!isInitialRender) {
-            resetCategory();
-        }
-        else {
-            setIsInitialRender(false);
-        }
-
         fetchData();
     }, [location.pathname])
+
+    useEffect(() => {
+        applyFilters(products);
+    }, [location.search])
 
     async function fetchProducts(category: CategoryDTO | null) {
         try {
@@ -56,7 +56,7 @@ export default function CategoryPage() {
             var products = response.data as CoverProduct[];
             var sortedProducts: CoverProduct[] = sortProducts(sorting, products)!;
             setProducts(sortedProducts);
-            calculateProductsToShow(sortedProducts, 1, itemsPerPage);
+            applyFilters(sortedProducts);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -98,6 +98,32 @@ export default function CategoryPage() {
         }
     }
 
+    function applyFilters(products: CoverProduct[]) {
+        var urlSearchParams = new URLSearchParams(location.search);
+        var params = Object.fromEntries(urlSearchParams.entries());
+        if (urlSearchParams.size == 0) {
+            setFilteredProducts(products);
+            calculateProductsToShow(products, 1, itemsPerPage);
+            return;
+        }
+        var filtredProducts: CoverProduct[] = products;
+        for (var [key, value] of Object.entries(params)) {
+            if (key == 'sort') {
+                setSorting(value);
+            } else if (key == 'items') {
+                setItemsPerPage(parseInt(value))
+            } else if (key == 'page') {
+                setCurrentPage(parseInt(value));
+            } else {
+                var values = value.split('|');
+
+                filtredProducts = filtredProducts.filter(p => p.tags[language.code][key] != undefined && values.includes(p.tags[language.code][key]));
+            }
+        }
+
+        setFilteredProducts(filtredProducts);
+        calculateProductsToShow(filtredProducts, 1, itemsPerPage);
+    }
 
     function calculateProductsToShow(products: CoverProduct[], page: number, itemsPerPage: number) {
         var productsToShow: CoverProduct[];
@@ -130,22 +156,45 @@ export default function CategoryPage() {
         }
     }
 
+    function changeSorting(sortingType: SortType) {
+        setSorting(sortingType);
+
+        var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+        searchParams.set('sort', sortingType);
+        navigate(`?${searchParams.toString()}`);
+    }
+
+    function changeItemsPerPage(itemsPerPage: number) {
+        setItemsPerPage(itemsPerPage);
+
+        var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+        searchParams.set('items', itemsPerPage.toString());
+        navigate(`?${searchParams.toString()}`);
+    }
+
     function onItemsPerPageChanged(productsPerPage: number) {
         var currentPageStart = (currentPage - 1) * itemsPerPage;
         var newCurrentPage = Math.ceil((currentPageStart + 1) / productsPerPage);
 
         setCurrentPage(newCurrentPage);
-        calculateProductsToShow(products, newCurrentPage, productsPerPage);
+        calculateProductsToShow(filteredProducts, newCurrentPage, productsPerPage);
     }
 
     function onSortingTypeChanged(sortingType: SortType) {
-        sortProducts(sortingType, products);
-        calculateProductsToShow(products, currentPage, itemsPerPage);
+        sortProducts(sortingType, filteredProducts);
+        calculateProductsToShow(filteredProducts, currentPage, itemsPerPage);
     }
 
     function onPageChanged(page: number) {
         setCurrentPage(page);
-        calculateProductsToShow(products, page, itemsPerPage);
+        calculateProductsToShow(filteredProducts, page, itemsPerPage);
+
+        var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+        searchParams.set('page', page.toString());
+        navigate(`?${searchParams.toString()}`);
     }
 
     if (isLoading) {
@@ -163,7 +212,7 @@ export default function CategoryPage() {
 
     return (
         <div className="grid grid-cols-12">
-            <div className="col-start-3 col-span-2 hidden md:flex md:flex-col">
+            <div className="lg:col-start-3 col-span-2 hidden md:flex md:flex-col md:mr-2 ml-2 lg:ml-0">
                 <h1 className="text-black dark:text-white font-bold text-2xl mt-5">{t('categories')}</h1>
                 {category?.subCategories?.map((subCategory, index) => {
                     return (
@@ -178,8 +227,14 @@ export default function CategoryPage() {
                             </div>
                         </div>)
                 })}
+                {category != undefined && products != undefined && products.length > 0 &&
+                    <div>
+                        <Separator className="mt-4" />
+                        <CategoryFilters category={category} products={products} />
+                    </div>
+                }
             </div>
-            <div className="md:col-start-5 md:col-span-6 col-start-2 col-span-10">
+            <div className="lg:col-start-5 lg:col-span-6 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
                 <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">{category?.displayName[language.code]}</h1>
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-4 pb-2 border-b">
@@ -212,7 +267,7 @@ export default function CategoryPage() {
                                                         return (
                                                             <Listbox.Option value={value} key={index} className="w-full text-center text-black py-1 dark:text-white
                                                             hover:text-orange-500 hover:dark:text-orange-500 cursor-pointer"
-                                                                onClick={() => setSorting(value)}>
+                                                                onClick={() => changeSorting(value)}>
                                                                 {t(`${value}`)}
                                                             </Listbox.Option>
                                                         )
@@ -253,7 +308,7 @@ export default function CategoryPage() {
                                                         return (
                                                             <Listbox.Option value={value} key={index} className="w-full text-center text-black py-1 dark:text-white
                                                                  hover:text-orange-500 hover:dark:text-orange-500 cursor-pointer"
-                                                                onClick={() => setItemsPerPage(value)}>
+                                                                onClick={() => changeItemsPerPage(value)}>
                                                                 {value}
                                                             </Listbox.Option>
                                                         )

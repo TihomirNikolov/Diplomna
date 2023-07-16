@@ -1,4 +1,5 @@
 import { UserInfo, LoginInfo, Address, } from "./account";
-import { Category, CategoryDTO, BaseCategory, Product, CoverProduct, ProductReview } from "./store";
+import { Category, CategoryDTO, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType, sortings } from "./store";
 
-export type { UserInfo, LoginInfo, Address, Category, CategoryDTO, BaseCategory, Product, CoverProduct, ProductReview }
+export { sortings }
+export type { UserInfo, LoginInfo, Address, Category, CategoryDTO, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType }
