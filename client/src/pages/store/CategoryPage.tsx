@@ -52,7 +52,7 @@ export default function CategoryPage() {
 
     async function fetchProducts(category: CategoryDTO | null) {
         try {
-            var response = await axiosClient.get(`${baseProductsURL()}api/products/category/${category?.displayName[language.code]}`);
+            var response = await axiosClient.get(`${baseProductsURL()}api/products/category/${category?.displayName.find(name => name.key == language.code)?.value}`);
             var products = response.data as CoverProduct[];
             var sortedProducts: CoverProduct[] = sortProducts(sorting, products)!;
             setProducts(sortedProducts);
@@ -117,7 +117,8 @@ export default function CategoryPage() {
             } else {
                 var values = value.split('|');
 
-                filtredProducts = filtredProducts.filter(p => p.tags[language.code][key] != undefined && values.includes(p.tags[language.code][key]));
+                filtredProducts = filtredProducts.filter(p => p.tags.find(tag => tag.key == language.code)?.value != undefined
+                    && values.includes(p.tags.find(t => t.key == language.code)?.value.find(t => t.key == key)?.value || ''));
             }
         }
 
@@ -222,7 +223,7 @@ export default function CategoryPage() {
                                 <Link to={`/category/${subCategory.urlPath}`}
                                     className={`hover:text-orange-500 hover:dark:text-orange-500 
                                 ${selectedCategory?.displayName == subCategory.displayName ? 'text-orange-500 dark:text-orange-500' : ''}`}>
-                                    {subCategory.displayName[language.code]}
+                                    {subCategory.displayName.find(name => name.key == language.code)?.value}
                                 </Link>
                             </div>
                         </div>)
@@ -235,7 +236,9 @@ export default function CategoryPage() {
                 }
             </div>
             <div className="lg:col-start-5 lg:col-span-6 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
-                <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">{category?.displayName[language.code]}</h1>
+                <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">
+                    {category?.displayName.find(name => name.key == language.code)?.value}
+                </h1>
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-4 pb-2 border-b">
                         <div className="flex gap-4 items-center justify-center">

@@ -48,7 +48,8 @@ export default function CoverProductCard(props: Props) {
             <Link to={`/product/${props.product.productUrl}`}>
                 <div>
                     <div className="">
-                        <img src={props.product.coverImageUrl} alt="product" className="rounded-lg h-full" title={props.product.name[language.code]} />
+                        <img src={`${import.meta.env.VITE_IDENTITY_PRODUCTS_URL}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
+                            title={props.product.name.find(name => name.key == language.code)?.value} />
                     </div>
                 </div>
                 <div className="flex justify-between pt-2">
@@ -57,8 +58,8 @@ export default function CoverProductCard(props: Props) {
                         <ReviewRating rating={props.product.rating} />
                     </div>
                     <div className="flex gap-1">
-                        <FontAwesomeIcon icon={['fas', 'heart']} size="lg" 
-                        className={`${isFavourited == true ? 'text-pink-500' : ''} hover:text-pink-600`}
+                        <FontAwesomeIcon icon={['fas', 'heart']} size="lg"
+                            className={`${isFavourited == true ? 'text-pink-500' : ''} hover:text-pink-600`}
                             onClick={((event) => {
                                 event.preventDefault();
                                 changeFavourite(isFavourited);
@@ -72,13 +73,13 @@ export default function CoverProductCard(props: Props) {
                     </div>
                 </div>
                 <div className="line-clamp-2 mt-2">
-                    <span className="h-12">{props.product.name[language.code]}</span>
+                    <span className="h-12">{props.product.name.find(name => name.key == language.code)?.value}</span>
                 </div>
                 <div>
-                    {Object.entries(props.product.coverTags[language.code]).map(([key, value]) => {
+                    {props.product.coverTags.find(tag => tag.key == language.code)?.value.map((item, index) => {
                         return (
-                            <div key={key} className="mt-2 h-6 flex overflow-hidden text-sm text-gray-400">
-                                <span>{key} : {value}</span>
+                            <div key={index} className="mt-2 h-6 flex overflow-hidden text-sm text-gray-400">
+                                <span>{item.key} : {item.value}</span>
                             </div>)
                     })}
                 </div>

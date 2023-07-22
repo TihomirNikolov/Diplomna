@@ -86,7 +86,10 @@ export default function CategoryFilters({ category, products }: Props) {
     }, [checkedFilters])
 
     useEffect(() => {
-        var categoryTags = category!.tags[language.code]
+        var categoryTags = category!.tags.find(tag => tag.key == language.code)?.value;
+
+        if (categoryTags == undefined)
+            return
 
         var filters: Dictionary<Filter> = {};
 
@@ -102,10 +105,10 @@ export default function CategoryFilters({ category, products }: Props) {
 
         for (var product of products) {
             for (var categoryTag of categoryTags) {
-                var productTags = product.tags[language.code];
-                var tag = productTags[categoryTag];
+                var productTags = product.tags.find(tag => tag.key == language.code)?.value!;
+                var tag = productTags.find(tag => tag.key == categoryTag)?.value;
                 if (tag != undefined) {
-                    if (productTags[categoryTag] != undefined) {
+                    if (productTags.find(tag => tag.key == categoryTag)?.value != undefined) {
                         if (filters[categoryTag] == undefined) {
                             filters[categoryTag] = { values: {} };
                         }

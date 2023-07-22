@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Documents;
@@ -73,13 +74,13 @@ namespace ProductsMicroservice.Services
             var db = GetDatabase();
 
             var collection = await db.GetCollection<ProductDocument>(CollectionName)
-                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories,
-                c => c.DisplayName["bg"] == categoryName || c.DisplayName["en"] == categoryName)).ToListAsync();
+                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories, 
+                c=> c.DisplayName.Any(name => name.Value == categoryName))).ToListAsync();
 
             return _mapper.Map<List<CoverProductDTO>>(collection);
         }
 
-        public async Task<bool> CheckIfProductExists(string url)
+        public async Task<bool> CheckIfProductExistsAsync(string url)
         {
             await CreateCollectionIfDoesntExistAsync();
 
@@ -91,7 +92,7 @@ namespace ProductsMicroservice.Services
             return product != null;
         }
 
-        public async Task<ProductDTO> GetProductByUrl(string url)
+        public async Task<ProductDTO> GetProductByUrlAsync(string url)
         {
             await CreateCollectionIfDoesntExistAsync();
 
@@ -103,7 +104,7 @@ namespace ProductsMicroservice.Services
             return _mapper.Map<ProductDTO>(product);
         }
 
-        public async Task<bool> AddReview(ProductReview review, string productUrl)
+        public async Task<bool> AddReviewAsync(ProductReview review, string productUrl)
         {
             await CreateCollectionIfDoesntExistAsync();
 
@@ -119,7 +120,7 @@ namespace ProductsMicroservice.Services
             return true;
         }
 
-        public async Task<bool> RemoveReview(ProductReview review, string productUrl)
+        public async Task<bool> RemoveReviewAsync(ProductReview review, string productUrl)
         {
             await CreateCollectionIfDoesntExistAsync();
 
@@ -130,6 +131,18 @@ namespace ProductsMicroservice.Services
             await db.GetCollection<ProductDocument>(CollectionName).UpdateOneAsync(filter, update);
 
             return true;
+        }
+
+        public async Task<List<SearchProductDTO>> SearchByTextAsync(string searchText)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filter = Builders<ProductDocument>.Filter.Regex(p => p.ProductUrl, new BsonRegularExpression(searchText, "i"));
+            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
+
+            return _mapper.Map<List<SearchProductDTO>>(productDocuments);
         }
     }
 }

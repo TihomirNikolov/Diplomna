@@ -1,15 +1,15 @@
-import { BaseCategory, Dictionary, ProductReview } from "../../..";
+import { BaseCategory, Item, ProductReview } from "../../..";
 
 export default interface Product{
-    name: Dictionary<string>,
-    description: Dictionary<string>,
+    name: Item<string, string>[],
+    description: Item<string, string>[],
     pictureUrls: string[],
     coverImageUrl: string,
     productUrl: string,
     price: number,
     videoUrls: string[],
     reviews: ProductReview[],
-    tags: Dictionary<string>,
-    coverTags: Dictionary<Dictionary<string>>,
+    tags: Item<string, Item<string, string>[]>[],
+    coverTags: Item<string, Item<string, string>[]>[],
     categories: BaseCategory[]
 }

@@ -1,12 +1,12 @@
-import { Dictionary } from "../../..";
+import { Item } from "../../..";
 
 export default interface CoverProduct {
-    name: Dictionary<string>,
+    name: Item<string, string>[],
     coverImageUrl: string,
     productUrl: string,
     price: number,
-    coverTags: Dictionary<Dictionary<string>>,
-    tags: Dictionary<Dictionary<string>>,
+    coverTags: Item<string, Item<string, string>[]>[],
+    tags: Item<string, Item<string, string>[]>[],
     addedDate: Date,
     rating: number,
     comments: number,

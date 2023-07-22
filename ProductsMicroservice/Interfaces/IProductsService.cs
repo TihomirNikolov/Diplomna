@@ -9,9 +9,10 @@ namespace ProductsMicroservice.Interfaces
         Task<List<CoverProductDTO>> GetCoverProductsAsync();
         Task<List<CoverProductDTO>> GetCoverProductsByCategoryAsync(string categoryName);
         Task<bool> CreateProductAsync(Product product);
-        Task<bool> CheckIfProductExists(string url);
-        Task<ProductDTO> GetProductByUrl(string url);
-        Task<bool> AddReview(ProductReview review, string productUrl);
-        Task<bool> RemoveReview(ProductReview review, string productUrl);
+        Task<bool> CheckIfProductExistsAsync(string url);
+        Task<ProductDTO> GetProductByUrlAsync(string url);
+        Task<bool> AddReviewAsync(ProductReview review, string productUrl);
+        Task<bool> RemoveReviewAsync(ProductReview review, string productUrl);
+        Task<List<SearchProductDTO>> SearchByTextAsync (string searchText);
     }
 }

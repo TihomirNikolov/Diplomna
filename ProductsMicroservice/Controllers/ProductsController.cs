@@ -49,7 +49,7 @@ namespace ProductsMicroservice.Controllers
         [Route("exists/{url}")]
         public async Task<IActionResult> CheckIfProductExists(string url)
         {
-            var result = await _productsService.CheckIfProductExists(url);
+            var result = await _productsService.CheckIfProductExistsAsync(url);
 
             if (result)
                 return Ok();
@@ -61,9 +61,18 @@ namespace ProductsMicroservice.Controllers
         [Route("{url}")]
         public async Task<IActionResult> GetProductByUrl(string url)
         {
-            var product = await _productsService.GetProductByUrl(url);
+            var product = await _productsService.GetProductByUrlAsync(url);
 
             return Ok(product);
+        }
+
+        [HttpGet]
+        [Route("search/{searchText}")]
+        public async Task<IActionResult> GetBySearchText(string searchText)
+        {
+            var products = await _productsService.SearchByTextAsync(searchText);
+
+            return Ok(products);
         }
 
         #endregion
@@ -92,7 +101,7 @@ namespace ProductsMicroservice.Controllers
             var email = await _httpRequestHelper.GetUserEmailAsync(token);
             request.Review.UserEmail = email;
 
-            await _productsService.AddReview(request.Review, request.ProductUrl);
+            await _productsService.AddReviewAsync(request.Review, request.ProductUrl);
 
             return Ok(request.Review);
         }
@@ -101,7 +110,7 @@ namespace ProductsMicroservice.Controllers
         [Route("remove-review")]
         public async Task<IActionResult> RemoveReview([FromBody] RemoveReviewRequest request)
         {
-            await _productsService.RemoveReview(request.Review, request.ProductUrl);
+            await _productsService.RemoveReviewAsync(request.Review, request.ProductUrl);
 
             return Ok();
         }

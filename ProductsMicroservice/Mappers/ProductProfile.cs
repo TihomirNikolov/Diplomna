@@ -16,6 +16,7 @@ namespace ProductsMicroservice.Mappers
                 ? pd.Reviews.Sum(r => r.Rating)/pd.Reviews.Count : 0));
             CreateMap<ProductDTO, ProductDocument>();
             CreateMap<CoverProductDTO, ProductDocument>();
+            CreateMap<ProductDocument, SearchProductDTO>().ReverseMap();
         }
     }
 }

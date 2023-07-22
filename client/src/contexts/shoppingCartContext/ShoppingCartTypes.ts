@@ -1,8 +1,8 @@
-import { Dictionary } from "../../utilities"
+import { Dictionary, Item } from "../../utilities"
 
 export interface ShoppingCartItem {
-    name: Dictionary<string>,
-    coverTags: Dictionary<Dictionary<string>>,
+    name: Item<string, string>[],
+    coverTags: Item<string, Item<string, string>[]>[],
     price: number,
     number: number,
     imageUrl: string,

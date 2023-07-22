@@ -1,6 +1,6 @@
-import { Dictionary } from "../../..";
+import { Dictionary, Item } from "../../..";
 
 export default interface BaseCategory {
-    displayName: Dictionary<string>,
+    displayName: Item<string, string>[],
     urlPath: string,
 }

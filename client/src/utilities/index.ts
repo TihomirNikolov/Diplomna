@@ -16,7 +16,7 @@ import {
     UserInfo, LoginInfo, Address, CategoryDTO,
     Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType, sortings
 } from './models';
-import { Dictionary, KeyValuePair } from './types';
+import { Dictionary, KeyValuePair, Item } from './types';
 
 export {
     classNames, baseUserURL, baseOrdersURL, basePaymentsURL, baseProductsURL, baseShoppingCartURL,
@@ -30,5 +30,5 @@ export type {
     LoginResponse, LoginModel, SignUpModel,
     UserInfo, LoginInfo, Address,
     CategoryDTO, Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType,
-    Dictionary, KeyValuePair
+    Dictionary, KeyValuePair, Item
 };

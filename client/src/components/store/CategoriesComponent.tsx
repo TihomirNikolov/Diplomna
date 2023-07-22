@@ -10,10 +10,11 @@ import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { useLanguage } from "../../contexts";
 
 const InitialCategory: CategoryDTO = {
-    displayName: {},
+    displayName: [],
     urlPath: '',
     icon: '',
     categoryId: '',
+    tags: []
 }
 
 export default function CategoriesComponent() {
@@ -81,7 +82,7 @@ export default function CategoriesComponent() {
                                                     <Menu.Item>
                                                         <Link to={`category/${item.urlPath}`} className="flex gap-1 items-center ">
                                                             <FontAwesomeIcon icon={['fas', item.icon as IconName]} />
-                                                            <span>{item.displayName[language.code]}</span>
+                                                            <span>{item.displayName.find(name => name.key == language.code)?.value}</span>
                                                         </Link>
                                                     </Menu.Item>
                                                 </div>
@@ -94,7 +95,7 @@ export default function CategoriesComponent() {
                                                 <div key={index}>
                                                     <Menu.Item>
                                                         <Link to={`category/${item.urlPath}`}
-                                                            className="text-lg font-bold text-orange-500 hover:text-orange-400">{item.displayName[language.code]}</Link>
+                                                            className="text-lg font-bold text-orange-500 hover:text-orange-400">{item.displayName.find(name => name.key == language.code)?.value}</Link>
                                                     </Menu.Item>
                                                     {item.subCategories?.map((subItem, index) => {
                                                         return (
@@ -102,7 +103,7 @@ export default function CategoriesComponent() {
                                                                 <Menu.Item>
                                                                     <Link to={`category/${subItem.urlPath}`}
                                                                         className="cursor-pointer hover:text-orange-500">
-                                                                        {subItem.displayName[language.code]}
+                                                                        {subItem.displayName.find(name => name.key == language.code)?.value}
                                                                     </Link>
                                                                 </Menu.Item>
                                                             </div>
@@ -125,7 +126,7 @@ export default function CategoriesComponent() {
                                                                     <Disclosure.Button className='flex w-full justify-between'>
                                                                         <div className="flex gap-1 items-center">
                                                                             <FontAwesomeIcon icon={['fas', 'book']} />
-                                                                            <span>{category.displayName[language.code]}</span>
+                                                                            <span>{category.displayName.find(name => name.key == language.code)?.value}</span>
                                                                         </div>
                                                                         <ChevronDownIcon
                                                                             className={`${open ? 'rotate-180 transform' : ''}
@@ -152,7 +153,7 @@ export default function CategoriesComponent() {
                                                                                             {({ open }) => (
                                                                                                 <>
                                                                                                     <Disclosure.Button className='flex w-full justify-between'>
-                                                                                                        <span>{subCategory.displayName[language.code]}</span>
+                                                                                                        <span>{subCategory.displayName.find(name => name.key == language.code)?.value}</span>
                                                                                                         <ChevronDownIcon
                                                                                                             className={`${open ? 'rotate-180 transform' : ''}
                                                                                                                                  h-5 w-5 text-gray-500`} />
@@ -176,7 +177,7 @@ export default function CategoriesComponent() {
                                                                                                                     <div key={index}>
                                                                                                                         <Menu.Item>
                                                                                                                             <Link to={`category/${subSubCategory.urlPath}`}>
-                                                                                                                                {subSubCategory.displayName[language.code]}
+                                                                                                                                {subSubCategory.displayName.find(name => name.key == language.code)?.value}
                                                                                                                             </Link>
                                                                                                                         </Menu.Item>
                                                                                                                     </div>
