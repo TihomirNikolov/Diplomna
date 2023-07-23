@@ -14,7 +14,8 @@ import {
 } from './validations';
 import {
     UserInfo, LoginInfo, Address, CategoryDTO,
-    Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType, sortings
+    Category, BaseCategory, Product, CoverProduct,
+    ProductReview, Filter, SortType, sortings, SearchProduct, SearchCategory
 } from './models';
 import { Dictionary, KeyValuePair, Item } from './types';
 
@@ -29,6 +30,8 @@ export {
 export type {
     LoginResponse, LoginModel, SignUpModel,
     UserInfo, LoginInfo, Address,
-    CategoryDTO, Category, BaseCategory, Product, CoverProduct, ProductReview, Filter, SortType,
+    CategoryDTO, Category, BaseCategory, Product,
+    CoverProduct, ProductReview, Filter,
+    SortType, SearchProduct, SearchCategory,
     Dictionary, KeyValuePair, Item
 };

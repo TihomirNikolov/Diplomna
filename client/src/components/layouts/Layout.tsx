@@ -87,11 +87,6 @@ export default function Layout(props: Props) {
                         <CategoriesComponent />
                     </div>
                 </div>
-                <div className="md:grid md:grid-cols-12 hidden bg-lightBackground dark:bg-darkBackground-900">
-                    <div className="col-start-3 col-span-8 border-b border-gray-300 py-2">
-                        navbar
-                    </div>
-                </div>
             </nav>
             { user.accessToken.length > 0 && !isEmailConfirmed &&
                 <div className="grid place-items-center">

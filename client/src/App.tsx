@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { FavouritesItem, Role, User, useFavourites, useTheme, useUser } from './contexts'
-import { authClient, axiosClient, baseProductsURL, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, setTokenObject } from './utilities'
+import { authClient, axiosClient, baseProductsURL, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, removeTokenObject, setTokenObject } from './utilities'
 import { AxiosRequestConfig } from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -82,6 +82,7 @@ function App() {
           }
           catch (err) {
             setUser({ accessToken: "", refreshToken: "" });
+            removeTokenObject();
 
           }
           finally {

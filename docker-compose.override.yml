@@ -19,12 +19,19 @@ services:
     volumes:
         - ./mongodb-data:/data/db
   cache:
+    container_name: redis-server
     restart: always
     ports:
         - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass MySecretRedisP@ss0rd
     volumes: 
         - cache:/data
+  cache-ui:
+    container_name: redis-commander
+    environment:
+        - REDIS_HOSTS=local:redis-server:6379:0:MySecretRedisP@ss0rd
+    ports:
+        - "8081:8081"
   rabbitmq:
      container_name: 'rabbitmq'
      environment:

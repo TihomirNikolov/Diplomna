@@ -106,16 +106,16 @@ namespace UserMicroservice.Controllers
             if (result.Status == StatusEnum.InternalError)
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
-            if (model.RememberMe)
-            {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
-            }
-            else
-            {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
-            }
+            //if (model.RememberMe)
+            //{
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
+            //}
+            //else
+            //{
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
+            //}
 
             return Ok(new LoginResponse
             {
@@ -162,16 +162,16 @@ namespace UserMicroservice.Controllers
 
             var result = await _tokenService.RefreshTokenAsync(email, oldRefreshToken, oldAccessToken);
 
-            if (string.IsNullOrEmpty(oldRefreshToken))
-            {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
-            }
-            else
-            {
-                Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
-                Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
-            }
+            //if (string.IsNullOrEmpty(oldRefreshToken))
+            //{
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken);
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken);
+            //}
+            //else
+            //{
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.AccessToken, result.Data.AccessToken, 1);
+            //    Response.Cookies.AppendDefaultCookie(CookieConstants.RefreshToken, result.Data.RefreshToken, 1);
+            //}
 
             return Ok(new TokenResponse()
             {

@@ -13,6 +13,10 @@ services:
     image: mongo
   cache:
     image: redis:6.2-alpine
+  cache-ui:
+    image: rediscommander/redis-commander:latest
+    depends_on:
+        - cache
   rabbitmq:
     image: rabbitmq:3-management-alpine
   usermicroservice:

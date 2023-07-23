@@ -13,10 +13,13 @@ namespace ProductsMicroservice.Controllers
     public class CategoriesController : ControllerBase
     {
         private ICategoriesService _categoryService;
+        private readonly IRedisService _redisService;
 
-        public CategoriesController(ICategoriesService categoriesService)
+        public CategoriesController(ICategoriesService categoriesService,
+                                    IRedisService redisService)
         {
             _categoryService = categoriesService;
+            _redisService = redisService;
         }
 
         [HttpGet]
@@ -32,7 +35,12 @@ namespace ProductsMicroservice.Controllers
         [Route("{url}")]
         public async Task<IActionResult> GetCategoryByUrl(string url)
         {
-            var category = await _categoryService.GetSubCategoriesCategoryByUrl(HttpUtility.UrlDecode(url));
+            var decodedUrl = HttpUtility.UrlDecode(url);
+            var category = await _categoryService.GetSubCategoriesCategoryByUrl(decodedUrl);
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _redisService.VisitCategoryAsync(decodedUrl);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
             return Ok(category);
         }
@@ -47,11 +55,12 @@ namespace ProductsMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("tags")]
-        public async Task<IActionResult> GetCategoryWithTags()
+        [Route("visits/most-popular")]
+        public async Task<IActionResult> GetMostPopularCategories()
         {
+            var categories = await _redisService.GetMostPopularCategoriesAsync();
 
-            return Ok();
+            return Ok(categories);
         }
 
         [HttpGet]

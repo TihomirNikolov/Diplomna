@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react"
-import { CategoryDTO, CoverProduct, Dictionary, Filter, SortType, axiosClient, baseProductsURL, sortings } from "../../utilities"
+import { CategoryDTO, CoverProduct, SortType, axiosClient, baseProductsURL, sortings } from "../../utilities"
 import axios from "axios"
 import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, Spinner, useTitle } from "../../components"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -19,8 +19,6 @@ export default function CategoryPage() {
 
     const [showProducts, setShowProducts] = useState<CoverProduct[]>([]);
 
-    const [selectedCategory, setSelectedCategory] = useState<CategoryDTO>();
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -34,6 +32,7 @@ export default function CategoryPage() {
     const { language } = useLanguage();
 
     useEffect(() => {
+        setCategory(undefined);
         async function fetchData() {
             var result = await fetchIfExists();
 
@@ -71,7 +70,6 @@ export default function CategoryPage() {
             var response = await axiosClient.get(`${baseProductsURL()}api/categories/${url}`);
             var data = response.data as CategoryDTO;
             setCategory(data);
-            setSelectedCategory(data);
             return data;
         }
         catch (error) {
@@ -222,7 +220,8 @@ export default function CategoryPage() {
                                 <FontAwesomeIcon icon={['fas', 'chevron-right']} className="pr-2 text-orange-500" />
                                 <Link to={`/category/${subCategory.urlPath}`}
                                     className={`hover:text-orange-500 hover:dark:text-orange-500 
-                                ${selectedCategory?.displayName == subCategory.displayName ? 'text-orange-500 dark:text-orange-500' : ''}`}>
+                                ${category?.displayName.find(name => name.key == language.code)?.value == subCategory.displayName.find(name => name.key == language.code)?.value
+                                            ? 'text-orange-500 dark:text-orange-500' : ''}`}>
                                     {subCategory.displayName.find(name => name.key == language.code)?.value}
                                 </Link>
                             </div>

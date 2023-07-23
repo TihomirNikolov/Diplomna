@@ -14,5 +14,6 @@ namespace ProductsMicroservice.Interfaces
         Task<bool> AddReviewAsync(ProductReview review, string productUrl);
         Task<bool> RemoveReviewAsync(ProductReview review, string productUrl);
         Task<List<SearchProductDTO>> SearchByTextAsync (string searchText);
+        Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls);
     }
 }

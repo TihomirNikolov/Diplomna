@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Categories;
 using ProductsMicroservice.Models.Documents;
+using ProductsMicroservice.Models.Products;
 
 namespace ProductsMicroservice.Services
 {
@@ -131,6 +132,19 @@ namespace ProductsMicroservice.Services
                 .Find(Builders<CategoryDocument>.Filter.Eq("UrlPath", url)).FirstOrDefaultAsync();
 
             return category != null;
+        }
+
+        public async Task<List<SearchCategoryDTO>> GetCategoriesByUrlsAsync(List<string> urls)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filter = Builders<CategoryDocument>.Filter.Where(c => urls.Contains(c.UrlPath));
+
+            var categoryDocuments = await db.GetCollection<CategoryDocument>(CollectionName).Find(filter).ToListAsync();
+
+            return _mapper.Map<List<SearchCategoryDTO>>(categoryDocuments);
         }
     }
 }

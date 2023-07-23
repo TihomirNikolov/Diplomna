@@ -62,7 +62,7 @@ export default function ProductPage() {
             var result = await axiosClient.get(`${baseProductsURL()}api/products/${productUrl}`);
             var data = result.data as Product;
             setProduct(data);
-            document.title = data.name[language.code];
+            document.title = data.name.find(name => name.key == language.code)?.value || "";
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -139,25 +139,27 @@ export default function ProductPage() {
                     <div className="flex">
                         <div className="p-5">
                             <div className="h-56 w-40 md:h-full md:w-80">
-                                <div className="relative">
-                                    <img src={product?.pictureUrls[0]} alt="product" />
-                                    <FontAwesomeIcon icon={['fas', 'bookmark']} size="2x"
-                                        className={`absolute top-0 right-0 m-2 cursor-pointer
+                                {product != undefined &&
+                                    <div className="relative">
+                                        <img src={`${baseProductsURL()}${product?.pictureUrls[0]}`} alt="product" />
+                                        <FontAwesomeIcon icon={['fas', 'bookmark']} size="2x"
+                                            className={`absolute top-0 right-0 m-2 cursor-pointer
                                         ${isFavourited == true ? 'text-orange-500 hover:text-orange-600' :
-                                                ' text-black hover:text-orange-600'}`}
-                                        onClick={() => changeFavourite(isFavourited)} />
-                                </div>
+                                                    ' text-black hover:text-orange-600'}`}
+                                            onClick={() => changeFavourite(isFavourited)} />
+                                    </div>
+                                }
                             </div>
                             <div>
                             </div>
                         </div>
                         <div className="p-5 grid grid-rows-2">
                             <div className="">
-                                <span className="text-black dark:text-white text-2xl line-clamp-2">{product?.name[language.code]}</span>
-                                {product != null && Object.entries(product?.coverTags[language.code]).map(([key, value]) => {
+                                <span className="text-black dark:text-white text-2xl line-clamp-2">{product?.name.find(name => name.key == language.code)?.value}</span>
+                                {product != null && product?.coverTags.find(tag => tag.key == language.code)?.value.map((item, index) => {
                                     return (
-                                        <div key={key} className="text-gray-500">
-                                            <span>{key}: {value}</span>
+                                        <div key={index} className="text-gray-500">
+                                            <span>{item.key}: {item.value}</span>
                                         </div>
                                     )
                                 })}
@@ -182,7 +184,7 @@ export default function ProductPage() {
                     <div className="grid text-black dark:text-white">
                         <h1 className="py-10 text-2xl font-bold justify-self-center">{t('description')}</h1>
                         <div>
-                            {product?.description[language.code]}
+                            {product?.description.find(desc => desc.key == language.code)?.value}
                         </div>
                     </div>
                     <div className="grid text-black dark:text-white ">
@@ -195,7 +197,7 @@ export default function ProductPage() {
                                         return (
                                             <div key={index}>
                                                 <Link to={`/category/${item.urlPath}`} className="text-blue-600 hover:text-blue-500">
-                                                    {item.displayName[language.code]}
+                                                    {item.displayName.find(name => name.key == language.code)?.value}
                                                 </Link>
                                             </div>
                                         )
@@ -203,11 +205,11 @@ export default function ProductPage() {
                                 </div>
                             </div>
                             <div className="md:grid md:grid-cols-2">
-                                {product?.tags != null && Object.entries(product.tags[language.code]).map(([key, value]) => {
+                                {product?.tags != null && product.tags.find(tag => tag.key == language.code)?.value.map((item, index) => {
                                     return (
-                                        <div key={key} className="md:grid md:grid-cols-2">
-                                            <span className="md:justify-self-end">{key} :</span>
-                                            <span className="px-2">{value}</span>
+                                        <div key={index} className="md:grid md:grid-cols-2">
+                                            <span className="md:justify-self-end">{item.key} :</span>
+                                            <span className="px-2">{item.value}</span>
                                         </div>
                                     )
                                 })}

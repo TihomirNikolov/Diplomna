@@ -29,6 +29,7 @@ builder.Services.AddSingleton<IMongoClient>(new MongoClient(connectionUri));
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IFavouritesService, FavouritesService>();
+builder.Services.AddScoped<IRedisService, RedisService>();
 
 builder.Services.AddHttpClient();
 

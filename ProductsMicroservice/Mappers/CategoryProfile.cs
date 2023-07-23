@@ -10,6 +10,7 @@ namespace ProductsMicroservice.Mappers
         {
             CreateMap<CategoryDocument, Category>();
             CreateMap<Category,CategoryDTO>();
+            CreateMap<CategoryDocument, SearchCategoryDTO>();
         }
     }
 }

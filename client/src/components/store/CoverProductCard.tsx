@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { CoverProduct } from "../../utilities"
+import { CoverProduct, baseProductsURL } from "../../utilities"
 import { useFavourites, useLanguage, useShoppingCart } from "../../contexts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
@@ -48,7 +48,7 @@ export default function CoverProductCard(props: Props) {
             <Link to={`/product/${props.product.productUrl}`}>
                 <div>
                     <div className="">
-                        <img src={`${import.meta.env.VITE_IDENTITY_PRODUCTS_URL}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
+                        <img src={`${baseProductsURL()}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
                             title={props.product.name.find(name => name.key == language.code)?.value} />
                     </div>
                 </div>

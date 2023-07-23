@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Footer() {
 
     return (
-        <div className="flex flex-col bg-white dark:bg-gray-800 text-black dark:text-white px-2 sm:px-0">
+        <div className="flex flex-col mt-5 bg-white dark:bg-gray-800 text-black dark:text-white px-2 sm:px-0">
             <div className="grid grid-cols-2 sm:grid-cols-6 w-full py-5">
                 <div className="col-start-1 sm:col-start-2">
                     <Link to='/'>

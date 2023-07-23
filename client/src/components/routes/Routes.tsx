@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { HomePage } from '../../pages'
+import { HomePage, SearchPage } from '../../pages'
 import ProtectedRoute from './ProtectedRoute'
 import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
@@ -42,7 +42,8 @@ export default function Router(props: Props) {
                 <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
                 <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
                 <Route path='/category/*' element={<CategoryPage />} />
-                <Route path='/product/:productUrl' element={<ProductPage></ProductPage>} />
+                <Route path='/product/:productUrl' element={<ProductPage />} />
+                <Route path='/search/:searchText' element={<SearchPage />} />
                 <Route element={<AuthRoute isLoading={props.isLoading} />}>
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />

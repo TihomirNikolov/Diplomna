@@ -14,15 +14,20 @@ namespace ProductsMicroservice.Controllers
         #region Declarations
 
         private readonly IProductsService _productsService;
+        private readonly IRedisService _redisService;
+
         private readonly HttpRequestHelper _httpRequestHelper;
 
         #endregion
 
         #region Constructor
 
-        public ProductsController(IProductsService productsService, HttpRequestHelper httpRequestHelper)
+        public ProductsController(IProductsService productsService, 
+                                  IRedisService redisService,
+                                  HttpRequestHelper httpRequestHelper)
         {
             _productsService = productsService;
+            _redisService = redisService;
             _httpRequestHelper = httpRequestHelper;
         }
 
@@ -63,6 +68,10 @@ namespace ProductsMicroservice.Controllers
         {
             var product = await _productsService.GetProductByUrlAsync(url);
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+             _redisService.VisitProductAsync(url);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
             return Ok(product);
         }
 
@@ -71,6 +80,24 @@ namespace ProductsMicroservice.Controllers
         public async Task<IActionResult> GetBySearchText(string searchText)
         {
             var products = await _productsService.SearchByTextAsync(searchText);
+
+            return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("visits/{url}")]
+        public async Task<IActionResult> GetVisitsByUrl(string url)
+        {
+            var visits = await _redisService.GetProductVisitsByUrlAsync(url);
+
+            return Ok(visits);
+        }
+
+        [HttpGet]
+        [Route("visits/most-popular")]
+        public async Task<IActionResult> GetMostPopularProducts()
+        {
+            var products = await _redisService.GetMostPopularProductsAsync();
 
             return Ok(products);
         }

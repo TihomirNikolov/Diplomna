@@ -14,7 +14,7 @@ interface Props {
 export default function CategoryFilters({ category, products }: Props) {
     const [filters, setFilters] = useState<Dictionary<Filter>>({});
 
-    const [isInitialized, setIsInitialized] = useState<boolean>();
+    const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const [checkedFilters, setCheckedFilters] = useState<{ key: string, values: string[] }[]>([]);
 
     const navigate = useNavigate();
@@ -88,8 +88,10 @@ export default function CategoryFilters({ category, products }: Props) {
     useEffect(() => {
         var categoryTags = category!.tags.find(tag => tag.key == language.code)?.value;
 
-        if (categoryTags == undefined)
+        if (categoryTags == undefined) {
+            setFilters({});
             return
+        }
 
         var filters: Dictionary<Filter> = {};
 
@@ -125,7 +127,7 @@ export default function CategoryFilters({ category, products }: Props) {
         }
         setFilters(filters);
         setIsInitialized(true);
-    }, [])
+    }, [category])
 
     return (
         <div>
