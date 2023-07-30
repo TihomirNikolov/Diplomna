@@ -14,5 +14,8 @@ export type UserContextType = {
     setRoles: (roles: SetStateAction<Role[]>) => void,
     isEmailConfirmed: boolean,
     setIsEmailConfirmed: (isEmailConfirmed: SetStateAction<boolean>) => void,
-    logout: () => Promise<void>;
+    logout: () => Promise<void>,
+    isAuthenticated: boolean,
+    setIsAuthenticated: (isAuthenticated: SetStateAction<boolean>) => void
+    isUserLoaded: boolean
 }

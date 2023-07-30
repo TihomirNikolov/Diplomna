@@ -4,5 +4,6 @@ import Reviews from "./Reviews";
 import ReviewRating from "./ReviewRating";
 import ChooseReviewRating from "./ChooseReviewRating";
 import CategoryFilters from "./CategoryFIlters";
+import SortingComponent from "./SortingComponent";
 
-export { CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, CategoryFilters }
+export { CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, CategoryFilters, SortingComponent }

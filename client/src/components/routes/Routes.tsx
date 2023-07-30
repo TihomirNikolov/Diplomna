@@ -5,10 +5,6 @@ import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
 import { Suspense, lazy } from 'react'
 
-interface Props {
-    isLoading: boolean
-}
-
 const AccountPage = lazy(() => import('../../pages').then((module) => ({ default: module.AccountPage })));
 const AddressPage = lazy(() => import('../../pages').then((module) => ({ default: module.AddressPage })));
 const CategoryPage = lazy(() => import('../../pages').then((module) => ({ default: module.CategoryPage })));
@@ -26,7 +22,7 @@ const ResetPasswordPage = lazy(() => import('../../pages').then((module) => ({ d
 const ShoppingCartPage = lazy(() => import('../../pages').then((module) => ({ default: module.ShoppingCartPage })));
 const WishlistPage = lazy(() => import('../../pages').then((module) => ({ default: module.WishlistPage })));
 
-export default function Router(props: Props) {
+export default function Router() {
 
     function homeRoutes() {
         return ['/home', '/logout'].map(function (path, index) {
@@ -44,13 +40,13 @@ export default function Router(props: Props) {
                 <Route path='/category/*' element={<CategoryPage />} />
                 <Route path='/product/:productUrl' element={<ProductPage />} />
                 <Route path='/search/:searchText' element={<SearchPage />} />
-                <Route element={<AuthRoute isLoading={props.isLoading} />}>
+                <Route element={<AuthRoute />}>
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
                     <Route path='/forgotpassword' element={<ForgottenPasswordPage />} />
                     <Route path='/password/reset/:resetToken' element={<ResetPasswordPage />} />
                 </Route>
-                <Route element={<ProtectedRoute isLoading={props.isLoading} />}>
+                <Route element={<ProtectedRoute />}>
                     <Route path='/account' element={<AccountLayout><AccountPage /></AccountLayout>} />
                     <Route path='/account/address' element={<AccountLayout><MyAddressesPage /></AccountLayout>} />
                     <Route path='/payments/cards' element={<AccountLayout><PaymentCardsPage /></AccountLayout>} />

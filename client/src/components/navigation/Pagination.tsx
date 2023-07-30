@@ -1,40 +1,66 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactNode, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 interface Props {
     onPageChanged: (page: number) => void,
     currentPage: number,
-    itemsPerPage: number,
     items: number
 }
 
 export default function Pagination(props: Props) {
     const [totalPages, setTotalPages] = useState<number>(1);
-    const [currentPage, setCurretPage] = useState<number>(1);
-    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
-    const [items, setItems] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        setCurretPage(props.currentPage);
+        setCurrentPage(props.currentPage == 0 ? 1 : props.currentPage);
+        var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+        searchParams.set('page', props.currentPage == 0 ? '1' : props.currentPage.toString());
+        navigate(`?${searchParams.toString()}`);
     }, [props.currentPage])
 
     useEffect(() => {
-        setItemsPerPage(props.itemsPerPage);
-        var pages = calculatePages(items, props.itemsPerPage);
+        var pages = calculatePages(props.items, getItemsPerPage());
         setTotalPages(pages);
-    }, [props.itemsPerPage])
+        if (currentPage > pages) {
+            setCurrentPage(pages == 0 ? 1 : pages);
+            var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+            searchParams.set('page', pages == 0 ? '1' : pages.toString());
+            navigate(`?${searchParams.toString()}`);
+        }
+    }, [props.items])
 
     useEffect(() => {
-        setItems(props.items);
-        var pages = calculatePages(props.items, itemsPerPage);
+        if (location.search == '') {
+            var searchParams: URLSearchParams = new URLSearchParams(location.search);
+
+            searchParams.set('page', '1');
+            searchParams.set('items', '40');
+            navigate(`?${searchParams.toString()}`);
+        }
+
+        var pages = calculatePages(props.items, getItemsPerPage());
         setTotalPages(pages);
-    }, [props.items])
+
+    }, [location.search])
+
+    function getItemsPerPage() {
+        var urlParams: URLSearchParams = new URLSearchParams(location.search)
+        var params = Object.fromEntries(urlParams)
+        var items = parseInt(params['items']);
+        return items;
+    }
 
     function calculatePages(productsCount: number, itemsPerPage: number) {
         let pagesNumber: number = 1;
         pagesNumber = Math.ceil(productsCount / itemsPerPage);
-        return pagesNumber;
+        return pagesNumber == 0 ? 1 : pagesNumber;
     }
 
     function renderPages() {
@@ -94,7 +120,7 @@ export default function Pagination(props: Props) {
         if (page > totalPages || page < 1 || currentPage == page) {
             return;
         }
-        setCurretPage(page);
+        setCurrentPage(page);
         props.onPageChanged(page);
     }
 

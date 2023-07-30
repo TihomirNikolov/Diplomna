@@ -1,4 +1,5 @@
 ﻿using ProductsMicroservice.Models.Categories;
+using SharedResources.Models;
 using System.Collections.Generic;
 
 namespace ProductsMicroservice.Models.Products

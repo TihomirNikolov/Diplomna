@@ -13,7 +13,7 @@ import {
 import { useData, useGetType, useGet, usePost, usePut, useTitle } from "./hooks";
 import { Modal } from "./modals";
 import { LanguageSelector, Profile, ShoppingCart, Favourites } from "./layoutComponents";
-import { CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, CategoryFilters } from "./store";
+import { CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, CategoryFilters, SortingComponent } from "./store";
 import { Pagination } from "./navigation";
 
 export {
@@ -23,5 +23,5 @@ export {
     AccountProfile, ChangeEmail, ChangeName, ChangePassword, AddNewAddressCard, AddressCard, DeleteAccount, Avatar,
     useData, useGetType, useGet, usePost, usePut, useTitle,
     Modal, LanguageSelector, Profile, ShoppingCart, Favourites,
-    CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, CategoryFilters, Pagination
+    CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, SortingComponent, CategoryFilters, Pagination
 }

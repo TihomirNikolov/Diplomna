@@ -2,18 +2,18 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useUser } from "../../contexts";
 import { Spinner } from "../utilities";
 
-interface Props{
-    isLoading: boolean
-}
+export default function ProtectedRoute() {
+    const { user, isUserLoaded, isAuthenticated } = useUser();
 
-export default function ProtectedRoute(props: Props) {
-    const { user } = useUser();
-
-    if(props.isLoading){
-        return <Spinner/>
+    if (!isUserLoaded) {
+        return (
+            <div className="flex items-center justify-center">
+                <Spinner />
+            </div>
+        )
     }
 
-    if (user.accessToken != null && !user.accessToken) {
+    if (!isAuthenticated) {
         return <Navigate to='/' />
     }
 

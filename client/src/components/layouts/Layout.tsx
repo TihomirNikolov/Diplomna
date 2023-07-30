@@ -6,12 +6,8 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { Category, authClient, axiosClient, baseUserURL, notification } from "../../utilities";
 import axios from "axios";
 
-interface Props{
-    isLoading: boolean
-}
-
-export default function Layout(props: Props) {
-    const { user, isEmailConfirmed } = useUser();
+export default function Layout() {
+    const { user, isEmailConfirmed, isAuthenticated, isUserLoaded } = useUser();
     const { setTheme } = useTheme();
 
     const { t } = useTranslation();
@@ -88,7 +84,7 @@ export default function Layout(props: Props) {
                     </div>
                 </div>
             </nav>
-            { user.accessToken.length > 0 && !isEmailConfirmed &&
+            { isUserLoaded && isAuthenticated && !isEmailConfirmed &&
                 <div className="grid place-items-center">
                     <h1 className="text-black dark:text-white">
                         {t('emailNotConfirmed')}&nbsp;

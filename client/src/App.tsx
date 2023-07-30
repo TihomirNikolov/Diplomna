@@ -16,11 +16,7 @@ import { v4 as uuidv4 } from 'uuid'
 library.add(fab, fas, far)
 
 function App() {
-
-  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
-
-  const { setUser, setRoles, setIsEmailConfirmed } = useUser();
-  const { setFavourites } = useFavourites();
+  const { setUser, setIsAuthenticated } = useUser();
   const { theme } = useTheme();
 
   let isRefreshing = false;
@@ -83,7 +79,7 @@ function App() {
           catch (err) {
             setUser({ accessToken: "", refreshToken: "" });
             removeTokenObject();
-
+            setIsAuthenticated(false);
           }
           finally {
             isRefreshing = false;
@@ -95,65 +91,6 @@ function App() {
   }, [])
 
   useEffect(() => {
-    setIsLoadingState(true);
-    var userObject = getTokenObject();
-    if (userObject == null) {
-      userObject = { accessToken: '', refreshToken: '' }
-    }
-    setUser(userObject);
-    setIsLoadingState(false);
-
-    async function fetchRole() {
-      if (getTokenObject() != null) {
-        try {
-          var response = await authClient.get(`${baseUserURL()}api/user/roles`);
-          var data = response.data as Role[]
-          setRoles(data);
-        }
-        catch (error) {
-          setRoles(['User'])
-        }
-      }
-      else {
-        setRoles(['User']);
-      }
-    }
-
-    async function fetchIsEmailConfirmed() {
-      if (getTokenObject() != null) {
-        try {
-          var response = await authClient.get(`${baseUserURL()}api/user/emailVerification`);
-          var data = response.data as boolean;
-          setIsEmailConfirmed(data);
-        }
-        catch (error) {
-          setIsEmailConfirmed(false);
-        }
-      } else {
-        setIsEmailConfirmed(false);
-      }
-    }
-
-    async function fetchFavourites() {
-      if (getTokenObject() != null) {
-        if (getTokenObject() != null) {
-          try {
-            var response = await authClient.get(`${baseProductsURL()}api/favourites`);
-            var data = response.data as string[];
-            setFavourites(data);
-          }
-          catch (error) {
-            setFavourites([]);
-          }
-        } else {
-          setFavourites([]);
-        }
-      }
-    }
-
-    fetchRole();
-    fetchIsEmailConfirmed();
-    fetchFavourites();
     checkForUserId();
   }, [])
 
@@ -162,8 +99,8 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <div className='min-h-screen'>
-          <Layout isLoading={isLoadingState} />
-          <Routes isLoading={isLoadingState} />
+          <Layout />
+          <Routes />
         </div>
         <Footer />
         <ToastContainer theme={theme} />

@@ -1,9 +1,8 @@
 using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
-using ProductsMicroservice;
-using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Services;
+using SharedResources.Constants;
 using StackExchange.Redis;
 using System.Reflection;
 
@@ -32,8 +31,6 @@ builder.Services.AddScoped<IFavouritesService, FavouritesService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
 
 builder.Services.AddHttpClient();
-
-builder.Services.AddScoped<HttpRequestHelper>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

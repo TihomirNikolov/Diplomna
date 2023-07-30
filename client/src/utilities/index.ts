@@ -15,7 +15,7 @@ import {
 import {
     UserInfo, LoginInfo, Address, CategoryDTO,
     Category, BaseCategory, Product, CoverProduct,
-    ProductReview, Filter, SortType, sortings, SearchProduct, SearchCategory
+    ProductReview, Filter, SortType, sortings, SearchProduct, SearchCategory, sortingParams
 } from './models';
 import { Dictionary, KeyValuePair, Item } from './types';
 
@@ -25,7 +25,7 @@ export {
     getAccessToken, getRefreshToken, getTokenObject, setAccessToken, setRefreshToken, setTokenObject, removeTokenObject,
     validateEmail, validatePassword, validateCity, validateFirstName,
     validateLastName, validateMobileNumber, validateStreetAddress,
-    validateRegion, sortings
+    validateRegion, sortings, sortingParams
 };
 export type {
     LoginResponse, LoginModel, SignUpModel,

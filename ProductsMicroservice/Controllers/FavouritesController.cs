@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson.Serialization.IdGenerators;
-using ProductsMicroservice.Extensions;
-using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Requests;
+using SharedResources.Extensions;
+using SharedResources.Helpers;
 using System.Xml.Linq;
 
 namespace ProductsMicroservice.Controllers
@@ -13,12 +13,10 @@ namespace ProductsMicroservice.Controllers
     public class FavouritesController : ControllerBase
     {
         private readonly IFavouritesService _favouritesService;
-        private readonly HttpRequestHelper _httpRequestHelper;
 
-        public FavouritesController(IFavouritesService favouritesService, HttpRequestHelper httpRequestHelper)
+        public FavouritesController(IFavouritesService favouritesService)
         {
             _favouritesService = favouritesService;
-            _httpRequestHelper = httpRequestHelper;
         }
 
         #region Methods
@@ -30,8 +28,8 @@ namespace ProductsMicroservice.Controllers
         public async Task<IActionResult> GetFavourites()
         {
             var token = Request.GetAuthorizationToken();
-
-            var email = await _httpRequestHelper.GetUserEmailAsync(token);
+            
+            var email = await HttpRequests.GetUserEmailAsync(token);
 
             if (email == null)
             {
@@ -57,7 +55,7 @@ namespace ProductsMicroservice.Controllers
 
             var token = Request.GetAuthorizationToken();
 
-            var email = await _httpRequestHelper.GetUserEmailAsync(token);
+            var email = await HttpRequests.GetUserEmailAsync(token);
 
             if (email == null)
             {
@@ -84,7 +82,7 @@ namespace ProductsMicroservice.Controllers
 
             var token = Request.GetAuthorizationToken();
 
-            var email = await _httpRequestHelper.GetUserEmailAsync(token);
+            var email = await HttpRequests.GetUserEmailAsync(token);
 
             if (email == null)
             {

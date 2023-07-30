@@ -17,7 +17,7 @@ export default function LoginPage() {
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
 
-    const { setUser, setRoles, setIsEmailConfirmed } = useUser();
+    const { setUser, setRoles, setIsEmailConfirmed, setIsAuthenticated } = useUser();
     const navigate = useNavigate();
 
     function onChecked() {
@@ -51,6 +51,7 @@ export default function LoginPage() {
             setIsEmailConfirmed(data.isEmailConfirmed);
             setRoles(data.roles);
             setUser(user);
+            setIsAuthenticated(true);
             navigate('/home');
         }
         catch (error) {
@@ -62,6 +63,7 @@ export default function LoginPage() {
                     notification.error(t('responseErrors.serverError'), 'top-center')
                 }
             }
+            setIsAuthenticated(false);
         }
     }
 

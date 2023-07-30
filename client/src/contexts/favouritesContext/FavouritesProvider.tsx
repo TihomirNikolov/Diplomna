@@ -1,12 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FavouritesContext } from "./FavouritesContext";
 import { FavouritesItem } from "./FavouritesTypes";
 import axios from "axios";
-import { authClient, baseProductsURL } from "../../utilities";
+import { authClient, baseProductsURL, getTokenObject } from "../../utilities";
+import { useUser } from "../userContext";
 
 
 export default function FavouritesProvider(props: any) {
     const [favourites, setFavourites] = useState<string[]>([])
+
+    const { isAuthenticated, isUserLoaded } = useUser();
+
+    async function fetchFavourites() {
+        if (getTokenObject() != null) {
+            if (getTokenObject() != null) {
+                try {
+                    var response = await authClient.get(`${baseProductsURL()}api/favourites`);
+                    var data = response.data as string[];
+                    setFavourites(data);
+                }
+                catch (error) {
+                    setFavourites([]);
+                }
+            } else {
+                setFavourites([]);
+            }
+        }
+    }
+
+    useEffect(() => {
+        if(isAuthenticated && isUserLoaded){
+            fetchFavourites();
+        }
+    }, [isAuthenticated])
 
     function addFavourite(productUrl: string) {
         var items = [...favourites];

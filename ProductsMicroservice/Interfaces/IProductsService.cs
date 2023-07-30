@@ -1,4 +1,5 @@
 ﻿using ProductsMicroservice.Models.Products;
+using SharedResources.Models;
 
 namespace ProductsMicroservice.Interfaces
 {
@@ -14,6 +15,8 @@ namespace ProductsMicroservice.Interfaces
         Task<bool> AddReviewAsync(ProductReview review, string productUrl);
         Task<bool> RemoveReviewAsync(ProductReview review, string productUrl);
         Task<List<SearchProductDTO>> SearchByTextAsync (string searchText);
+        Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText);
         Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls);
+        Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> urls);
     }
 }

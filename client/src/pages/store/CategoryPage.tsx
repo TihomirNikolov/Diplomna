@@ -1,17 +1,20 @@
-import { Fragment, useEffect, useState } from "react"
-import { CategoryDTO, CoverProduct, SortType, axiosClient, baseProductsURL, sortings } from "../../utilities"
+import { Fragment, useEffect, useRef, useState } from "react"
+import { CategoryDTO, CoverProduct, SortType, axiosClient, baseProductsURL, sortingParams, sortings } from "../../utilities"
 import axios from "axios"
-import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, Spinner, useTitle } from "../../components"
+import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, SortingComponent, Spinner, useTitle } from "../../components"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Listbox, Transition } from "@headlessui/react"
 import { useTranslation } from "react-i18next"
 import { useLanguage } from "../../contexts"
 import { Separator } from "@/components/ui/separator"
+import { SortingHandle } from "@/components/store/SortingComponent"
 
 export default function CategoryPage() {
     const { t } = useTranslation();
     useTitle(t('category'));
+
+    const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
     const [products, setProducts] = useState<CoverProduct[]>([])
     const [filteredProducts, setFilteredProducts] = useState<CoverProduct[]>([]);
@@ -23,13 +26,13 @@ export default function CategoryPage() {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
-    const [sorting, setSorting] = useState<SortType>('newest');
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const { language } = useLanguage();
+
+    const sortingRef = useRef<SortingHandle>(null);
 
     useEffect(() => {
         setCategory(undefined);
@@ -47,13 +50,14 @@ export default function CategoryPage() {
 
     useEffect(() => {
         applyFilters(products);
+        setIsInitialLoad(false);
     }, [location.search])
 
     async function fetchProducts(category: CategoryDTO | null) {
         try {
             var response = await axiosClient.get(`${baseProductsURL()}api/products/category/${category?.displayName.find(name => name.key == language.code)?.value}`);
             var products = response.data as CoverProduct[];
-            var sortedProducts: CoverProduct[] = sortProducts(sorting, products)!;
+            var sortedProducts: CoverProduct[] = sortProducts('newest', products)!;
             setProducts(sortedProducts);
             applyFilters(sortedProducts);
         }
@@ -101,27 +105,31 @@ export default function CategoryPage() {
         var params = Object.fromEntries(urlSearchParams.entries());
         if (urlSearchParams.size == 0) {
             setFilteredProducts(products);
-            calculateProductsToShow(products, 1, itemsPerPage);
+            calculateProductsToShow(products, 1, sortingRef.current?.itemsPerPage || 40);
             return;
         }
         var filtredProducts: CoverProduct[] = products;
         for (var [key, value] of Object.entries(params)) {
-            if (key == 'sort') {
-                setSorting(value);
-            } else if (key == 'items') {
-                setItemsPerPage(parseInt(value))
-            } else if (key == 'page') {
-                setCurrentPage(parseInt(value));
-            } else {
+            if (!sortingParams.includes(key)) {
                 var values = value.split('|');
 
                 filtredProducts = filtredProducts.filter(p => p.tags.find(tag => tag.key == language.code)?.value != undefined
                     && values.includes(p.tags.find(t => t.key == language.code)?.value.find(t => t.key == key)?.value || ''));
             }
+            else if (isInitialLoad) {
+                if (key == 'sort') {
+                    sortingRef.current?.setSorting(value);
+                    sortProducts(value, products);
+                } else if (key == 'items') {
+                    sortingRef.current?.setItemsPerPage(parseInt(value))
+                } else if (key == 'page') {
+                    setCurrentPage(parseInt(value));
+                }
+            }
         }
 
         setFilteredProducts(filtredProducts);
-        calculateProductsToShow(filtredProducts, 1, itemsPerPage);
+        calculateProductsToShow(filtredProducts, parseInt(params['page']), parseInt(params['items']));
     }
 
     function calculateProductsToShow(products: CoverProduct[], page: number, itemsPerPage: number) {
@@ -155,26 +163,8 @@ export default function CategoryPage() {
         }
     }
 
-    function changeSorting(sortingType: SortType) {
-        setSorting(sortingType);
-
-        var searchParams: URLSearchParams = new URLSearchParams(location.search);
-
-        searchParams.set('sort', sortingType);
-        navigate(`?${searchParams.toString()}`);
-    }
-
-    function changeItemsPerPage(itemsPerPage: number) {
-        setItemsPerPage(itemsPerPage);
-
-        var searchParams: URLSearchParams = new URLSearchParams(location.search);
-
-        searchParams.set('items', itemsPerPage.toString());
-        navigate(`?${searchParams.toString()}`);
-    }
-
     function onItemsPerPageChanged(productsPerPage: number) {
-        var currentPageStart = (currentPage - 1) * itemsPerPage;
+        var currentPageStart = (currentPage - 1) * (sortingRef.current?.itemsPerPage!);
         var newCurrentPage = Math.ceil((currentPageStart + 1) / productsPerPage);
 
         setCurrentPage(newCurrentPage);
@@ -183,17 +173,12 @@ export default function CategoryPage() {
 
     function onSortingTypeChanged(sortingType: SortType) {
         sortProducts(sortingType, filteredProducts);
-        calculateProductsToShow(filteredProducts, currentPage, itemsPerPage);
+        calculateProductsToShow(filteredProducts, currentPage, sortingRef.current?.itemsPerPage!);
     }
 
     function onPageChanged(page: number) {
         setCurrentPage(page);
-        calculateProductsToShow(filteredProducts, page, itemsPerPage);
-
-        var searchParams: URLSearchParams = new URLSearchParams(location.search);
-
-        searchParams.set('page', page.toString());
-        navigate(`?${searchParams.toString()}`);
+        calculateProductsToShow(filteredProducts, page, sortingRef.current!.itemsPerPage);
     }
 
     if (isLoading) {
@@ -241,98 +226,21 @@ export default function CategoryPage() {
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-4 pb-2 border-b">
                         <div className="flex gap-4 items-center justify-center">
-                            <div>
-                                <span className="text-black dark:text-white mr-2 text-sm">{t('sortBy')}:</span>
-                                <Listbox value={sorting} onChange={onSortingTypeChanged}>
-                                    {({ open }) => (
-                                        <div className="relative w-44">
-                                            <Listbox.Button className="w-full bg-white dark:bg-darkBackground-800
-                                                                 text-black dark:text-white border p-1 rounded-lg">
-                                                <div className="flex w-full items-center justify-between">
-                                                    <span>{t(`${sorting}`)}</span>
-                                                    {open == true ?
-                                                        <FontAwesomeIcon icon={['fas', 'chevron-up']} /> :
-                                                        <FontAwesomeIcon icon={['fas', 'chevron-down']} />}
-                                                </div>
-                                            </Listbox.Button>
-                                            <Transition
-                                                show={open}
-                                                as={Fragment}
-                                                enter="transition ease-out duration-200"
-                                                enterFrom="opacity-0 translate-y-1"
-                                                enterTo="opacity-100 translate-y-0"
-                                                leave="transition ease-in duration-150"
-                                                leaveFrom="opacity-100 translate-y-0"
-                                                leaveTo="opacity-0 translate-y-1">
-                                                <Listbox.Options className="absolute z-10 w-full bg-white dark:bg-darkBackground-800 shadow-lg rounded-lg">
-                                                    {sortings.map((value, index) => {
-                                                        return (
-                                                            <Listbox.Option value={value} key={index} className="w-full text-center text-black py-1 dark:text-white
-                                                            hover:text-orange-500 hover:dark:text-orange-500 cursor-pointer"
-                                                                onClick={() => changeSorting(value)}>
-                                                                {t(`${value}`)}
-                                                            </Listbox.Option>
-                                                        )
-                                                    })}
-                                                </Listbox.Options>
-                                            </Transition>
-                                        </div>
-                                    )}
-                                </Listbox>
-                            </div>
-
-                            <div>
-                                <span className="text-black dark:text-white mr-2 text-sm">{t('showBy')}:</span>
-                                <Listbox value={itemsPerPage} onChange={onItemsPerPageChanged}>
-                                    {({ open }) => (
-                                        <div className="relative w-44">
-                                            <Listbox.Button className="w-full bg-white dark:bg-darkBackground-800
-                                                                     text-black dark:text-white border p-1 rounded-lg">
-                                                <div className="flex w-full items-center justify-between">
-                                                    <span></span>
-                                                    <span>{itemsPerPage}</span>
-                                                    {open == true ?
-                                                        <FontAwesomeIcon icon={['fas', 'chevron-up']} /> :
-                                                        <FontAwesomeIcon icon={['fas', 'chevron-down']} />}
-                                                </div>
-                                            </Listbox.Button>
-                                            <Transition
-                                                show={open}
-                                                as={Fragment}
-                                                enter="transition ease-out duration-200"
-                                                enterFrom="opacity-0 translate-y-1"
-                                                enterTo="opacity-100 translate-y-0"
-                                                leave="transition ease-in duration-150"
-                                                leaveFrom="opacity-100 translate-y-0"
-                                                leaveTo="opacity-0 translate-y-1">
-                                                <Listbox.Options className="absolute z-10 w-full bg-white dark:bg-darkBackground-800 shadow-lg rounded-lg">
-                                                    {[20, 40, 60, 80, 100].map((value, index) => {
-                                                        return (
-                                                            <Listbox.Option value={value} key={index} className="w-full text-center text-black py-1 dark:text-white
-                                                                 hover:text-orange-500 hover:dark:text-orange-500 cursor-pointer"
-                                                                onClick={() => changeItemsPerPage(value)}>
-                                                                {value}
-                                                            </Listbox.Option>
-                                                        )
-                                                    })}
-                                                </Listbox.Options>
-                                            </Transition>
-                                        </div>
-                                    )}
-                                </Listbox>
-                            </div>
+                            <SortingComponent
+                                ref={sortingRef}
+                                onItemsPerPageChanged={onItemsPerPageChanged}
+                                onSortingTypeChanged={onSortingTypeChanged} />
                         </div>
                         <div className="flex items-center justify-center">
                             <Pagination
                                 currentPage={currentPage}
                                 onPageChanged={onPageChanged}
-                                items={products.length}
-                                itemsPerPage={itemsPerPage} />
+                                items={filteredProducts.length} />
                         </div>
 
                         <div className="flex items-center justify-start text-black dark:text-white">
                             <span>{t('foundResults')}: &nbsp;</span>
-                            <span>{products.length}</span>
+                            <span>{filteredProducts.length}</span>
                         </div>
                     </div>
 
@@ -347,8 +255,7 @@ export default function CategoryPage() {
                         <Pagination
                             currentPage={currentPage}
                             onPageChanged={onPageChanged}
-                            items={products.length}
-                            itemsPerPage={itemsPerPage} />
+                            items={filteredProducts.length} />
                     </div>
                 </div>
             </div>

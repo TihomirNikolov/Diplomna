@@ -1,7 +1,8 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net;
 using System.Net.Http.Headers;
 
-namespace ProductsMicroservice.Extensions
+namespace SharedResources.Extensions
 {
     public static class HttpRequestExtension
     {

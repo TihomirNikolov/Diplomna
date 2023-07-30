@@ -5,6 +5,7 @@ using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models;
 using ProductsMicroservice.Models.Documents;
 using ProductsMicroservice.Models.Products;
+using SharedResources.Models;
 using System.Linq;
 
 namespace ProductsMicroservice.Services
@@ -147,9 +148,26 @@ namespace ProductsMicroservice.Services
                 Builders<ProductDocument>.Filter.ElemMatch(p => p.Tags, tags => tags.Value.Any(t => t.Value.ToLower().Contains(searchText.ToLower())))
                 );
 
-            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filters).ToListAsync();
+            var productDocuments = (await db.GetCollection<ProductDocument>(CollectionName).Find(filters).SortBy(p => p.Name).ToListAsync()).Take(3).ToList();
 
             return _mapper.Map<List<SearchProductDTO>>(productDocuments);
+        }
+
+        public async Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filters = Builders<ProductDocument>.Filter.Or(
+                Builders<ProductDocument>.Filter.ElemMatch(p => p.Name, name => name.Value.ToLower().Contains(searchText.ToLower())),
+                Builders<ProductDocument>.Filter.ElemMatch(p => p.Description, desc => desc.Value.ToLower().Contains(searchText.ToLower())),
+                Builders<ProductDocument>.Filter.ElemMatch(p => p.Tags, tags => tags.Value.Any(t => t.Value.ToLower().Contains(searchText.ToLower())))
+                );
+
+            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filters).ToListAsync();
+
+            return _mapper.Map<List<CoverProductDTO>>(productDocuments);
         }
 
         public async Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls)
@@ -163,6 +181,19 @@ namespace ProductsMicroservice.Services
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
 
             return _mapper.Map<List<SearchProductDTO>>(productDocuments);
+        }
+
+        public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> urls)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filter = Builders<ProductDocument>.Filter.Where(p => urls.Contains(p.ProductUrl));
+
+            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
+
+            return _mapper.Map<List<ShoppingCartItemDTO>>(productDocuments);
         }
     }
 }

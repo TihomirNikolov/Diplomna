@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductsMicroservice.Extensions;
-using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Products;
 using ProductsMicroservice.Models.Requests;
+using SharedResources.Extensions;
+using SharedResources.Helpers;
 
 namespace ProductsMicroservice.Controllers
 {
@@ -16,19 +16,15 @@ namespace ProductsMicroservice.Controllers
         private readonly IProductsService _productsService;
         private readonly IRedisService _redisService;
 
-        private readonly HttpRequestHelper _httpRequestHelper;
-
         #endregion
 
         #region Constructor
 
         public ProductsController(IProductsService productsService, 
-                                  IRedisService redisService,
-                                  HttpRequestHelper httpRequestHelper)
+                                  IRedisService redisService)
         {
             _productsService = productsService;
             _redisService = redisService;
-            _httpRequestHelper = httpRequestHelper;
         }
 
         #endregion
@@ -85,6 +81,15 @@ namespace ProductsMicroservice.Controllers
         }
 
         [HttpGet]
+        [Route("search/getall/{searchText}")]
+        public async Task<IActionResult> GetAllBySearchText(string searchText)
+        {
+            var products = await _productsService.GetAllBySearchTextAsync(searchText);
+
+            return Ok(products);
+        }
+
+        [HttpGet]
         [Route("visits/{url}")]
         public async Task<IActionResult> GetVisitsByUrl(string url)
         {
@@ -125,7 +130,7 @@ namespace ProductsMicroservice.Controllers
 
             var token = Request.GetAuthorizationToken();
 
-            var email = await _httpRequestHelper.GetUserEmailAsync(token);
+            var email = await HttpRequests.GetUserEmailAsync(token);
             request.Review.UserEmail = email;
 
             await _productsService.AddReviewAsync(request.Review, request.ProductUrl);
@@ -154,6 +159,15 @@ namespace ProductsMicroservice.Controllers
             var products = await _productsService.GetProductsByUrlsAsync(request.ProductUrls);
 
             return Ok(products);
+        }
+
+        [HttpPost]
+        [Route("shoppingcart")]
+        public async Task<IActionResult> GetShoppingCartInformation([FromBody] List<string> productUrls)
+        {
+            var shoppingCartItems = await _productsService.GetShoppingCartItemsInformationAsync(productUrls);
+
+            return Ok(shoppingCartItems);
         }
 
         #endregion

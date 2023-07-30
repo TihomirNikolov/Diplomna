@@ -1,4 +1,4 @@
-﻿namespace ProductsMicroservice.Models
+﻿namespace SharedResources.Models
 {
     public class Item<TKey, TValue>
     {

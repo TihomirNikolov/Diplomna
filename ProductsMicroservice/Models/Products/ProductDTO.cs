@@ -1,4 +1,5 @@
 ﻿using ProductsMicroservice.Models.Categories;
+using SharedResources.Models;
 
 namespace ProductsMicroservice.Models.Products
 {

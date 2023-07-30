@@ -3,7 +3,7 @@ import { useTitle } from "../../components";
 import { ShoppingCartItem, useLanguage, useShoppingCart } from "../../contexts";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ChangeEvent } from "react";
+import { baseProductsURL } from "@/utilities";
 
 export default function ShoppingCartPage() {
     const { t } = useTranslation();
@@ -12,7 +12,7 @@ export default function ShoppingCartPage() {
     const { shoppingCartItems, changeShoppingCartItemCount, removeShoppingCartItem } = useShoppingCart();
     const { language } = useLanguage();
 
-    function changeItemCount(e: ChangeEvent<HTMLInputElement>, item: ShoppingCartItem) {
+    function changeItemCount(e: React.FocusEvent<HTMLInputElement, Element>, item: ShoppingCartItem) {
         var newCount = parseInt(e.target.value) || 0;
         newCount = Math.abs(newCount);
         if (newCount <= 999) {
@@ -85,17 +85,17 @@ export default function ShoppingCartPage() {
                              text-black dark:text-white bg-white dark:bg-gray-800">
                                 <div className="col-span-2">
                                     <div className="flex">
-                                        <img src={item.imageUrl} width={90} />
+                                        <img src={`${baseProductsURL()}${item.imageUrl}`} width={90} />
                                         <div className="px-2">
                                             <Link to={`/product/${item.productUrl}`} className="hover:text-orange-500">
                                                 <div>
-                                                    {item.name[language.code]}
+                                                    {item.name.find(i => i.key == language.code)?.value}
                                                 </div>
                                             </Link>
-                                            {Object.entries(item.coverTags[language.code]).map(([key, value]) => {
+                                            {item.coverTags.find(i => i.key == language.code)?.value.map((item, index) => {
                                                 return (
-                                                    <div key={key} className="mt-2 h-6 flex overflow-hidden text-sm text-gray-400">
-                                                        <span>{key} : {value}</span>
+                                                    <div key={index} className="mt-2 h-6 flex overflow-hidden text-sm text-gray-400">
+                                                        <span>{item.key} : {item.value}</span>
                                                     </div>)
                                             })}
                                         </div>
@@ -109,11 +109,11 @@ export default function ShoppingCartPage() {
                                         onClick={() => decrementShoppingCartItemCount(item)}>
                                         -
                                     </button>
-                                    <input value={item.number}
+                                    <input defaultValue={item.number}
                                         className="px-2 py-1 border border-gray-300 dark:border-gray-700 bg-transparent w-12
                                         text-center focus:outline-none focus:outline-offset-0
                                          focus:outline-blue-600 focus:dark:outline-blue-600"
-                                        onChange={(e) => changeItemCount(e, item)} />
+                                         onBlur={(e) => changeItemCount(e, item)} />
                                     <button className="px-3 py-1 bg-gray-300 dark:bg-gray-900"
                                         onClick={() => incrementShoppingCartItemCount(item)}>
                                         +

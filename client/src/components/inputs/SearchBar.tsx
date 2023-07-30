@@ -101,28 +101,42 @@ export default function SearchBar(props: Props) {
         }
     }
 
+    function onClearButtonClicked() {
+        inputRef.current!.value = '';
+        onSearchTextChanged('');
+        inputRef?.current?.focus();
+    }
+
     return (
         <div ref={divRef} className="w-full relative" >
-            <div className="flex items-center border rounded-lg">
-                <FontAwesomeIcon icon={['fas', 'search']} className="text-black dark:text-white p-1" />
-                <input id="search" ref={inputRef}
-                    className="bg-transparent text-black dark:text-white outline-none p-1 w-full"
-                    onChange={(e) => onSearchTextChanged(e.target.value)}
-                    onFocus={() => setShowResults(true)}
-                    onKeyDown={(e) => onKeydown(e)}
-                />
+            <div className="flex justify-between items-center border rounded-lg">
+                <div className="flex items-center w-full">
+                    <FontAwesomeIcon icon={['fas', 'search']} className="text-black dark:text-white p-1" />
+                    <input id="search" ref={inputRef} autoComplete="off"
+                        className="bg-transparent text-black dark:text-white outline-none p-1 w-full"
+                        onChange={(e) => onSearchTextChanged(e.target.value)}
+                        onFocus={() => setShowResults(true)}
+                        onKeyDown={(e) => onKeydown(e)}
+                    />
+                </div>
+                {inputRef.current != null && inputRef.current.value.length > 0 &&
+                    <FontAwesomeIcon icon={['fas', 'x']}
+                        className="text-black dark:text-white mr-2 cursor-pointer
+                             hover:text-red-600 dark:hover:text-red-600"
+                        onClick={() => onClearButtonClicked()} />
+                }
             </div>
             {showResults &&
                 <div className="absolute w-full bg-white dark:bg-gray-800 
                 text-black dark:text-white border-l border-r border-b px-1z-[60]">
                     {arePopularVisible &&
                         <div>
-                            <h1 className="font-bold">Най-популярни продукти</h1>
+                            <h1 className="font-bold px-1">Най-популярни продукти</h1>
                             {popularProducts.map((product, index) => {
                                 return (
                                     <Link to={`product/${product.productUrl}`} key={index}
                                         onClick={() => setShowResults(false)}>
-                                        <div className="grid grid-cols-12 place-items-center hover:bg-gray-300 hover:dark:bg-gray-600">
+                                        <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <img className="col-span-2" src={`${baseProductsURL()}${product.coverImageUrl}`} />
                                             <div className="grid col-span-10 px-1">
                                                 <span>{product.name.find(name => name.key == language.code)?.value}</span>
@@ -136,13 +150,13 @@ export default function SearchBar(props: Props) {
                                     </Link>
                                 )
                             })}
-                            <h1 className="font-bold">Най-популярни категории</h1>
+                            <h1 className="font-bold px-1">Най-популярни категории</h1>
                             {popularCategories.map((category, index) => {
                                 return (
                                     <div key={index} className="flex">
                                         <Link to={`category/${category.urlPath}`}
                                             onClick={() => setShowResults(false)}
-                                            className="w-full hover:bg-gray-300 hover:dark:bg-gray-600">
+                                            className="w-full px-1 hover:bg-gray-300 hover:dark:bg-gray-600">
                                             {category.displayName.find(c => c.key == language.code)?.value}
                                         </Link>
                                     </div>
@@ -150,14 +164,14 @@ export default function SearchBar(props: Props) {
                             })}
                         </div>
                     }
-                    {results != undefined && results.length > 0 &&
-                        <div>
+                    {results != undefined && results.length > 0 ?
+                        (<div>
                             <h1 className="font-bold">Продукти</h1>
                             {results.map((product, index) => {
                                 return (
                                     <Link to={`product/${product.productUrl}`} key={index}
                                         onClick={() => setShowResults(false)}>
-                                        <div className="grid grid-cols-12 place-items-center hover:bg-gray-300 hover:dark:bg-gray-600">
+                                        <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <img className="col-span-2" src={`${baseProductsURL()}${product.coverImageUrl}`} />
                                             <div className="grid col-span-10 px-1">
                                                 <span>{product.name.find(name => name.key == language.code)?.value}</span>
@@ -171,7 +185,19 @@ export default function SearchBar(props: Props) {
                                     </Link>
                                 )
                             })}
-                        </div>
+                            <Link
+                                to={`/search/${inputRef.current?.value}`}
+                                className="hover:bg-gray-600 flex"
+                                onClick={() => setShowResults(false)}>
+                                Виж всички резултати
+                            </Link>
+                        </div>) : (
+                            <>
+                                {!arePopularVisible &&
+                                    <h1>Не са намерени продукти</h1>
+                                }
+                            </>
+                        )
                     }
                 </div>
             }

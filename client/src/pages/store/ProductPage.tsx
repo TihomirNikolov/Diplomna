@@ -81,7 +81,7 @@ export default function ProductPage() {
                 price: product.price,
                 productUrl: productUrl ?? ""
             }
-            addShoppingCartItem(shoppingCartItem);
+            await addShoppingCartItem(shoppingCartItem);
         }
     }
 
@@ -184,7 +184,9 @@ export default function ProductPage() {
                     <div className="grid text-black dark:text-white">
                         <h1 className="py-10 text-2xl font-bold justify-self-center">{t('description')}</h1>
                         <div>
-                            {product?.description.find(desc => desc.key == language.code)?.value}
+                            <span>
+                                {product?.description.find(desc => desc.key == language.code)?.value}
+                            </span>
                         </div>
                     </div>
                     <div className="grid text-black dark:text-white ">

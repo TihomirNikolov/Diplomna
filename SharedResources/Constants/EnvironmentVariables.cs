@@ -1,4 +1,4 @@
-﻿namespace ProductsMicroservice
+﻿namespace SharedResources.Constants
 {
     public static class EnvironmentVariables
     {

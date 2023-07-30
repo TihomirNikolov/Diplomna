@@ -1,4 +1,6 @@
-﻿namespace ProductsMicroservice.Models.Products
+﻿using SharedResources.Models;
+
+namespace ProductsMicroservice.Models.Products
 {
     public class SearchProductDTO
     {

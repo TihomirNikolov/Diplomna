@@ -1,10 +1,10 @@
-import { CategoryDTO, CoverProduct, Dictionary, Filter, Product } from "@/utilities"
+import { CategoryDTO, CoverProduct, Dictionary, Filter, Product, sortingParams } from "@/utilities"
 import { ScrollArea } from "../ui/scroll-area"
 import { useEffect, useState } from "react"
 import { useLanguage } from "@/contexts";
 import { Separator } from "../ui/separator";
 import { Checkbox } from "../inputs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface Props {
     category: CategoryDTO,
@@ -18,6 +18,7 @@ export default function CategoryFilters({ category, products }: Props) {
     const [checkedFilters, setCheckedFilters] = useState<{ key: string, values: string[] }[]>([]);
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const { language } = useLanguage();
 
@@ -68,7 +69,15 @@ export default function CategoryFilters({ category, products }: Props) {
     }
 
     useEffect(() => {
-        var searchParams: URLSearchParams = new URLSearchParams();
+        var newSearchParams: URLSearchParams = new URLSearchParams();
+
+        var params = Object.fromEntries(searchParams.entries());
+        for (var [key, value] of Object.entries(params)) {
+            if (sortingParams.includes(key)) {
+                newSearchParams.set(key, value);
+            }
+        }
+
         checkedFilters.forEach((filter) => {
             var urlParam: string = '';
             filter.values.forEach((value) => {
@@ -78,10 +87,10 @@ export default function CategoryFilters({ category, products }: Props) {
                     urlParam = urlParam + '|' + value;
                 }
             })
-            searchParams.set(filter.key, urlParam);
+            newSearchParams.set(filter.key, urlParam);
         })
         if (isInitialized) {
-            navigate(`?${searchParams.toString()}`);
+            navigate(`?${newSearchParams.toString()}`);
         }
     }, [checkedFilters])
 
@@ -101,7 +110,9 @@ export default function CategoryFilters({ category, products }: Props) {
         var checkedFilters: { key: string, values: string[] }[] = [];
         for (var [key, value] of Object.entries(params)) {
             var values = value.split('|');
-            checkedFilters.push({ key: key, values: values });
+            if (!sortingParams.includes(key)) {
+                checkedFilters.push({ key: key, values: values });
+            }
         }
         setCheckedFilters(checkedFilters);
 
@@ -127,7 +138,7 @@ export default function CategoryFilters({ category, products }: Props) {
         }
         setFilters(filters);
         setIsInitialized(true);
-    }, [category])
+    }, [category, location.search])
 
     return (
         <div>

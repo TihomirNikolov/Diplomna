@@ -83,6 +83,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=MySecretRedisP@ss0rd
     ports:
       - "44323:80"
       - "44324:443"
@@ -93,6 +96,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=MySecretRedisP@ss0rd
     ports:
       - "44325:80"
       - "44326:443"

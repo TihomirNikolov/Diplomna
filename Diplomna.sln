@@ -32,11 +32,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserMicroservice", "UserMic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentsMicroservice", "PaymentsMicroservice\PaymentsMicroservice.csproj", "{09720579-47FB-47E1-A368-C9C8EE48D8FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersMicroservice", "OrdersMicroservice\OrdersMicroservice.csproj", "{1496F470-ED2A-409F-8F27-699BE743FF3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrdersMicroservice", "OrdersMicroservice\OrdersMicroservice.csproj", "{1496F470-ED2A-409F-8F27-699BE743FF3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartMicroservice", "ShoppingCartMicroservice\ShoppingCartMicroservice.csproj", "{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartMicroservice", "ShoppingCartMicroservice\ShoppingCartMicroservice.csproj", "{24AEA7CA-2C87-4386-A736-D6B4A0E72C13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationMicroservice", "LocationMicroservice\LocationMicroservice.csproj", "{CFDC2027-C000-451F-93E5-0AF0AF93709B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationMicroservice", "LocationMicroservice\LocationMicroservice.csproj", "{CFDC2027-C000-451F-93E5-0AF0AF93709B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedResources", "SharedResources\SharedResources.csproj", "{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFDC2027-C000-451F-93E5-0AF0AF93709B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
