@@ -16,6 +16,7 @@ export default function AccountLayout(props: any) {
     const paths: { path: string, translate: string }[] = [{ path: '/account', translate: 'account' },
     { path: '/account/address', translate: 'myAddresses' },
     { path: '/account/history', translate: 'myHistory' },
+    { path: '/payments/cards', translate: 'title.paymentCards'},
     { path: '/wishlist', translate: "wishlist" }];
 
 
@@ -31,9 +32,9 @@ export default function AccountLayout(props: any) {
                     </div>
                 </div>
             </nav>
-            <div className="md:hidden flex items-center justify-center">
+            <div className="md:hidden">
                 <Tabs defaultValue="/account">
-                    <TabsList className="w-full">
+                    <TabsList className="w-full flex h-full flex-wrap">
                         {paths.map((path, index) => {
                             return <TabsTrigger key={index} value={path.path}
                                 className="p-2" onClick={() => navigate(path.path)}>

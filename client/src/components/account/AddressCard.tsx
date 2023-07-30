@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Address } from "../../utilities"
 import { BlackWhiteButton } from "../buttons"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 interface Props {
     address: Address
@@ -17,7 +17,7 @@ export default function AddressCard(props: Props) {
     }
 
     function onDelete() {
-
+        
     }
 
     return (

@@ -26,7 +26,11 @@
         "eightCharactersRequired": "Моля въведете поне 8 символа",
         "emailInvalid": "Моля въведете валиден email",
         "confirmPasswordInvalid": "Паролите не съвпадат",
-        "passwordInvalid": "Паролата не е валидна"
+        "passwordInvalid": "Паролата не е валидна",
+        "cardNumberInvalid": "Невалиден номер на карта",
+        "cardholderNameInvalid": "Името трябва да е поне 3 символа и може да съдържа букви и .'-",
+        "expiryDateInValid": "Моля въведете валидни месец и година във формата мм/гг или мм/гггг",
+        "cvvInvalid": "Моля въведете валиден CVV/CVC"
     },
     "address": {
         "addNewAddress": "Добавяне на нов адрес",
@@ -36,6 +40,12 @@
         "postCode": "Пощенски код",
         "city": "Град",
         "region": "Област"
+    },
+    "card": {
+        "addNewCard": "Добавяне на нова карта",
+        "cardholderName": "Име на картодържателя",
+        "cardNumber": "Номер на карта",
+        "expiry": "Изтичане"
     },
     "responseErrors":{
         "changeEmailSuccess": "Потвърждение по имейл за промяна на вашия имейл беше изпратено до текущия ви имейл.",

@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { HomePage, SearchPage } from '../../pages'
+import { AddPaymentCardPage, EditPaymentCardPage, HomePage, SearchPage } from '../../pages'
 import ProtectedRoute from './ProtectedRoute'
 import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
@@ -50,6 +50,8 @@ export default function Router() {
                     <Route path='/account' element={<AccountLayout><AccountPage /></AccountLayout>} />
                     <Route path='/account/address' element={<AccountLayout><MyAddressesPage /></AccountLayout>} />
                     <Route path='/payments/cards' element={<AccountLayout><PaymentCardsPage /></AccountLayout>} />
+                    <Route path='/payments/cards/add' element={<AccountLayout><AddPaymentCardPage /></AccountLayout>} />
+                    <Route path='/payments/cards/edit/id/:id' element={<AccountLayout><EditPaymentCardPage /></AccountLayout>} />
                     <Route path='/account/history' element={<AccountLayout><MyOrdersPage /></AccountLayout>} />
                     <Route path='/wishlist' element={<AccountLayout><WishlistPage /></AccountLayout>} />
                     <Route path='/account/address/add' element={<AccountLayout><AddressPage /></AccountLayout>} />

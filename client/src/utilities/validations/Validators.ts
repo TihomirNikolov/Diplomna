@@ -39,3 +39,19 @@ export function validateTitle(value: string) {
 export function validateComment(value: string) {
     return value.length >= 3;
 }
+
+export function validateCardNumber(value: string) {
+    return validator.isCreditCard(value);
+}
+
+export function validateCardholderName(value: string) {
+    return value.match(/^[\w'\-,.][^0-9_!¡?÷?¿\/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/) !== null;
+}
+
+export function validateCardExpiry(value: string) {
+    return value.match(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/) !== null;
+}
+
+export function validateCVV(value: string) {
+    return value.match(/^[0-9]{3,4}$/) !== null;
+}

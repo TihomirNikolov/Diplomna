@@ -133,7 +133,7 @@ export default function ShoppingCartPage() {
                         {t('total')}: {calculateSum()}
                     </div>
                     <Link to="" className="mt-2 px-5 py-2 w-48 text-white
-                     bg-orange-600 rounded-lg hover:bg-orange-700">
+                     bg-orange-600 rounded-lg hover:bg-orange-700 text-center">
                         {t('checkOut')}
                     </Link>
                 </div>

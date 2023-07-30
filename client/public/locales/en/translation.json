@@ -26,7 +26,11 @@
         "eightCharactersRequired": "Please enter at least 8 characters.",
         "emailInvalid": "Please enter a valid email",
         "confirmPasswordInvalid": "The passwords don't match",
-        "passwordInvalid": "The password is invalid"
+        "passwordInvalid": "The password is invalid",
+        "cardNumberInvalid": "The card number is invalid",
+        "cardholderNameInvalid": "The cardholder name must be at least 3 characters and must contains only lettesr and .'-",
+        "expiryDateInValid": "Please enter valid month and year in the format mm/yy or mm/yyyy",
+        "cvvInvalid": "Please enter a valid CVV/CVC"
     },
     "address": {
         "addNewAddress": "Add a new address",
@@ -36,6 +40,12 @@
         "postCode": "Postcode",
         "city": "City",
         "region": "Region"
+    },
+    "card": {
+        "addNewCard": "Add a new card",
+        "cardholderName": "Cardholder name",
+        "cardNumber": "Card number",
+        "expiry": "Expiry"
     },
     "responseErrors": {
         "changeEmailSuccess": "An email confirmation for changing your email was sent to your current email.",
