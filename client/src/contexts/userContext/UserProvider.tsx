@@ -63,20 +63,17 @@ export default function UserProvider(props: any) {
 
     async function logout() {
         try {
-            var response = await authClient.delete(`${baseUserURL()}api/authenticate/logout`);
-            setUser(initialUser);
-            setRoles(['User']);
-            setIsEmailConfirmed(false);
-            removeTokenObject();
+            await authClient.delete(`${baseUserURL()}api/authenticate/logout`);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                setUser(initialUser);
-                setRoles(['User']);
-                setIsEmailConfirmed(false);
-                removeTokenObject();
             }
         }
+        setUser(initialUser);
+        setRoles(['User']);
+        setIsEmailConfirmed(false);
+        removeTokenObject();
+        setIsAuthenticated(false);
     }
 
     return (

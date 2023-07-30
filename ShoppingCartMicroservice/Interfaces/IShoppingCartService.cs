@@ -6,5 +6,6 @@ namespace ShoppingCartMicroservice.Interfaces
     {
         Task<List<ShoppingCartItem>> GetShoppingCartByEmailAsync(string email);
         Task<List<ShoppingCartItem>> GetShoppingCartByBrowserIdAsync(string browserId);
+        Task<List<ShoppingCartItem>> MergeShoppingCartsAsync(string email, string browserId);
     }
 }

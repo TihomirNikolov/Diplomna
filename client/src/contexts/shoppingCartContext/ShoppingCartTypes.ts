@@ -13,5 +13,6 @@ export type ShoppingCartContextType = {
     shoppingCartItems: ShoppingCartItem[],
     addShoppingCartItem: (shoppingCartItem: ShoppingCartItem) => Promise<void>,
     removeShoppingCartItem: (shoppingCartItem: ShoppingCartItem) => Promise<void>,
-    changeShoppingCartItemCount: (shoppingCartItem: ShoppingCartItem, newCount: number) => Promise<void>
+    changeShoppingCartItemCount: (shoppingCartItem: ShoppingCartItem, newCount: number) => Promise<void>,
+    merge: () => Promise<void>
 }

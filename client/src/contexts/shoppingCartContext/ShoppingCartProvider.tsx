@@ -10,10 +10,11 @@ import { useUser } from "../userContext";
 export default function ShoppingCardProvider(props: any) {
     const { t } = useTranslation();
     const { language } = useLanguage();
-
-    const { user, isAuthenticated, isUserLoaded } = useUser();
-
+    
     const [shoppingCartItems, setShoppingCartItems] = useState<ShoppingCartItem[]>([])
+    const [isMerging, setIsMerging] = useState<boolean>(false);
+
+    const { isAuthenticated, isUserLoaded } = useUser();
 
     async function fetchShoppingCartItemsByEmail() {
         try {
@@ -43,7 +44,7 @@ export default function ShoppingCardProvider(props: any) {
     }
 
     useEffect(() => {
-        if (isUserLoaded) {
+        if (isUserLoaded && !isMerging) {
             if (isAuthenticated) {
                 fetchShoppingCartItemsByEmail();
             }
@@ -130,10 +131,27 @@ export default function ShoppingCardProvider(props: any) {
         }
     }
 
+    async function merge(){
+        try{
+            setIsMerging(true);
+            var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/merge`, { browserId: localStorage.getItem('uuid')});
+            var items = result.data as ShoppingCartItem[];
+            setShoppingCartItems(items);
+            setIsMerging(false);
+        }
+        catch(error){
+            if(axios.isAxiosError(error)){
+
+            }
+            setIsMerging(false);
+        }
+    }
+
     return (
         <ShoppingCartContext.Provider value={{
             shoppingCartItems: shoppingCartItems,
-            addShoppingCartItem: addItem, removeShoppingCartItem: removeItem, changeShoppingCartItemCount: changeCount
+            addShoppingCartItem: addItem, removeShoppingCartItem: removeItem, changeShoppingCartItemCount: changeCount,
+            merge: merge
         }}>
             {props.children}
         </ShoppingCartContext.Provider>

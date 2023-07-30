@@ -45,7 +45,7 @@ namespace ShoppingCartMicroservice.Controllers
 
         [HttpPost]
         [Route("add/email")]
-        public async Task<IActionResult> AddItemToShoppingCartByEmailAsync([FromBody] AddShoppingCartItemEmail request)
+        public async Task<IActionResult> AddItemToShoppingCartByEmail([FromBody] AddShoppingCartItemEmail request)
         {
             var token = Request.GetAuthorizationToken();
 
@@ -58,7 +58,7 @@ namespace ShoppingCartMicroservice.Controllers
 
         [HttpPost]
         [Route("add/browserid")]
-        public async Task<IActionResult> AddItemToShoppingCartByBrowserIdAsync([FromBody] AddShoppingCartItemBrowserId request)
+        public async Task<IActionResult> AddItemToShoppingCartByBrowserId([FromBody] AddShoppingCartItemBrowserId request)
         {
             var shoppingCartItems = await _redisService.AddItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductUrl, request.Number);
 
@@ -67,7 +67,7 @@ namespace ShoppingCartMicroservice.Controllers
 
         [HttpPost]
         [Route("remove/email")]
-        public async Task<IActionResult> RemoveItemFromShoppingCartByEmailAsync([FromBody] RemoveShoppingCartItemByEmail request)
+        public async Task<IActionResult> RemoveItemFromShoppingCartByEmail([FromBody] RemoveShoppingCartItemByEmail request)
         {
             var token = Request.GetAuthorizationToken();
 
@@ -80,9 +80,22 @@ namespace ShoppingCartMicroservice.Controllers
 
         [HttpPost]
         [Route("remove/browserId")]
-        public async Task<IActionResult> RemoveItemFromShoppingCartByEmailAsync([FromBody] RemoveShoppingCartItemByBrowserId request)
+        public async Task<IActionResult> RemoveItemFromShoppingCartByEmail([FromBody] RemoveShoppingCartItemByBrowserId request)
         {
             var shoppingCartItems = await _redisService.DeleteShoppingCartItemByBrowserIdAsync(request.BrowserId, request.ProductUrl);
+
+            return Ok(shoppingCartItems);
+        }
+
+        [HttpPost]
+        [Route("merge")]
+        public async Task<IActionResult> MergeBrowserIdIntoEmailShoppingCart([FromBody] MergeShoppingCart request)
+        {
+            var token = Request.GetAuthorizationToken();
+
+            var email = await HttpRequests.GetUserEmailAsync(token);
+
+            var shoppingCartItems = await _shoppingCartService.MergeShoppingCartsAsync(email, request.BrowserId);
 
             return Ok(shoppingCartItems);
         }

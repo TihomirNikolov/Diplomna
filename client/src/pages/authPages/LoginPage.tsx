@@ -3,8 +3,8 @@ import { FormEvent, useRef, useState } from "react";
 import { BlueButton, Checkbox, FloatingInput, LinkButton, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { LoginModel, LoginResponse, axiosClient, baseUserURL, notification, setTokenObject, validateEmail } from "../../utilities";
-import { User, useUser } from "../../contexts";
+import { LoginModel, LoginResponse, authClient, axiosClient, baseShoppingCartURL, baseUserURL, notification, setTokenObject, validateEmail } from "../../utilities";
+import { User, useShoppingCart, useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 import { FloatingInputHandle } from "../../components/inputs/FloatingInput";
 
@@ -16,8 +16,9 @@ export default function LoginPage() {
     const passwordInput = useRef<FloatingInputHandle>(null);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-
     const { setUser, setRoles, setIsEmailConfirmed, setIsAuthenticated } = useUser();
+    const { merge } = useShoppingCart();
+
     const navigate = useNavigate();
 
     function onChecked() {
@@ -51,6 +52,7 @@ export default function LoginPage() {
             setIsEmailConfirmed(data.isEmailConfirmed);
             setRoles(data.roles);
             setUser(user);
+            merge();
             setIsAuthenticated(true);
             navigate('/home');
         }
