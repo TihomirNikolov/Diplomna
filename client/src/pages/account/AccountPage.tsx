@@ -143,9 +143,9 @@ export default function AccountPage() {
                             <h1>Email</h1>
                             <label>{userInfo.email}</label>
                         </ProfileDataItem.Content>
-                        <ProfileDataItem.Edit>
+                        {/* <ProfileDataItem.Edit>
                             <ChangeEmail userInfo={userInfo} setUserInfo={setUserInfo} />
-                        </ProfileDataItem.Edit>
+                        </ProfileDataItem.Edit> */}
                     </ProfileDataItem>
 
                     <Line />

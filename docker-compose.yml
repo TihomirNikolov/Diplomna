@@ -37,6 +37,9 @@ services:
      build:
         context: .
         dockerfile: PaymentsMicroservice/Dockerfile
+     depends_on:
+        ms-sql-server:
+            condition: service_healthy
   ordersmicroservice:
      image: ${DOCKER_REGISTRY-}ordersmicroservice
      build:

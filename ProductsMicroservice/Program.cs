@@ -63,6 +63,11 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
+if (!Directory.Exists(Path.Combine(builder.Environment.ContentRootPath, "Files")))
+{
+    Directory.CreateDirectory(Path.Combine(builder.Environment.ContentRootPath, "Files"));
+}
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Files")),
