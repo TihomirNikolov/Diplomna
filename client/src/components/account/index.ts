@@ -7,9 +7,10 @@ import AddressCard from './AddressCard'
 import DeleteAccount from "./DeleteAccount";
 import Avatar from "./Avatar";
 import AddNewPaymentCard from "./AddNewPaymentCard";
+import PaymentCardCard from "./PaymentCardCard";
 
 export {
     AccountProfile, ChangeEmail, ChangeName,
     ChangePassword, AddNewAddressCard, AddressCard,
-    DeleteAccount, Avatar, AddNewPaymentCard
+    DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard
 }

@@ -3,6 +3,7 @@ using PaymentsMicroservice.Interfaces;
 using PaymentsMicroservice.Models;
 using PaymentsMicroservice.Services;
 using Stripe;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IPaymentsService, PaymentsService>();
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

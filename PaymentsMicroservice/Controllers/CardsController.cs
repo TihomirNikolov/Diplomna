@@ -17,6 +17,17 @@ namespace PaymentsMicroservice.Controllers
             _customersService = customersService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCards()
+        {
+            var token = Request.GetAuthorizationToken();
+
+            var email = await HttpRequests.GetUserEmailAsync(token);
+
+            var result = await _customersService.GetCustomersCardsAsync(email);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
@@ -27,6 +38,19 @@ namespace PaymentsMicroservice.Controllers
 
             await _customersService.AddCardAsync(email, request.CardNumber, request.CardholderName, request.Month, request.Year, request.CVV, request.CardType);
             return Ok();
+        }
+
+        [HttpDelete]
+        [Route("delete/{cardId}")]
+        public async Task<IActionResult> DeleteCard(string cardId)
+        {
+            var token = Request.GetAuthorizationToken();
+
+            var email = await HttpRequests.GetUserEmailAsync(token);
+
+            var result = await _customersService.DeleteCustomersCardAsync(email, cardId);
+
+            return result ? Ok() : BadRequest();
         }
     }
 }

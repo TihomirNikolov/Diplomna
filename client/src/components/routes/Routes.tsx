@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { AddPaymentCardPage, EditPaymentCardPage, HomePage, SearchPage } from '../../pages'
+import { HomePage } from '../../pages'
 import ProtectedRoute from './ProtectedRoute'
 import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
@@ -16,11 +16,14 @@ const MyAddressesPage = lazy(() => import('../../pages').then((module) => ({ def
 const MyOrdersPage = lazy(() => import('../../pages').then((module) => ({ default: module.MyOrdersPage })));
 const NotFoundPage = lazy(() => import('../../pages').then((module) => ({ default: module.NotFoundPage })));
 const PaymentCardsPage = lazy(() => import('../../pages').then((module) => ({ default: module.PaymentCardsPage })));
+const AddPaymentCardPage = lazy(() => import('../../pages').then((module) => ({ default: module.AddPaymentCardPage })));
 const ProductPage = lazy(() => import('../../pages').then((module) => ({ default: module.ProductPage })));
 const RegisterPage = lazy(() => import('../../pages').then((module) => ({ default: module.RegisterPage })));
 const ResetPasswordPage = lazy(() => import('../../pages').then((module) => ({ default: module.ResetPasswordPage })));
 const ShoppingCartPage = lazy(() => import('../../pages').then((module) => ({ default: module.ShoppingCartPage })));
 const WishlistPage = lazy(() => import('../../pages').then((module) => ({ default: module.WishlistPage })));
+const SearchPage = lazy(() => import('../../pages').then((module) => ({ default: module.SearchPage })));
+
 
 export default function Router() {
 
@@ -51,7 +54,6 @@ export default function Router() {
                     <Route path='/account/address' element={<AccountLayout><MyAddressesPage /></AccountLayout>} />
                     <Route path='/payments/cards' element={<AccountLayout><PaymentCardsPage /></AccountLayout>} />
                     <Route path='/payments/cards/add' element={<AccountLayout><AddPaymentCardPage /></AccountLayout>} />
-                    <Route path='/payments/cards/edit/id/:id' element={<AccountLayout><EditPaymentCardPage /></AccountLayout>} />
                     <Route path='/account/history' element={<AccountLayout><MyOrdersPage /></AccountLayout>} />
                     <Route path='/wishlist' element={<AccountLayout><WishlistPage /></AccountLayout>} />
                     <Route path='/account/address/add' element={<AccountLayout><AddressPage /></AccountLayout>} />

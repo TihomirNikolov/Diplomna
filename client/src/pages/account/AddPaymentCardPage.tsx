@@ -1,19 +1,27 @@
 import { BlackWhiteButton, FloatingInput, Input, useTitle } from "@/components";
 import { FormEvent, Fragment, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import creditCard from "../../assets/Credit-Card.png"
 import { validateCVV, validateCardExpiry, validateCardNumber, validateCardholderName } from "@/utilities/validations/Validators";
 import { Listbox, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InputHandle } from "@/components/inputs/Input";
 import axios from "axios";
 import { authClient, basePaymentsURL } from "@/utilities";
+import { useNavigate } from "react-router-dom";
+
+import visa from '../../assets/visa.png'
+import mastercard from '../../assets/mastercard.png'
+import discover from '../../assets/discover.png'
+import americanEexpress from '../../assets/american-express.png'
+import emptyCard from '../../assets/empty-card.png'
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const years = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032']
 
 type MonthsType = typeof months[number]
 type YearsType = typeof years[number]
+
+type cardType = 'None' | 'JCB' | 'American Express' | 'Diners Club' | 'Visa' | 'MasterCard' | 'Discover'
 
 export default function AddPaymentCardPage() {
     const { t } = useTranslation();
@@ -25,7 +33,12 @@ export default function AddPaymentCardPage() {
 
     const [selectedMonth, setSelectedMonth] = useState<MonthsType>('Month');
     const [selectedYear, setSelectedYear] = useState<YearsType>('Year');
-    const [cardType, setCardType] = useState<string>('')
+    const [cardType, setCardType] = useState<cardType>('None')
+    const [imgSource, setImageSource] = useState<string>(emptyCard);
+    const [cardNumber, setCardNumber] = useState<string>('');
+    const [cardholderName, setCardholderName] = useState<string>('');
+
+    const navigate = useNavigate();
 
     function onSelectedMonthChanged(month: string) {
         setSelectedMonth(month);
@@ -35,36 +48,62 @@ export default function AddPaymentCardPage() {
         setSelectedYear(year);
     }
 
-    function checkCardType(cardNumber: string){
-        if(cardNumber.match(/^(?:2131|1800|35)[0-9]{0,}$/)){
+    function onCardNumberChanged(value: string) {
+        setCardNumber(value);
+        var cardType = checkCardType(value);
+        setCardType(cardType);
+        changeImage(cardType);
+    }
+
+    function onCardholderNameChanged(value: string) {
+        setCardholderName(value);
+    }
+
+    function checkCardType(cardNumber: string): cardType {
+        if (cardNumber.match(/^(?:2131|1800|35)[0-9]{0,}$/)) {
             return 'JCB';
         }
 
-        if(cardNumber.match(/^3[47][0-9]{0,}$/)){
+        if (cardNumber.match(/^3[47][0-9]{0,}$/)) {
             return 'American Express';
         }
 
-        if(cardNumber.match(/^3(?:0[0-59]{1}|[689])[0-9]{0,}$/)){
+        if (cardNumber.match(/^3(?:0[0-59]{1}|[689])[0-9]{0,}$/)) {
             return 'Diners Club';
         }
-        
-        if(cardNumber.match(/^4[0-9]{0,}$/)){
+
+        if (cardNumber.match(/^4[0-9]{0,}$/)) {
             return 'Visa';
         }
 
-        if(cardNumber.match(/^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)[0-9]{0,}$/)){
+        if (cardNumber.match(/^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)[0-9]{0,}$/)) {
             return 'MasterCard';
         }
 
-        if(cardNumber.match(/^(5[06789]|6)[0-9]{0,}$/)){
-            return 'Maestro';
-        }
-
-        if(cardNumber.match(/^(6011|65|64[4-9]|62212[6-9]|6221[3-9]|622[2-8]|6229[01]|62292[0-5])[0-9]{0,}$/)){
+        if (cardNumber.match(/^(6011|65|64[4-9]|62212[6-9]|6221[3-9]|622[2-8]|6229[01]|62292[0-5])[0-9]{0,}$/)) {
             return 'Discover';
         }
 
-        return '';
+        return 'None';
+    }
+
+    function changeImage(cardType: cardType) {
+        switch (cardType) {
+            case 'American Express':
+                setImageSource(americanEexpress);
+                break;
+            case 'Discover':
+                setImageSource(discover);
+                break;
+            case 'MasterCard':
+                setImageSource(mastercard);
+                break;
+            case 'Visa':
+                setImageSource(visa);
+                break;
+            default:
+                setImageSource(emptyCard)
+        }
     }
 
     async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -79,7 +118,7 @@ export default function AddPaymentCardPage() {
             cvvRef.current?.showValidation();
             return;
         }
-        
+
         try {
             var cardRequest = {
                 cardNumber: cardNumberRef.current.value,
@@ -87,10 +126,11 @@ export default function AddPaymentCardPage() {
                 month: selectedMonth,
                 year: selectedYear,
                 cvv: cvvRef.current.value,
-                cardType: checkCardType(cardNumberRef.current.value)
+                cardType: cardType
             }
 
             var result = await authClient.post(`${basePaymentsURL()}api/cards/add`, cardRequest);
+            navigate('/payments/cards');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -106,16 +146,28 @@ export default function AddPaymentCardPage() {
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                     <div className="grid">
                         <form className="grid p-5 space-y-5" onSubmit={onSubmit}>
-                            <img src={creditCard} className="w-full md:w-96 justify-self-center" />
+                            <div className="relative">
+                                <img src={imgSource} className="w-full md:w-96 justify-self-center" />
+                                <div className="absolute bottom-10 left-10">
+                                    <span className="text-black font-bold text-2xl">{cardNumber}</span>
+                                </div>
+                                <div className="absolute bottom-2 left-10">
+                                    <span className="text-black font-bold text-2xl">{cardholderName}</span>
+                                </div>
+                            </div>
                             <div className="mt-5">
                                 <Input ref={cardNumberRef}
                                     className="w-full"
                                     type="text" placeholder={t('card.cardNumber')}
+                                    onChange={onCardNumberChanged}
+                                    maxLength={19}
                                     validate={validateCardNumber} immediateValdation
                                     validationMessage={t('errorInput.cardNumberInvalid')!} />
                                 <Input ref={cardholderNameRef}
                                     className="w-full"
                                     type="text" placeholder={t('card.cardholderName')}
+                                    onChange={onCardholderNameChanged}
+                                    maxLength={24}
                                     validate={validateCardholderName} immediateValdation
                                     validationMessage={t('errorInput.cardholderNameInvalid')!} />
                                 <div className="w-full flex flex-wrap sm:space-x-1 justify-between">

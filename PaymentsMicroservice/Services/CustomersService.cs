@@ -1,5 +1,8 @@
-﻿using PaymentsMicroservice.Interfaces;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PaymentsMicroservice.Interfaces;
 using PaymentsMicroservice.Models;
+using PaymentsMicroservice.Models.DTOs;
 using Stripe;
 
 namespace PaymentsMicroservice.Services
@@ -8,9 +11,13 @@ namespace PaymentsMicroservice.Services
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public CustomersService(ApplicationDbContext dbContext)
+        private readonly IMapper _mapper;
+
+        public CustomersService(ApplicationDbContext dbContext,
+                                IMapper mapper)
         {
-            _dbContext = dbContext; 
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task AddCardAsync(string email, string cardNumber, string cardholderName, string month, string year, string cvv, string cardType)
@@ -41,7 +48,7 @@ namespace PaymentsMicroservice.Services
 
                     var customerOptions = new CustomerCreateOptions
                     {
-                        Email= email
+                        Email = email
                     };
 
                     var customerService = new CustomerService();
@@ -70,11 +77,40 @@ namespace PaymentsMicroservice.Services
                 });
                 await _dbContext.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
 
+        }
+
+        public async Task<List<CardDTO>> GetCustomersCardsAsync(string email)
+        {
+            var cards = await _dbContext.Cards.Include(c => c.Customer).Where(c => c.Customer.Email.ToLower() == email.ToLower()).ToListAsync();
+
+            return _mapper.Map<List<CardDTO>>(cards);
+        }
+
+        public async Task<bool> DeleteCustomersCardAsync(string email, string cardId)
+        {
+            var card = await _dbContext.Cards.Include(c => c.Customer).FirstOrDefaultAsync(c => c.Id == cardId);
+
+            if (card == null || card.Customer.Email.ToLower() != email.ToLower())
+                return false;
+
+            try
+            {
+                var cardService = new CardService();
+                await cardService.DeleteAsync(card.Customer.CutomerId, card.CardId);
+
+                _dbContext.Remove(card);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
