@@ -79,7 +79,8 @@ export default function ProductPage() {
                 name: product.name,
                 number: 1,
                 price: product.price,
-                productUrl: productUrl ?? ""
+                productUrl: productUrl ?? "",
+                productId: product.id
             }
             await addShoppingCartItem(shoppingCartItem);
         }

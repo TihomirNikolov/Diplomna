@@ -183,13 +183,13 @@ namespace ProductsMicroservice.Services
             return _mapper.Map<List<SearchProductDTO>>(productDocuments);
         }
 
-        public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> urls)
+        public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> ids)
         {
             await CreateCollectionIfDoesntExistAsync();
 
             var db = GetDatabase();
 
-            var filter = Builders<ProductDocument>.Filter.Where(p => urls.Contains(p.ProductUrl));
+            var filter = Builders<ProductDocument>.Filter.Where(p => ids.Contains(p.Id.ToString()));
 
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
 

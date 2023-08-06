@@ -20,6 +20,7 @@ namespace ProductsMicroservice.Mappers
             CreateMap<ProductDocument, SearchProductDTO>().ReverseMap();
             CreateMap<ProductDocument, ShoppingCartItemDTO>()
                 .ForMember(s => s.ImageUrl, p => p.MapFrom(pd => pd.CoverImageUrl))
+                .ForMember(s => s.ProductId, p => p.MapFrom(pd => pd.Id))
                 .ReverseMap();
         }
     }

@@ -6,16 +6,7 @@ import { useEffect, useState } from "react";
 export default function ShoppingCart() {
     const navigate = useNavigate();
 
-    const [sum, setSum] = useState<number>(0);
-    const { shoppingCartItems } = useShoppingCart();
-
-    useEffect(() => {
-        var sum = 0;
-        shoppingCartItems.forEach(item => {
-            sum += item.price;
-        });
-        setSum(sum);
-    }, [shoppingCartItems])
+    const { shoppingCartItems, sum } = useShoppingCart();
 
     return (
         <div className="flex gap-2 cursor-pointer" onClick={() => navigate('/checkout/cart')}>

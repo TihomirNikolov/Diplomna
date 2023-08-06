@@ -1,6 +1,7 @@
 import { Item } from "../../..";
 
 export default interface CoverProduct {
+    id: string,
     name: Item<string, string>[],
     coverImageUrl: string,
     productUrl: string,

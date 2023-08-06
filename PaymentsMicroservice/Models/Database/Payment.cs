@@ -8,6 +8,8 @@
 
         public DateTime DateOfPayment { get; set; }
 
+        public string OrderId { get; set; } = string.Empty;
+
         public string PaymentId { get; set; } = string.Empty;
 
         public Customer Customer { get; set; } = default!;

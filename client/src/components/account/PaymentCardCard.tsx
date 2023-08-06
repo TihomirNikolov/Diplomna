@@ -13,13 +13,26 @@ interface Props {
 
 export default function PaymentCardCard({ card, onCardDeleted }: Props) {
 
-
+    function getCardSrc() {
+        switch (card.type) {
+            case 'Visa':
+                return visa;
+            case 'Mastercard':
+                return mastercard;
+            case 'Discover':
+                return discover;
+            case 'AmericanExpress':
+                return americanEexpress;
+            default:
+                return emptyCard;
+        }
+    }
 
     return (
         <div className="relative text-white">
-            <img src={visa} className="w-72" />
+            <img src={getCardSrc()} className="w-72 rounded-lg" />
             <div className="absolute bottom-5 left-14">
-                <span className="text-2xl">************{card.last4}</span>
+                <span className="text-2xl">{card.last4.padStart(16, '*')}</span>
             </div>
             <div className="absolute top-0 right-1">
                 <FontAwesomeIcon icon={['fas', 'x']}

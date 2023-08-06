@@ -163,9 +163,9 @@ namespace ProductsMicroservice.Controllers
 
         [HttpPost]
         [Route("shoppingcart")]
-        public async Task<IActionResult> GetShoppingCartInformation([FromBody] List<string> productUrls)
+        public async Task<IActionResult> GetShoppingCartInformation([FromBody] List<string> productIds)
         {
-            var shoppingCartItems = await _productsService.GetShoppingCartItemsInformationAsync(productUrls);
+            var shoppingCartItems = await _productsService.GetShoppingCartItemsInformationAsync(productIds);
 
             return Ok(shoppingCartItems);
         }

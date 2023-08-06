@@ -37,7 +37,7 @@ export default function CoverProductCard(props: Props) {
     function onProductAdded(product: CoverProduct) {
         addShoppingCartItem({
             name: product.name, coverTags: product.coverTags, price: product.price,
-            number: 1, imageUrl: product.coverImageUrl, productUrl: product.productUrl
+            number: 1, imageUrl: product.coverImageUrl, productUrl: product.productUrl, productId: product.id
         })
     }
 

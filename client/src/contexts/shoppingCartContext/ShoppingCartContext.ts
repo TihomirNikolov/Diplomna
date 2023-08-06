@@ -6,7 +6,8 @@ export const ShoppingCartContext = createContext<ShoppingCartContextType>({
     addShoppingCartItem: (item: ShoppingCartItem) => Promise.resolve(console.log(item)),
     removeShoppingCartItem: (item: ShoppingCartItem) => Promise.resolve(console.log(item)),
     changeShoppingCartItemCount: (item: ShoppingCartItem, newCount: number) => Promise.resolve(console.log(item)),
-    merge: () => Promise.resolve(console.log('merging'))
+    merge: () => Promise.resolve(console.log('merging')),
+    sum: 0
 })
 
 export const useShoppingCart = () => useContext(ShoppingCartContext)

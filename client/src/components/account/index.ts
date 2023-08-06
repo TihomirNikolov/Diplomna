@@ -8,9 +8,12 @@ import DeleteAccount from "./DeleteAccount";
 import Avatar from "./Avatar";
 import AddNewPaymentCard from "./AddNewPaymentCard";
 import PaymentCardCard from "./PaymentCardCard";
+import AddressComponent from "./AddressComponent";
+import PaymentCardComponent from "./PaymentCardComponent";
 
 export {
     AccountProfile, ChangeEmail, ChangeName,
     ChangePassword, AddNewAddressCard, AddressCard,
-    DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard
+    DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard,
+    AddressComponent, PaymentCardComponent
 }

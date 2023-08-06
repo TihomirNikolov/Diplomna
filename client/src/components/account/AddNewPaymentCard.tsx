@@ -10,7 +10,7 @@ export default function AddNewPaymentCard() {
             <Link to='/payments/cards/add'
                 className=" cursor-pointer">
                 <div className="relative">
-                    <img src={emptyCard} />
+                    <img src={emptyCard} className="rounded-lg"/>
                     <div className="absolute bottom-5 right-8">
                         <span className="text-black font-bold text-xl">{t('card.addNewCard')}</span>
                     </div>

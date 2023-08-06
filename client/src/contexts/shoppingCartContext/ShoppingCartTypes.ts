@@ -6,6 +6,7 @@ export interface ShoppingCartItem {
     price: number,
     number: number,
     imageUrl: string,
+    productId: string,
     productUrl: string
 }
 
@@ -14,5 +15,6 @@ export type ShoppingCartContextType = {
     addShoppingCartItem: (shoppingCartItem: ShoppingCartItem) => Promise<void>,
     removeShoppingCartItem: (shoppingCartItem: ShoppingCartItem) => Promise<void>,
     changeShoppingCartItemCount: (shoppingCartItem: ShoppingCartItem, newCount: number) => Promise<void>,
-    merge: () => Promise<void>
+    merge: () => Promise<void>,
+    sum: number
 }

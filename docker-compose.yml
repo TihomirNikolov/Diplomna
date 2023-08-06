@@ -45,6 +45,9 @@ services:
      build:
         context: .
         dockerfile: OrdersMicroservice/Dockerfile
+     depends_on:
+        ms-sql-server:
+            condition: service_healthy
   shoppingcartmicroservice:
      image: ${DOCKER_REGISTRY-}shoppingcartmicroservice
      build:

@@ -8,7 +8,7 @@ import { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar } f
 import { Routes, } from './routes'
 import {
     AccountProfile, ChangeEmail, ChangeName, ChangePassword,
-    AddNewAddressCard, AddressCard, DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard
+    AddNewAddressCard, AddressCard, DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard, AddressComponent
 } from "./account";
 import { useData, useGetType, useGet, usePost, usePut, useTitle } from "./hooks";
 import { Modal } from "./modals";
@@ -20,7 +20,8 @@ export {
     FloatingInput, Checkbox, Toggle, SearchBar, RadioButton, Input, ComboBox, CountriesComboBox, Textarea,
     Layout, AccountLayout, Footer, LinkButton, BlueButton, BlackWhiteButton,
     i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Routes,
-    AccountProfile, ChangeEmail, ChangeName, ChangePassword, AddNewAddressCard, AddressCard, DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard,
+    AccountProfile, ChangeEmail, ChangeName, ChangePassword, AddNewAddressCard,
+    AddressCard, DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard, AddressComponent,
     useData, useGetType, useGet, usePost, usePut, useTitle,
     Modal, LanguageSelector, Profile, ShoppingCart, Favourites,
     CategoriesComponent, CoverProductCard, Reviews, ReviewRating, ChooseReviewRating, SortingComponent, CategoryFilters, Pagination

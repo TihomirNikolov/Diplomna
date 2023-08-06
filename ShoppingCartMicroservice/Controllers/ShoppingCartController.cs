@@ -51,7 +51,7 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.AddItemToShoppingCartByEmailAsync(email, request.ProductUrl, request.Number);
+            var shoppingCartItems = await _redisService.AddItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
 
             return Ok(shoppingCartItems);
         }
@@ -60,7 +60,7 @@ namespace ShoppingCartMicroservice.Controllers
         [Route("add/browserid")]
         public async Task<IActionResult> AddItemToShoppingCartByBrowserId([FromBody] AddShoppingCartItemBrowserId request)
         {
-            var shoppingCartItems = await _redisService.AddItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductUrl, request.Number);
+            var shoppingCartItems = await _redisService.AddItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
 
             return Ok(shoppingCartItems);
         }
@@ -73,7 +73,7 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByEmailAsync(email, request.ProductUrl);
+            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByEmailAsync(email, request.ProductId);
 
             return Ok(shoppingCartItems);
         }
@@ -82,7 +82,7 @@ namespace ShoppingCartMicroservice.Controllers
         [Route("remove/browserId")]
         public async Task<IActionResult> RemoveItemFromShoppingCartByEmail([FromBody] RemoveShoppingCartItemByBrowserId request)
         {
-            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByBrowserIdAsync(request.BrowserId, request.ProductUrl);
+            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByBrowserIdAsync(request.BrowserId, request.ProductId);
 
             return Ok(shoppingCartItems);
         }
@@ -108,7 +108,7 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByEmailAsync(email, request.ProductUrl, request.Number);
+            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
 
             return Ok(shoppingCartItems);
         }
@@ -117,7 +117,7 @@ namespace ShoppingCartMicroservice.Controllers
         [Route("update/browserid")]
         public async Task<IActionResult> UpdateShoppingCartItemByBrowserId([FromBody] AddShoppingCartItemBrowserId request)
         {
-            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductUrl, request.Number);
+            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
 
             return Ok(shoppingCartItems);
         }

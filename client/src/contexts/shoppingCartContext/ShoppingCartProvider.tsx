@@ -10,7 +10,8 @@ import { useUser } from "../userContext";
 export default function ShoppingCardProvider(props: any) {
     const { t } = useTranslation();
     const { language } = useLanguage();
-    
+
+    const [sum, setSum] = useState<number>(0);
     const [shoppingCartItems, setShoppingCartItems] = useState<ShoppingCartItem[]>([])
     const [isMerging, setIsMerging] = useState<boolean>(false);
 
@@ -34,6 +35,11 @@ export default function ShoppingCardProvider(props: any) {
             var result = await axiosClient.get(`${baseShoppingCartURL()}api/shoppingcart/get/browserId/${localStorage.getItem('uuid')}`);
             var data = result.data as ShoppingCartItem[];
             setShoppingCartItems(data);
+            var sum = 0;
+            data.forEach(item => {
+                sum += item.price;
+            });
+            setSum(sum);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -59,18 +65,23 @@ export default function ShoppingCardProvider(props: any) {
             var updatedItems: ShoppingCartItem[] = [];
             if (isAuthenticated) {
                 var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/email`,
-                    { productUrl: shoppingCartItem.productUrl, number: shoppingCartItem.number });
+                    { productId: shoppingCartItem.productId, number: shoppingCartItem.number });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/browserid`,
-                    { browserId: localStorage.getItem('uuid'), productUrl: shoppingCartItem.productUrl, number: shoppingCartItem.number });
+                    { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: shoppingCartItem.number });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
 
             setShoppingCartItems(updatedItems);
+            var sum = 0;
+            updatedItems.forEach(item => {
+                sum += item.price;
+            });
+            setSum(sum);
             notification.success(t('successfullyAdded') + shoppingCartItem.name.find(i => i.key == language.code)?.value + t('toYourShoppingCart'));
         }
         catch (error) {
@@ -86,17 +97,22 @@ export default function ShoppingCardProvider(props: any) {
 
             if (isAuthenticated) {
                 var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/email`,
-                    { productUrl: shoppingCartItem.productUrl });
+                    { productId: shoppingCartItem.productId });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/browserid`,
-                    { browserId: localStorage.getItem('uuid'), productUrl: shoppingCartItem.productUrl });
+                    { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
             setShoppingCartItems(updatedItems);
+            var sum = 0;
+            updatedItems.forEach(item => {
+                sum += item.price;
+            });
+            setSum(sum);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -111,18 +127,23 @@ export default function ShoppingCardProvider(props: any) {
 
             if (isAuthenticated) {
                 var result = await authClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/email`,
-                    { productUrl: shoppingCartItem.productUrl, number: newCount });
+                    { productId: shoppingCartItem.productId, number: newCount });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/browserid`,
-                    { browserId: localStorage.getItem('uuid'), productUrl: shoppingCartItem.productUrl, number: newCount });
+                    { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: newCount });
 
                 updatedItems = result.data as ShoppingCartItem[];
             }
 
             setShoppingCartItems(updatedItems);
+            var sum = 0;
+            updatedItems.forEach(item => {
+                sum += item.price;
+            });
+            setSum(sum);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -131,16 +152,16 @@ export default function ShoppingCardProvider(props: any) {
         }
     }
 
-    async function merge(){
-        try{
+    async function merge() {
+        try {
             setIsMerging(true);
-            var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/merge`, { browserId: localStorage.getItem('uuid')});
+            var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/merge`, { browserId: localStorage.getItem('uuid') });
             var items = result.data as ShoppingCartItem[];
             setShoppingCartItems(items);
             setIsMerging(false);
         }
-        catch(error){
-            if(axios.isAxiosError(error)){
+        catch (error) {
+            if (axios.isAxiosError(error)) {
 
             }
             setIsMerging(false);
@@ -151,7 +172,7 @@ export default function ShoppingCardProvider(props: any) {
         <ShoppingCartContext.Provider value={{
             shoppingCartItems: shoppingCartItems,
             addShoppingCartItem: addItem, removeShoppingCartItem: removeItem, changeShoppingCartItemCount: changeCount,
-            merge: merge
+            merge: merge, sum: sum
         }}>
             {props.children}
         </ShoppingCartContext.Provider>

@@ -83,6 +83,10 @@ namespace PaymentsMicroservice.Migrations
                     b.Property<DateTime>("DateOfPayment")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

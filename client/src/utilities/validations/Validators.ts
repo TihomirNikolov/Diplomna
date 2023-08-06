@@ -17,7 +17,7 @@ export function validateLastName(value: string) {
 }
 
 export function validateMobileNumber(value: string) {
-    return validator.isMobilePhone(value)
+    return validator.isMobilePhone(value, 'bg-BG')
 }
 
 export function validateStreetAddress(value: string) {

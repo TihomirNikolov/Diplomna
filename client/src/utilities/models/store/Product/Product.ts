@@ -1,6 +1,7 @@
 import { BaseCategory, Item, ProductReview } from "../../..";
 
 export default interface Product{
+    id: string,
     name: Item<string, string>[],
     description: Item<string, string>[],
     pictureUrls: string[],

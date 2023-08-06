@@ -14,7 +14,8 @@
         "register": "Регистрация",
         "shoppingCart": "Количка",
         "home": "Начало",
-        "notFound": "Страницта не е намерена"
+        "notFound": "Страницта не е намерена",
+        "finishOrder": "Завършване на поръчка"
     },
     "errorInput": {
         "mobileNumberInvalid": "Моля въведете валиден телефонен номер.",
@@ -30,10 +31,13 @@
         "cardNumberInvalid": "Невалиден номер на карта",
         "cardholderNameInvalid": "Името трябва да е поне 3 символа и може да съдържа букви и .'-",
         "expiryDateInValid": "Моля въведете валидни месец и година във формата мм/гг или мм/гггг",
-        "cvvInvalid": "Моля въведете валиден CVV/CVC"
+        "cvvInvalid": "Моля въведете валиден CVV/CVC",
+        "addressInputInvalid": "Моля попълнете валидни данни за адресът Ви.",
+        "cardInputInvalid": "Моля попълнете валидни данни за картата Ви."
     },
     "address": {
         "addNewAddress": "Добавяне на нов адрес",
+        "createNewAddress": "Създаване на нов адрес",
         "mobileTelephoneNumber": "Мобилен телефонен номер",
         "useDefaultOffice": "Използвай като основен адрес",
         "address": "Адрес",
@@ -83,6 +87,7 @@
     "send": "Изпращане",
     "emailNotConfirmed": "Имейлът ви не е потвърден.",
     "resendEmail": "Изпратете отново имейла.",
+    "resetPassword": "Нулиране на парола",
     "account": "Акаунт",
     "myAddresses": "Моите адреси",
     "myHistory": "Моите поръчки",
@@ -140,5 +145,15 @@
     "reviews": "Ревюта",
     "noReviews": "Този продукт все още няма ревюта",
     "addReview": "Добави ревю",
-    "reviewLoginRequired": "За да добавите ново ревю ма продукта моля влезте в акаунта си."
+    "reviewLoginRequired": "За да добавите ново ревю ма продукта моля влезте в акаунта си.",
+    "paymentMethod": "Метод на плащане",
+    "cardPayment": "Плащане с карта",
+    "comment": "Коментар",
+    "addComment": "Добавяне на коментар",
+    "dueAmmount": "Дължима сума",
+    "finishOrder": "Завърши поръчката",
+    "chooseAddress": "Изберете адрес",
+    "chooseCard": "Изберете карта",
+    "year": "Година",
+    "expires": "Изтича на"
 }

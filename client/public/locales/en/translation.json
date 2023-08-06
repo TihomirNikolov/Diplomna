@@ -14,7 +14,8 @@
         "register": "Register",
         "shoppingCart": "Basket",
         "home": "Home",
-        "notFound": "Page was not found"
+        "notFound": "Page was not found",
+        "finishOrder": "Finish Order"
     },
     "errorInput": {
         "mobileNumberInvalid": "Please enter a valid phone number..",
@@ -30,10 +31,13 @@
         "cardNumberInvalid": "The card number is invalid",
         "cardholderNameInvalid": "The cardholder name must be at least 3 characters and must contains only lettesr and .'-",
         "expiryDateInValid": "Please enter valid month and year in the format mm/yy or mm/yyyy",
-        "cvvInvalid": "Please enter a valid CVV/CVC"
+        "cvvInvalid": "Please enter a valid CVV/CVC",
+        "addressInputInvalid": "Please enter valid address details.",
+        "cardInputInvalid": "Please enter valid card details."
     },
     "address": {
         "addNewAddress": "Add a new address",
+        "createNewAddress": "Create a new address",
         "mobileTelephoneNumber": "Mobile telephone number",
         "useDefaultOffice": "Use as default office",
         "address": "Address",
@@ -141,5 +145,15 @@
     "reviews": "Reviews",
     "noReviews": "This product has no reviews yet",
     "addReview": "Add review",
-    "reviewLoginRequired": "To add a new review, please log in to your account."
+    "reviewLoginRequired": "To add a new review, please log in to your account.",
+    "paymentMethod": "Payment method",
+    "cardPayment": "Card payment",
+    "comment": "Comment",
+    "addComment": "Add a comment",
+    "dueAmmount": "Due ammount",
+    "finishOrder": "Finish the order",
+    "chooseAddress": "Choose an address",
+    "chooseCard": "Choose a card",
+    "year": "Year",
+    "expires": "Expires"
 }

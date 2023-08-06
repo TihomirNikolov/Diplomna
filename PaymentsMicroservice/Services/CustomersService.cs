@@ -73,7 +73,8 @@ namespace PaymentsMicroservice.Services
                 {
                     CardId = cardResponse.Id,
                     CustomerId = customer.Id,
-                    Last4 = cardNumber[^4..]
+                    Last4 = cardNumber[^4..],
+                    Type = cardType
                 });
                 await _dbContext.SaveChangesAsync();
             }

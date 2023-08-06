@@ -7,6 +7,7 @@ import { FlagIcon, FlagIconCode } from "react-flag-kit";
 
 interface Props {
     labelText: string,
+    onChanged?: (country: Country) => void
 }
 
 type Country = {
@@ -43,12 +44,13 @@ const CountriesComboBox = forwardRef<CountriesComboboxHandle, Props>((props: Pro
                     .includes(query.toLowerCase().replace(/\s+/g, ''))
             );
 
-    function onSelected(contry: Country) {
-        setSelected(contry);
+    function onSelected(country: Country) {
+        setSelected(country);
+        props.onChanged?.(country);
     }
 
     return (
-        <>
+        <div>
             <label>{props.labelText}</label>
             <Combobox>
                 <div className="relative mt-1">
@@ -103,7 +105,7 @@ const CountriesComboBox = forwardRef<CountriesComboboxHandle, Props>((props: Pro
                     </Transition>
                 </div>
             </Combobox>
-        </>
+        </div>
     );
 });
 

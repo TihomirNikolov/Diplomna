@@ -4,6 +4,7 @@ namespace ProductsMicroservice.Models.Products
 {
     public class CoverProductDTO
     {
+        public string Id { get; set; } = string.Empty;
         public List<Item<string, string>> Name { get; set; } = default!;
         public string CoverImageUrl { get; set; } = string.Empty;
         public string ProductUrl { get; set; } = string.Empty;

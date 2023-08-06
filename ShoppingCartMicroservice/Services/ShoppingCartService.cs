@@ -43,15 +43,16 @@ namespace ShoppingCartMicroservice.Services
 
             var shoppingCartDocuments = JsonConvert.DeserializeObject<List<ShoppingCartDocument>>(db.StringGet(url).ToString())!;
 
-            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartDocuments.Select(s => s.ProductUrl).ToList());
+            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartDocuments.Select(s => s.ProductId).ToList());
 
             var mergedCollections = shoppingCartDocuments.Join(
                 shoppingCartItems,
-                itemA => itemA.ProductUrl,
-                itemB => itemB.ProductUrl,
+                itemA => itemA.ProductId,
+                itemB => itemB.ProductId,
                 (itemA, itemB) => new ShoppingCartItem
                 {
-                    ProductUrl = itemA.ProductUrl,
+                    ProductId = itemA.ProductId,
+                    ProductUrl = itemB.ProductUrl,
                     CoverTags = itemB.CoverTags,
                     ImageUrl = itemB.ImageUrl,
                     Name = itemB.Name,
@@ -98,7 +99,7 @@ namespace ShoppingCartMicroservice.Services
 
             foreach (var shoppingCartItem in browserIdShoppingCartItemDocuments)
             {
-                var emailShoppingCartItem = emailShoppingCartItemDocuments.FirstOrDefault(s => s.ProductUrl == shoppingCartItem.ProductUrl);
+                var emailShoppingCartItem = emailShoppingCartItemDocuments.FirstOrDefault(s => s.ProductId == shoppingCartItem.ProductId);
 
                 if (emailShoppingCartItem != null)
                 {
@@ -116,15 +117,15 @@ namespace ShoppingCartMicroservice.Services
 
         private async Task<List<ShoppingCartItem>> GetShoppingCartItemsInformationAsync(List<ShoppingCartDocument> shoppingCartDocuments)
         {
-            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartDocuments.Select(s => s.ProductUrl).ToList());
+            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartDocuments.Select(s => s.ProductId).ToList());
 
             var mergedCollections = shoppingCartDocuments.Join(
                 shoppingCartItems,
-                itemA => itemA.ProductUrl,
+                itemA => itemA.ProductId,
                 itemB => itemB.ProductUrl,
                 (itemA, itemB) => new ShoppingCartItem
                 {
-                    ProductUrl = itemA.ProductUrl,
+                    ProductId = itemA.ProductId,
                     CoverTags = itemB.CoverTags,
                     ImageUrl = itemB.ImageUrl,
                     Name = itemB.Name,

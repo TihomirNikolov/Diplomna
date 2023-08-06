@@ -21,6 +21,7 @@ const ProductPage = lazy(() => import('../../pages').then((module) => ({ default
 const RegisterPage = lazy(() => import('../../pages').then((module) => ({ default: module.RegisterPage })));
 const ResetPasswordPage = lazy(() => import('../../pages').then((module) => ({ default: module.ResetPasswordPage })));
 const ShoppingCartPage = lazy(() => import('../../pages').then((module) => ({ default: module.ShoppingCartPage })));
+const FinishOrderPage = lazy(() => import('../../pages').then((module) => ({ default: module.FinishOrderPage })));
 const WishlistPage = lazy(() => import('../../pages').then((module) => ({ default: module.WishlistPage })));
 const SearchPage = lazy(() => import('../../pages').then((module) => ({ default: module.SearchPage })));
 
@@ -38,6 +39,7 @@ export default function Router() {
                 <Route path={''} element={<HomePage />} />
                 {homeRoutes()}
                 <Route path='/checkout/cart' element={<ShoppingCartPage />} />
+                <Route path='/checkout/finish' element={<FinishOrderPage />} />
                 <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
                 <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
                 <Route path='/category/*' element={<CategoryPage />} />

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { BlackWhiteButton, Checkbox, CountriesComboBox, Input, useTitle } from "../../components";
+import { AddressComponent, BlackWhiteButton, Checkbox, CountriesComboBox, Input, useTitle } from "../../components";
 import { useTranslation } from "react-i18next";
 import validator from 'validator';
 import { InputHandle } from "../../components/inputs/Input";
@@ -10,6 +10,7 @@ import {
 } from "../../utilities";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
+import { AddressComponentHandle } from "@/components/account/AddressComponent";
 
 let initialInputs: Address = {
     city: '',
@@ -35,14 +36,7 @@ export default function AddressPage() {
     const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
     const [isDefaultAddressLocked, setIsDefaultAddressLocked] = useState<boolean>(false);
 
-    const countriesCombobox = useRef<CountriesComboboxHandle>(null);
-    const firstNameInput = useRef<InputHandle>(null);
-    const lastNameInput = useRef<InputHandle>(null);
-    const mobileNumberInput = useRef<InputHandle>(null);
-    const streetAddressInput = useRef<InputHandle>(null);
-    const postalCodeInput = useRef<InputHandle>(null);
-    const regionInput = useRef<InputHandle>(null);
-    const cityInput = useRef<InputHandle>(null);
+    const addressRef = useRef<AddressComponentHandle>(null);
 
     const { id } = useParams();
     const { state } = useLocation();
@@ -87,10 +81,6 @@ export default function AddressPage() {
         setIsDefaultAddress(!isDefaultAddress);
     }
 
-    function validatePostalCode(value: string) {
-        return validator.isPostalCode(value, countriesCombobox.current?.selectedCountry.countryCode as validator.PostalCodeLocale);
-    }
-
     async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (isEdit) {
@@ -100,38 +90,21 @@ export default function AddressPage() {
         }
     }
 
-    function validate() {
-        firstNameInput.current!.showValidation();
-        lastNameInput.current!.showValidation();
-        mobileNumberInput.current!.showValidation();
-        streetAddressInput.current!.showValidation();
-        postalCodeInput.current!.showValidation();
-        regionInput.current!.showValidation();
-        cityInput.current!.showValidation();
-
-        if (!firstNameInput.current?.isValid || !lastNameInput.current?.isValid
-            || !mobileNumberInput.current?.isValid || !streetAddressInput.current?.isValid
-            || !postalCodeInput.current?.isValid || !regionInput.current?.isValid
-            || !cityInput.current?.isValid) {
-            return false;
-        }
-        return true;
-    }
-
     async function edit() {
-        if (!validate()) {
+        if (!addressRef.current?.isValid) {
+            addressRef.current?.showValidation();
             return;
         }
 
         var address = {
-            firstName: firstNameInput.current?.value,
-            lastName: lastNameInput.current?.value,
-            phoneNumber: mobileNumberInput.current?.value,
-            streetAddress: streetAddressInput.current?.value,
-            country: countriesCombobox.current?.selectedCountry.country,
-            region: regionInput.current?.value,
-            city: cityInput.current?.value,
-            postalCode: postalCodeInput.current?.value,
+            firstName: addressRef.current?.address.firstName,
+            lastName: addressRef.current?.address.lastName,
+            phoneNumber: addressRef.current?.address.phoneNumber,
+            streetAddress: addressRef.current?.address.streetAddress,
+            country: addressRef.current?.address.country,
+            region: addressRef.current?.address.region,
+            city: addressRef.current?.address.city,
+            postalCode: addressRef.current?.address.postalCode,
             isDefault: isDefaultAddress,
             id: initial.id
         }
@@ -149,19 +122,20 @@ export default function AddressPage() {
     }
 
     async function add() {
-        if (!validate()) {
+        if (!addressRef.current?.isValid) {
+            addressRef.current?.showValidation();
             return;
         }
 
         var address = {
-            firstName: firstNameInput.current?.value,
-            lastName: lastNameInput.current?.value,
-            phoneNumber: mobileNumberInput.current?.value,
-            streetAddress: streetAddressInput.current?.value,
-            country: countriesCombobox.current?.selectedCountry.country,
-            region: regionInput.current?.value,
-            city: cityInput.current?.value,
-            postalCode: postalCodeInput.current?.value,
+            firstName: addressRef.current?.address.firstName,
+            lastName: addressRef.current?.address.lastName,
+            phoneNumber: addressRef.current?.address.phoneNumber,
+            streetAddress: addressRef.current?.address.streetAddress,
+            country: addressRef.current?.address.country,
+            region: addressRef.current?.address.region,
+            city: addressRef.current?.address.city,
+            postalCode: addressRef.current?.address.postalCode,
             isDefault: isDefaultAddress
         }
 
@@ -183,35 +157,7 @@ export default function AddressPage() {
                     <div className="grid">
                         <form className="p-5 space-y-5" onSubmit={onSubmit}>
                             <div>
-                                <CountriesComboBox labelText={t('address.addNewAddress')} ref={countriesCombobox} />
-                                <Input ref={firstNameInput} initialValue={initial.firstName}
-                                    type="text" placeholder={t('firstName')}
-                                    validate={validateFirstName} immediateValdation={true}
-                                    validationMessage={t('errorInput.threeCharactersRequired')!} />
-                                <Input ref={lastNameInput} initialValue={initial.lastName}
-                                    type="text" placeholder={t('lastName')}
-                                    validate={validateLastName} immediateValdation={true}
-                                    validationMessage={t('errorInput.threeCharactersRequired')!} />
-                                <Input ref={mobileNumberInput} initialValue={initial.phoneNumber}
-                                    type="text" placeholder={t('address.mobileTelephoneNumber')}
-                                    validate={validateMobileNumber} validateOnLostFocus={true}
-                                    validationMessage={t('errorInput.mobileNumberInvalid')!} />
-                                <Input ref={streetAddressInput} initialValue={initial.streetAddress}
-                                    type="text" placeholder={t('address.address')}
-                                    validate={validateStreetAddress} immediateValdation={true}
-                                    validationMessage={t('errorInput.fiveCharactersRequired')!} />
-                                <Input ref={postalCodeInput} initialValue={initial.postalCode}
-                                    type="tel" placeholder={t('address.postCode')}
-                                    validate={validatePostalCode} immediateValdation={true}
-                                    validationMessage={t('errorInput.postalCodeInvalid')!} />
-                                <Input ref={regionInput} initialValue={initial.region}
-                                    type="text" placeholder={t('address.region')}
-                                    validate={validateRegion} immediateValdation={true}
-                                    validationMessage={t('errorInput.twoCharactersRequired')!} />
-                                <Input ref={cityInput} initialValue={initial.city}
-                                    type="text" placeholder={t('address.city')}
-                                    validate={validateCity} immediateValdation={true}
-                                    validationMessage={t('errorInput.twoCharactersRequired')!} />
+                                <AddressComponent ref={addressRef}/>
                             </div>
 
                             <Checkbox
