@@ -192,5 +192,35 @@ namespace ShoppingCartMicroservice.Services
 
             return mergedCollections;
         }
+
+        public async Task<List<ShoppingCartItem>> DeleteShoppingCartByEmailAsync(string email)
+        {
+            var url = $"shoppingcart/email:{email}";
+
+            var items = await DeleteShoppingCartAsync(url);
+
+            return items;
+        }
+
+        public async Task<List<ShoppingCartItem>> DeleteShoppingCartByBrowserIdAsync(string browserId)
+        {
+            var url = $"shoppingcart/browserId:{browserId}";
+
+            var items = await DeleteShoppingCartAsync(url);
+
+            return items;
+        }
+
+        public async Task<List<ShoppingCartItem>> DeleteShoppingCartAsync(string url)
+        {
+            var db = _redis.GetDatabase();
+
+            if (await db.KeyExistsAsync(url))
+            {
+                await db.KeyDeleteAsync(url);
+            }
+
+            return new List<ShoppingCartItem>();
+        }
     }
 }

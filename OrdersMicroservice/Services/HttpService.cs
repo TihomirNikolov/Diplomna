@@ -2,12 +2,20 @@
 using OrdersMicroservice.Interfaces;
 using OrdersMicroservice.Models.DTOs;
 using OrdersMicroservice.Models.HttpRequests;
+using SharedResources.Extensions;
 using System.Text;
 
 namespace OrdersMicroservice.Services
 {
     public class HttpService : IHttpService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public HttpService(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
         public async Task<bool> CreatePaymentAsync(string orderId, string cardId, string amount)
         {
             var clientHandler = new HttpClientHandler
@@ -45,6 +53,9 @@ namespace OrdersMicroservice.Services
 
             var httpClient = new HttpClient(clientHandler);
 
+            var accessToken = _httpContextAccessor.HttpContext != null ? _httpContextAccessor.HttpContext.Request.GetAuthorizationToken() : "";
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
             var cardPayment = new CreatePaymentNewCardRequest
             {
                 OrderId = orderId,

@@ -36,7 +36,8 @@ const createNewAddress: Address = {
 }
 
 export type FinishPageAddressHandle = {
-    validate: () => boolean
+    validate: () => boolean,
+    isNewAddress: boolean
 }
 
 interface Props {
@@ -59,7 +60,8 @@ const FinishPageAddressComponent = forwardRef<FinishPageAddressHandle, Props>(({
         validate: () => {
             addressRef.current?.showValidation();
             return addressRef.current?.isValid || selectedAddress != createNewAddress;
-        }
+        },
+        isNewAddress: selectedAddress == createNewAddress
     }))
 
     async function fetchAddresses() {

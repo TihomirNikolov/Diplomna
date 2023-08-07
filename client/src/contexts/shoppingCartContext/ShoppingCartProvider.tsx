@@ -168,11 +168,26 @@ export default function ShoppingCardProvider(props: any) {
         }
     }
 
+    async function deleteShoppingCart() {
+        if (isAuthenticated) {
+            var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/email`);
+
+            var data = response.data as ShoppingCartItem[];
+            setShoppingCartItems(data);
+        }
+        else {
+            var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/browserId/${localStorage.getItem('uuid')}`);
+
+            var data = response.data as ShoppingCartItem[];
+            setShoppingCartItems(data);
+        }
+    }
+
     return (
         <ShoppingCartContext.Provider value={{
             shoppingCartItems: shoppingCartItems,
             addShoppingCartItem: addItem, removeShoppingCartItem: removeItem, changeShoppingCartItemCount: changeCount,
-            merge: merge, sum: sum
+            merge: merge, sum: sum, deleteShoppingCart: deleteShoppingCart
         }}>
             {props.children}
         </ShoppingCartContext.Provider>

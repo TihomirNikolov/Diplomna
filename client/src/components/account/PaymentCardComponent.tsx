@@ -242,7 +242,7 @@ const PaymentCardComponent = forwardRef<PaymentCardHandle, Props>(({ card, setCa
                             )}
                         </Listbox>
                     </div>
-                    <div className="flex items-end">
+                    <div className="w-64">
                         <Input ref={cvvRef}
                             type="text" placeholder={"CVV/CVC"}
                             validate={validateCVV} immediateValdation

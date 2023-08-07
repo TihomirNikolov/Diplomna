@@ -5,12 +5,13 @@ import { FinishPageAddressHandle } from "@/components/finishPage/FinishPageAddre
 import { FinishPagePaymentsHandle } from "@/components/finishPage/FinishPagePaymentsComponent";
 import { Textarea } from "@/components/ui/textarea";
 import { useShoppingCart, useUser } from "@/contexts";
-import { Address, authClient, axiosClient, baseOrdersURL, notification } from "@/utilities";
+import { Address, authClient, axiosClient, baseOrdersURL, baseShoppingCartURL, notification } from "@/utilities";
 import { Card } from "@/utilities/models/checkout/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom";
 
 const initialAddress: Address = {
     city: '',
@@ -51,7 +52,7 @@ export default function FinishOrderPage() {
     useTitle(t('title.finishOrder'));
 
     const { isAuthenticated } = useUser();
-    const { sum, shoppingCartItems } = useShoppingCart();
+    const { sum, shoppingCartItems, deleteShoppingCart } = useShoppingCart();
 
     const addressRef = useRef<FinishPageAddressHandle>(null);
     const paymentsRef = useRef<FinishPagePaymentsHandle>(null);
@@ -60,6 +61,8 @@ export default function FinishOrderPage() {
     const [newCard, setNewCard] = useState<CreateCard>(initialNewCard);
     const [card, setCard] = useState<Card>(initialCard);
     const [comment, setComment] = useState<string>('');
+
+    const navigate = useNavigate();
 
     async function onSubmit() {
         console.log('is new card: ' + paymentsRef.current?.isNewCard);
@@ -74,6 +77,7 @@ export default function FinishOrderPage() {
         }
 
         try {
+
             var items: OrderItem[] = [];
             for (var item of shoppingCartItems) {
                 items.push({
@@ -83,16 +87,36 @@ export default function FinishOrderPage() {
                 })
             }
             if (isAuthenticated) {
-                var response = await authClient.post(`${baseOrdersURL()}api/orders/create/email`, { orderItems: items, comment: comment })
+                var response = await authClient.post(`${baseOrdersURL()}api/orders/create/email`,
+                    {
+                        orderItems: items,
+                        comment: comment,
+                        address: address,
+                        isNewAddress: addressRef.current.isNewAddress,
+                        cardPayment: {
+                            cardId: card.id,
+                            newCard: newCard,
+                            isPaymentWithNewCard: paymentsRef.current.isNewCard
+                        }
+                    })
             }
             else {
                 var response = await axiosClient.post(`${baseOrdersURL()}api/orders/create/browserid`,
                     {
                         orderItems: items,
                         comment: comment,
-                        browserId: localStorage.getItem('uuid')
+                        browserId: localStorage.getItem('uuid'),
+                        address: address,
+                        isNewAddress: addressRef.current.isNewAddress,
+                        cardPayment: {
+                            cardId: card.id,
+                            newCard: newCard,
+                            isPaymentWithNewCard: paymentsRef.current.isNewCard
+                        }
                     })
             }
+            await deleteShoppingCart();
+            navigate('/');
         }
         catch (error) {
             if (axios.isAxiosError(error)) {

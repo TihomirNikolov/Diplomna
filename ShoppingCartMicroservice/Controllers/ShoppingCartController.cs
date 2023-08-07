@@ -122,5 +122,26 @@ namespace ShoppingCartMicroservice.Controllers
             return Ok(shoppingCartItems);
         }
 
+        [HttpDelete]
+        [Route("delete/email")]
+        public async Task<IActionResult> DeleteShoppingCartByEmail()
+        {
+            var token = Request.GetAuthorizationToken();
+
+            var email = await HttpRequests.GetUserEmailAsync(token);
+
+            var items = await _redisService.DeleteShoppingCartByEmailAsync(email);
+
+            return Ok(items);
+        }
+
+        [HttpDelete]
+        [Route("delete/browserid/{browserId}")]
+        public async Task<IActionResult> DeleteShoppingCartByBrowserId(string browserId)
+        {
+            var items = await _redisService.DeleteShoppingCartByBrowserIdAsync(browserId);
+
+            return Ok(items);
+        }
     }
 }

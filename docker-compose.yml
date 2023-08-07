@@ -58,6 +58,9 @@ services:
      build:
         context: .
         dockerfile: LocationMicroservice/Dockerfile
+     depends_on:
+        ms-sql-server:
+            condition: service_healthy
   #website:
   #  build:
   #      context: ./client

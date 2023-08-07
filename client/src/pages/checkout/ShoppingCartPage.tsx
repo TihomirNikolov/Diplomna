@@ -109,7 +109,7 @@ export default function ShoppingCartPage() {
                                         onClick={() => decrementShoppingCartItemCount(item)}>
                                         -
                                     </button>
-                                    <input defaultValue={item.number}
+                                    <input value={item.number}
                                         className="px-2 py-1 border border-gray-300 dark:border-gray-700 bg-transparent w-12
                                         text-center focus:outline-none focus:outline-offset-0
                                          focus:outline-blue-600 focus:dark:outline-blue-600"

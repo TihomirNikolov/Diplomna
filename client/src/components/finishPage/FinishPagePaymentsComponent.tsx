@@ -37,7 +37,7 @@ const FinishPagePaymentsComponent = forwardRef<FinishPagePaymentsHandle, Props>(
     const { t } = useTranslation();
 
     const [cards, setCards] = useState<Card[]>([]);
-    const [selectedCard, setSelectedCard] = useState<Card>(initialCard);
+    const [selectedCard, setSelectedCard] = useState<Card>(createNewCard);
 
     const paymentCardRef = useRef<PaymentCardHandle>(null);
 

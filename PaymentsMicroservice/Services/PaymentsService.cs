@@ -49,7 +49,7 @@ namespace PaymentsMicroservice.Services
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = longAmount,
+                    Amount = longAmount * 100,
                     Currency = "BGN",
                     PaymentMethod = card.CardId,
                     Customer = card.Customer.CutomerId
@@ -74,7 +74,7 @@ namespace PaymentsMicroservice.Services
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

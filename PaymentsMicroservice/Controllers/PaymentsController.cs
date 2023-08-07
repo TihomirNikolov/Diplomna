@@ -18,7 +18,7 @@ namespace PaymentsMicroservice.Controllers
         }
 
         [HttpPost]
-        [Route("/create/existing-card")]
+        [Route("create/existing-card")]
         public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentExistingCardRequest request)
         {
             var result = await _paymentsService.CreatePaymentWithExistingCardAsync(request.OrderId, request.CardId, request.Amount);
@@ -27,7 +27,7 @@ namespace PaymentsMicroservice.Controllers
         }
 
         [HttpPost]
-        [Route("/create/new-card")]
+        [Route("create/new-card")]
         public async Task<IActionResult> CreatePaymentWithNewCard([FromBody] CreatePaymentNewCardRequest request)
         {
             var token = Request.GetAuthorizationToken();

@@ -11,6 +11,8 @@ namespace OrdersMicroservice.Models.Requests
 
         public AddressDTO Address { get; set; } = default!;
 
+        public bool IsNewAddress { get; set; }
+
         public CardPaymentDTO CardPayment { get; set; } = default!;
     }
 }
