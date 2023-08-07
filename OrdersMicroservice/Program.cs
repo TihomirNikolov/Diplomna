@@ -13,6 +13,7 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")));
 
 builder.Services.AddScoped<IOrdersService, OrdersService>();
+builder.Services.AddScoped<IHttpService, HttpService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

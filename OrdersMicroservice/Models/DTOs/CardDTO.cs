@@ -1,6 +1,6 @@
-﻿namespace PaymentsMicroservice.Models.Requests
+﻿namespace OrdersMicroservice.Models.DTOs
 {
-    public class AddCardRequest
+    public class CardDTO
     {
         public string CardNumber { get; set; } = string.Empty;
 

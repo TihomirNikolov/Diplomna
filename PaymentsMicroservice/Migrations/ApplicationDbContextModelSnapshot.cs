@@ -76,8 +76,11 @@ namespace PaymentsMicroservice.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("CustomerId")
+                    b.Property<string>("CardId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfPayment")
@@ -92,6 +95,8 @@ namespace PaymentsMicroservice.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CardId");
 
                     b.HasIndex("CustomerId");
 
@@ -111,13 +116,17 @@ namespace PaymentsMicroservice.Migrations
 
             modelBuilder.Entity("PaymentsMicroservice.Models.Database.Payment", b =>
                 {
-                    b.HasOne("PaymentsMicroservice.Models.Database.Customer", "Customer")
-                        .WithMany("Payments")
-                        .HasForeignKey("CustomerId")
+                    b.HasOne("PaymentsMicroservice.Models.Database.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.HasOne("PaymentsMicroservice.Models.Database.Customer", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Card");
                 });
 
             modelBuilder.Entity("PaymentsMicroservice.Models.Database.Customer", b =>

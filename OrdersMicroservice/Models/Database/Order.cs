@@ -15,6 +15,8 @@ namespace OrdersMicroservice.Models.Database
 
         public List<OrderItem> OrderItems { get; set; } = default!;
 
+        public Address Address { get; set; } = default!;
+
         public Order()
         {
             Id = Guid.NewGuid().ToString();

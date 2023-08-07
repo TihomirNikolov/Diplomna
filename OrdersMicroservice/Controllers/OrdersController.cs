@@ -26,7 +26,7 @@ namespace OrdersMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var response = _ordersService.CreateOrderAsync(email, request.OrderItems, request.Comment);
+            var response = await _ordersService.CreateOrderAsync(email, request.OrderItems, request.Address, request.Comment, request.CardPayment);
 
             return Ok(response);
         }
@@ -35,7 +35,7 @@ namespace OrdersMicroservice.Controllers
         [Route("create/browserId")]
         public async Task<IActionResult> CreateOrderByBrowserId([FromBody] AddOrderByBrowserIdRequest request)
         {
-            var response = _ordersService.CreateOrderAsync(request.BrowserId, request.OrderItems, request.Comment);
+            var response = await _ordersService.CreateOrderAsync(request.BrowserId, request.OrderItems, request.Address, request.Comment, request.CardPayment);
 
             return Ok(response);
         }

@@ -12,9 +12,9 @@
 
         public string PaymentId { get; set; } = string.Empty;
 
-        public Customer Customer { get; set; } = default!;
+        public Card Card { get; set; } = default!;
 
-        public string CustomerId { get; set; } = string.Empty;
+        public string CardId { get; set; } = string.Empty;
 
         public Payment()
         {

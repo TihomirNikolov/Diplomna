@@ -20,7 +20,7 @@ namespace PaymentsMicroservice.Services
             _mapper = mapper;
         }
 
-        public async Task AddCardAsync(string email, string cardNumber, string cardholderName, string month, string year, string cvv, string cardType)
+        public async Task<string> AddCardAsync(string email, string cardNumber, string cardholderName, string month, string year, string cvv, string cardType)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace PaymentsMicroservice.Services
 
                 var cardResponse = await cardService.CreateAsync(customer.CutomerId, cardOptions);
 
-                _dbContext.Cards.Add(new Models.Database.Card
+                var entity = _dbContext.Cards.Add(new Models.Database.Card
                 {
                     CardId = cardResponse.Id,
                     CustomerId = customer.Id,
@@ -77,10 +77,12 @@ namespace PaymentsMicroservice.Services
                     Type = cardType
                 });
                 await _dbContext.SaveChangesAsync();
+
+                return entity.Entity.Id;
             }
             catch (Exception ex)
             {
-
+                return "";
             }
 
         }
