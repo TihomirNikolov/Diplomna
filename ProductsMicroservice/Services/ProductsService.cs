@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models;
 using ProductsMicroservice.Models.Documents;
@@ -12,14 +13,26 @@ namespace ProductsMicroservice.Services
 {
     public class ProductsService : BaseService, IProductsService
     {
-        private IMapper _mapper;
+        private readonly IHttpService _httpService;
+        private readonly IStoresService _storesService;
+
+        private readonly IMapper _mapper;
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         protected override string CollectionName => "Products";
 
 
-        public ProductsService(IMongoClient mongoClient, IMapper mapper) : base(mongoClient)
+        public ProductsService(IMongoClient mongoClient,
+                               IMapper mapper,
+                               IHttpContextAccessor httpContextAccessor,
+                               IHttpService httpService,
+                               IStoresService storesService) : base(mongoClient)
         {
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _httpService = httpService;
+            _storesService = storesService;
         }
 
 
@@ -80,7 +93,30 @@ namespace ProductsMicroservice.Services
                 .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories, 
                 c=> c.DisplayName.Any(name => name.Value == categoryName))).ToListAsync();
 
-            return _mapper.Map<List<CoverProductDTO>>(collection);
+            var products = _mapper.Map<List<CoverProductDTO>>(collection);
+
+            var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+
+            if (ipAddress.StartsWith("::ffff:"))
+            {
+                ipAddress = ipAddress.Substring("::ffff:".Length);
+            }
+
+            var userLocation = await _httpService.GetLocationByIpAddressAsync("161.149.146.201");
+
+            foreach(var product in products)
+            {
+                var stores = await _storesService.GetStoresByProductIdAsync(product.Id);
+
+                if(stores == null || stores.Count == 0) continue;
+
+                var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
+
+                product.StoreId = nearestStore.Store.Id;
+                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+            }
+
+            return products;
         }
 
         public async Task<bool> CheckIfProductExistsAsync(string url)

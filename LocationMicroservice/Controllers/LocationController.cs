@@ -15,7 +15,7 @@ namespace LocationMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("location/ip/{ipAddress}")]
+        [Route("ip/{ipAddress}")]
         public async Task<IActionResult> GetLocationByIpAddress(string ipAddress)
         {
             var result = await _countriesService.GetCountryByIpAddressAsync(ipAddress);
@@ -27,7 +27,7 @@ namespace LocationMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("location/country/{countryName}")]
+        [Route("country/{countryName}")]
         public async Task<IActionResult> GetLocationByCountryName(string countryName)
         {
             var result = await _countriesService.GetCountryByCountryNameAsync(countryName);
@@ -39,7 +39,7 @@ namespace LocationMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("location/{idAddress}/{countryName}")]
+        [Route("{idAddress}/{countryName}")]
         public async Task<IActionResult> GetLocationsForIpAndCountryName(string ipAddress, string countryName)
         {
             var result = await _countriesService.GetCountryByIpAndCountryNameAsync(ipAddress, countryName);

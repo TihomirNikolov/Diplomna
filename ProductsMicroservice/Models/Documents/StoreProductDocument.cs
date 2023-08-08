@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
-using ProductsMicroservice.Models.Categories;
+using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Models.Documents
 {
-    public class CategoryDocument : Category
+    public class StoreProductDocument : StoreProduct
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         [BsonRepresentation(BsonType.ObjectId)]

@@ -11,6 +11,7 @@ namespace ProductsMicroservice.Models.Products
         public string ProductUrl { get; set; } = string.Empty;
         public string CoverImageUrl { get; set; } = string.Empty;
         public decimal Price { get; set; }
+        public string StoreId { get; set; } = string.Empty;
         public List<string> PictureUrls { get; set; } = default!;
         public List<string> VideoUrls { get; set; } = default!;
         public List<ProductReview>? Reviews { get; set; }
