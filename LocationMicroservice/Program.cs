@@ -1,7 +1,8 @@
+using LocationMicroservice.Interfaces;
 using LocationMicroservice.Models;
 using LocationMicroservice.Models.Database;
+using LocationMicroservice.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ var configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")));
+builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<ICountriesService, CountriesService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,7 +40,7 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>(
     var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
     context?.Database.Migrate();
 
-    if(context.Countries.Count() != 195)
+    if (context.Countries.Count() != 195)
     {
         var json = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "Resources", "countries.txt"));
         var countries = JsonConvert.DeserializeObject<List<Country>>(json);
