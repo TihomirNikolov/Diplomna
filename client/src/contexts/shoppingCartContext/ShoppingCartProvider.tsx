@@ -37,7 +37,7 @@ export default function ShoppingCardProvider(props: any) {
             setShoppingCartItems(data);
             var sum = 0;
             data.forEach(item => {
-                sum += item.price;
+                sum += item.number * item.discountedPrice;
             });
             setSum(sum);
         }
@@ -79,7 +79,7 @@ export default function ShoppingCardProvider(props: any) {
             setShoppingCartItems(updatedItems);
             var sum = 0;
             updatedItems.forEach(item => {
-                sum += item.price;
+                sum += item.number * item.discountedPrice;
             });
             setSum(sum);
             notification.success(t('successfullyAdded') + shoppingCartItem.name.find(i => i.key == language.code)?.value + t('toYourShoppingCart'));
@@ -110,7 +110,7 @@ export default function ShoppingCardProvider(props: any) {
             setShoppingCartItems(updatedItems);
             var sum = 0;
             updatedItems.forEach(item => {
-                sum += item.price;
+                sum += item.number * item.discountedPrice;
             });
             setSum(sum);
         }
@@ -141,7 +141,7 @@ export default function ShoppingCardProvider(props: any) {
             setShoppingCartItems(updatedItems);
             var sum = 0;
             updatedItems.forEach(item => {
-                sum += item.price;
+                sum += item.number * item.discountedPrice;
             });
             setSum(sum);
         }
@@ -158,6 +158,12 @@ export default function ShoppingCardProvider(props: any) {
             var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/merge`, { browserId: localStorage.getItem('uuid') });
             var items = result.data as ShoppingCartItem[];
             setShoppingCartItems(items);
+
+            var sum = 0;
+            items.forEach(item => {
+                sum += item.number * item.discountedPrice;
+            });
+            setSum(sum);
             setIsMerging(false);
         }
         catch (error) {

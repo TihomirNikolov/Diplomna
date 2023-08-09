@@ -1,4 +1,5 @@
 ﻿using ProductsMicroservice.Models.DTOs;
+using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Interfaces
 {
@@ -8,6 +9,8 @@ namespace ProductsMicroservice.Interfaces
 
         Task<bool> BuyProductsFromStoreAsync(List<StoreProductDTO> storeProducts);
 
-        Task<int> GetProductCountByStoreAsync(string storeId, string productId);
+        Task<StoreProductBase> GetProductInfoByStoreAsync(string storeId, string productId);
+
+        Task<bool> IsProductAvailableAsync(string productId);
     }
 }

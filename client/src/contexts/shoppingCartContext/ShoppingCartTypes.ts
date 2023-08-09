@@ -7,7 +7,10 @@ export interface ShoppingCartItem {
     number: number,
     imageUrl: string,
     productId: string,
-    productUrl: string
+    productUrl: string,
+    storeId: string,
+    discount: number,
+    discountedPrice: number
 }
 
 export type ShoppingCartContextType = {

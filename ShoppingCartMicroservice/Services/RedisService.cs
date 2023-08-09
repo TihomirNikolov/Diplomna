@@ -112,7 +112,10 @@ namespace ShoppingCartMicroservice.Services
                     ImageUrl = itemB.ImageUrl,
                     Name = itemB.Name,
                     Number = itemA.Number,
-                    Price = itemB.Price
+                    Price = itemB.Price,
+                    Discount = itemB.Discount,
+                    DiscountedPrice = itemB.DiscountedPrice,
+                    StoreId = itemB.StoreId
                 }).ToList();
 
             return mergedCollections;
@@ -150,7 +153,10 @@ namespace ShoppingCartMicroservice.Services
                     ImageUrl = itemB.ImageUrl,
                     Name = itemB.Name,
                     Number = itemA.Number,
-                    Price = itemB.Price
+                    Price = itemB.Price,
+                    Discount = itemB.Discount,
+                    DiscountedPrice = itemB.DiscountedPrice,
+                    StoreId = itemB.StoreId
                 }).ToList();
 
             return mergedCollections;
@@ -187,7 +193,10 @@ namespace ShoppingCartMicroservice.Services
                     ImageUrl = itemB.ImageUrl,
                     Name = itemB.Name,
                     Number = itemA.Number,
-                    Price = itemB.Price
+                    Price = itemB.Price,
+                    Discount = itemB.Discount,
+                    DiscountedPrice = itemB.DiscountedPrice,
+                    StoreId = itemB.StoreId
                 }).ToList();
 
             return mergedCollections;

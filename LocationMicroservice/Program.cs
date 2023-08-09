@@ -40,7 +40,7 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>(
     var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
     context?.Database.Migrate();
 
-    if (context.Countries.Count() != 195)
+    if (context.Countries.Count() != 197)
     {
         var json = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "Resources", "countries.txt"));
         var countries = JsonConvert.DeserializeObject<List<Country>>(json);

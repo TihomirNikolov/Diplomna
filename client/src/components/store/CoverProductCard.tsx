@@ -36,8 +36,16 @@ export default function CoverProductCard(props: Props) {
 
     function onProductAdded(product: CoverProduct) {
         addShoppingCartItem({
-            name: product.name, coverTags: product.coverTags, price: product.price,
-            number: 1, imageUrl: product.coverImageUrl, productUrl: product.productUrl, productId: product.id
+            name: product.name,
+            coverTags: product.coverTags,
+            price: product.price,
+            number: 1,
+            imageUrl: product.coverImageUrl,
+            productUrl: product.productUrl,
+            productId: product.id,
+            discount: product.discount,
+            storeId: product.storeId,
+            discountedPrice: product.discountedPrice
         })
     }
 
@@ -47,9 +55,19 @@ export default function CoverProductCard(props: Props) {
                         border border-transparent hover:border-gray-500">
             <Link to={`/product/${props.product.productUrl}`}>
                 <div>
-                    <div className="">
+                    <div className="relative">
                         <img src={`${baseProductsURL()}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
                             title={props.product.name.find(name => name.key == language.code)?.value} />
+                        {!props.product.isAvailable &&
+                            <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">
+                                <span>Изчерпан</span>
+                            </div>
+                        }
+                        {props.product.discount > 0 &&
+                            <div className="absolute w-24 top-7 -left-2 text-center bg-orange-600 rounded-lg -rotate-45">
+                                <span>-{props.product.discount}%</span>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="flex justify-between pt-2">
@@ -64,12 +82,14 @@ export default function CoverProductCard(props: Props) {
                                 event.preventDefault();
                                 changeFavourite(isFavourited);
                             })} />
-                        <FontAwesomeIcon icon={['fas', 'cart-shopping']} size="lg" className="hover:text-orange-500"
-                            onClick={(event) => {
-                                event.preventDefault();
-                                onProductAdded(props.product);
-                            }
-                            } />
+                        {props.product.isAvailable &&
+                            <FontAwesomeIcon icon={['fas', 'cart-shopping']} size="lg" className="hover:text-orange-500"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    onProductAdded(props.product);
+                                }
+                                } />}
+
                     </div>
                 </div>
                 <div className="line-clamp-2 mt-2">
@@ -84,7 +104,19 @@ export default function CoverProductCard(props: Props) {
                     })}
                 </div>
                 <div>
-                    <span>{props.product.price}</span>
+                    {props.product.discount > 0 ?
+                        <div className="flex space-x-1">
+                            <span className="line-through decoration-red-600 decoration-2">
+                                {props.product.price.toFixed(2)} лв.
+                            </span>
+                            <span>
+                                {props.product.discountedPrice.toFixed(2)} лв.
+                            </span>
+                        </div> :
+                        <>
+                            <span>{props.product.price.toFixed(2)} лв.</span>
+                        </>
+                    }
                 </div>
             </Link>
         </div>

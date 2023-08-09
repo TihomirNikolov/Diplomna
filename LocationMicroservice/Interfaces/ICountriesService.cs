@@ -6,7 +6,7 @@ namespace LocationMicroservice.Interfaces
     public interface ICountriesService
     {
         Task<Country?> GetCountryByIpAddressAsync(string ipAddress);
-        Task<Country?> GetCountryByCountryNameAsync(string countryName);
-        Task<IpCountryNameLocations> GetCountryByIpAndCountryNameAsync(string ipAddress, string countryName);
+        Task<Country?> GetCountryByCountryCodeAsync(string countryCode);
+        Task<IpCountryNameLocations> GetCountryByIpAndCountryCodeAsync(string ipAddress, string countryCode);
     }
 }

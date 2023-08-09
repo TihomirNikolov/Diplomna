@@ -28,23 +28,23 @@ namespace LocationMicroservice.Services
                 return null;
             }
 
-            var country = _dbContext.Countries.FirstOrDefault(c => c.Name.ToLower() == geoLocation.CountryName.ToLower());
+            var country = _dbContext.Countries.FirstOrDefault(c => c.Code.ToLower() == geoLocation.CountryCode.ToLower());
 
             return country;
         }
 
-        public async Task<Country?> GetCountryByCountryNameAsync(string countryName)
+        public async Task<Country?> GetCountryByCountryCodeAsync(string countryCode)
         {
-            var country = await _dbContext.Countries.FirstOrDefaultAsync(c => c.Name.ToLower() == countryName);
+            var country = await _dbContext.Countries.FirstOrDefaultAsync(c => c.Code.ToLower() == countryCode);
 
             return country;
         }
 
-        public async Task<IpCountryNameLocations> GetCountryByIpAndCountryNameAsync(string ipAddress, string countryName)
+        public async Task<IpCountryNameLocations> GetCountryByIpAndCountryCodeAsync(string ipAddress, string countryCode)
         {
             var countryByIp = await GetCountryByIpAddressAsync(ipAddress);
 
-            var contryByName = await GetCountryByCountryNameAsync(countryName);
+            var contryByName = await GetCountryByCountryCodeAsync(countryCode);
 
             return new IpCountryNameLocations
             {

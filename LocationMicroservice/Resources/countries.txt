@@ -1,977 +1,1190 @@
 [
 	{
 		"Name": "Afghanistan",
+		"Code": "AF",
 		"Latitude": "33.93911",
 		"Longitude": "67.709953"
 	},
 	{
 		"Name": "Albania",
+		"Code": "AL",
 		"Latitude": "41.153332",
 		"Longitude": "20.168331"
 	},
 	{
 		"Name": "Algeria",
+		"Code": "DZ",
 		"Latitude": "28.033886",
 		"Longitude": "1.659626"
 	},
 	{
 		"Name": "Andorra",
+		"Code": "AD",
 		"Latitude": "42.546245",
 		"Longitude": "1.601554"
 	},
 	{
 		"Name": "Angola",
+		"Code": "AO",
 		"Latitude": "-11.202692",
 		"Longitude": "17.873887"
 	},
 	{
 		"Name": "Antigua and Barbuda",
+		"Code": "AG",
 		"Latitude": "17.060816",
 		"Longitude": "-61.796428"
 	},
 	{
 		"Name": "Argentina",
+		"Code": "AR",
 		"Latitude": "-38.416097",
 		"Longitude": "-63.616672"
 	},
 	{
 		"Name": "Armenia",
+		"Code": "AM",
 		"Latitude": "40.069099",
 		"Longitude": "45.038189"
 	},
 	{
 		"Name": "Australia",
+		"Code": "AU",
 		"Latitude": "-25.274398",
 		"Longitude": "133.775136"
 	},
 	{
 		"Name": "Austria",
+		"Code": "AT",
 		"Latitude": "47.516231",
 		"Longitude": "14.550072"
 	},
 	{
 		"Name": "Azerbaijan",
+		"Code": "AZ",
 		"Latitude": "40.143105",
 		"Longitude": "47.576927"
 	},
 	{
 		"Name": "Bahamas",
+		"Code": "BS",
 		"Latitude": "25.03428",
 		"Longitude": "-77.39628"
 	},
 	{
 		"Name": "Bahrain",
+		"Code": "BH",
 		"Latitude": "25.930414",
 		"Longitude": "50.637772"
 	},
 	{
 		"Name": "Bangladesh",
+		"Code": "BD",
 		"Latitude": "23.6850",
 		"Longitude": "90.3563"
 	},
 	{
 		"Name": "Barbados",
+		"Code": "BB",
 		"Latitude": "13.193887",
 		"Longitude": "-59.543198"
 	},
 	{
 		"Name": "Belarus",
+		"Code": "BY",
 		"Latitude": "53.709807",
 		"Longitude": "27.953389"
 	},
 	{
 		"Name": "Belgium",
+		"Code": "BE",
 		"Latitude": "50.850346",
 		"Longitude": "4.351721"
 	},
 	{
 		"Name": "Belize",
+		"Code": "BZ",
 		"Latitude": "17.189877",
 		"Longitude": "-88.49765"
 	},
 	{
 		"Name": "Benin",
+		"Code": "BJ",
 		"Latitude": "9.30769",
 		"Longitude": "2.315834"
 	},
 	{
 		"Name": "Bhutan",
+		"Code": "BT",
 		"Latitude": "27.514162",
 		"Longitude": "90.433601"
 	},
 	{
 		"Name": "Bolivia",
+		"Code": "BO",
 		"Latitude": "-16.290154",
 		"Longitude": "-63.588653"
 	},
 	{
 		"Name": "Bosnia and Herzegovina",
+		"Code": "BA",
 		"Latitude": "43.915886",
 		"Longitude": "17.679076"
 	},
 	{
 		"Name": "Botswana",
+		"Code": "BW",
 		"Latitude": "-22.328474",
 		"Longitude": "24.684866"
 	},
 	{
 		"Name": "Brazil",
+		"Code": "BR",
 		"Latitude": "-14.235004",
 		"Longitude": "-51.92528"
 	},
 	{
 		"Name": "Brunei",
+		"Code": "BN",
 		"Latitude": "4.535277",
 		"Longitude": "114.727669"
 	},
 	{
 		"Name": "Bulgaria",
+		"Code": "BG",
 		"Latitude": "42.733883",
 		"Longitude": "25.48583"
 	},
 	{
 		"Name": "Burkina Faso",
+		"Code": "BF",
 		"Latitude": "12.238333",
 		"Longitude": "-1.561593"
 	},
 	{
 		"Name": "Burundi",
+		"Code": "BI",
 		"Latitude": "-3.373056",
 		"Longitude": "29.918886"
 	},
 	{
+		"Name": "Côte d'Ivoire",
+		"Code": "CI",
+		"Latitude": "7.539989",
+		"Longitude": "-5.54708"
+	},
+	{
 		"Name": "Cabo Verde",
+		"Code": "CV",
 		"Latitude": "16.002082",
 		"Longitude": "-24.013197"
 	},
 	{
 		"Name": "Cambodia",
+		"Code": "KH",
 		"Latitude": "12.565679",
 		"Longitude": "104.990963"
 	},
 	{
 		"Name": "Cameroon",
+		"Code": "CM",
 		"Latitude": "7.369722",
 		"Longitude": "12.354722"
 	},
 	{
 		"Name": "Canada",
+		"Code": "CA",
 		"Latitude": "56.130366",
 		"Longitude": "-106.346771"
 	},
 	{
 		"Name": "Central African Republic",
+		"Code": "CF",
 		"Latitude": "6.611111",
 		"Longitude": "20.939444"
 	},
 	{
 		"Name": "Chad",
+		"Code": "TD",
 		"Latitude": "15.454166",
 		"Longitude": "18.732207"
 	},
 	{
 		"Name": "Chile",
+		"Code": "CL",
 		"Latitude": "-35.675147",
 		"Longitude": "-71.542969"
 	},
 	{
 		"Name": "China",
+		"Code": "CN",
 		"Latitude": "35.86166",
 		"Longitude": "104.195397"
 	},
 	{
 		"Name": "Colombia",
+		"Code": "CO",
 		"Latitude": "4.570868",
 		"Longitude": "-74.297333"
 	},
 	{
 		"Name": "Comoros",
-		"Latitude": "-11.6455",
-		"Longitude": "43.3333"
+		"Code": "KM",
+		"Latitude": "-11.875001",
+		"Longitude": "43.872219"
 	},
 	{
-		"Name": "Congo, Democratic Republic of the",
-		"Latitude": "-4.038333",
-		"Longitude": "21.758664"
-	},
-	{
-		"Name": "Congo, Republic of the",
+		"Name": "Republic of the Congo",
+		"Code": "CG",
 		"Latitude": "-0.228021",
 		"Longitude": "15.827659"
 	},
 	{
+		"Name": "Democratic Republic of the Congo",
+		"Code": "CD",
+		"Latitude": "-4.038333",
+		"Longitude": "21.758664"
+	},
+	{
 		"Name": "Costa Rica",
+		"Code": "CR",
 		"Latitude": "9.748917",
 		"Longitude": "-83.753428"
 	},
 	{
 		"Name": "Cote d'Ivoire",
+		"Code": "CI",
 		"Latitude": "7.539989",
 		"Longitude": "-5.54708"
 	},
 	{
 		"Name": "Croatia",
+		"Code": "HR",
 		"Latitude": "45.1",
 		"Longitude": "15.2"
 	},
 	{
 		"Name": "Cuba",
+		"Code": "CU",
 		"Latitude": "21.521757",
 		"Longitude": "-77.781167"
 	},
 	{
 		"Name": "Cyprus",
+		"Code": "CY",
 		"Latitude": "35.126413",
 		"Longitude": "33.429859"
 	},
 	{
 		"Name": "Czech Republic",
+		"Code": "CZ",
 		"Latitude": "49.817492",
 		"Longitude": "15.472962"
 	},
 	{
 		"Name": "Denmark",
+		"Code": "DK",
 		"Latitude": "56.26392",
 		"Longitude": "9.501785"
 	},
 	{
 		"Name": "Djibouti",
+		"Code": "DJ",
 		"Latitude": "11.825138",
 		"Longitude": "42.590275"
 	},
 	{
 		"Name": "Dominica",
+		"Code": "DM",
 		"Latitude": "15.414999",
 		"Longitude": "-61.370976"
 	},
 	{
 		"Name": "Dominican Republic",
+		"Code": "DO",
 		"Latitude": "18.735693",
 		"Longitude": "-70.162651"
 	},
 	{
 		"Name": "Ecuador",
+		"Code": "EC",
 		"Latitude": "-1.831239",
 		"Longitude": "-78.183406"
 	},
 	{
 		"Name": "Egypt",
+		"Code": "EG",
 		"Latitude": "26.820553",
 		"Longitude": "30.802498"
 	},
 	{
 		"Name": "El Salvador",
+		"Code": "SV",
 		"Latitude": "13.794185",
 		"Longitude": "-88.89653"
 	},
 	{
 		"Name": "Equatorial Guinea",
+		"Code": "GQ",
 		"Latitude": "1.650801",
 		"Longitude": "10.267895"
 	},
 	{
 		"Name": "Eritrea",
+		"Code": "ER",
 		"Latitude": "15.179384",
 		"Longitude": "39.782334"
 	},
 	{
 		"Name": "Estonia",
+		"Code": "EE",
 		"Latitude": "58.595272",
 		"Longitude": "25.013607"
 	},
 	{
 		"Name": "Eswatini",
+		"Code": "SZ",
 		"Latitude": "-26.522503",
 		"Longitude": "31.465866"
 	},
 	{
 		"Name": "Ethiopia",
+		"Code": "ET",
 		"Latitude": "9.145",
 		"Longitude": "40.489673"
 	},
 	{
 		"Name": "Fiji",
-		"Latitude": "-17.713371",
-		"Longitude": "178.065032"
+		"Code": "FJ",
+		"Latitude": "-16.578193",
+		"Longitude": "179.414413"
 	},
 	{
 		"Name": "Finland",
+		"Code": "FI",
 		"Latitude": "61.92411",
 		"Longitude": "25.748151"
 	},
 	{
 		"Name": "France",
-		"Latitude": "46.603354",
-		"Longitude": "1.888334"
+		"Code": "FR",
+		"Latitude": "46.227638",
+		"Longitude": "2.213749"
 	},
 	{
 		"Name": "Gabon",
+		"Code": "GA",
 		"Latitude": "-0.803689",
 		"Longitude": "11.609444"
 	},
 	{
 		"Name": "Gambia",
+		"Code": "GM",
 		"Latitude": "13.443182",
 		"Longitude": "-15.310139"
 	},
 	{
 		"Name": "Georgia",
+		"Code": "GE",
 		"Latitude": "42.315407",
 		"Longitude": "43.356892"
 	},
 	{
 		"Name": "Germany",
+		"Code": "DE",
 		"Latitude": "51.165691",
 		"Longitude": "10.451526"
 	},
 	{
 		"Name": "Ghana",
+		"Code": "GH",
 		"Latitude": "7.946527",
 		"Longitude": "-1.023194"
 	},
 	{
 		"Name": "Greece",
+		"Code": "GR",
 		"Latitude": "39.074208",
 		"Longitude": "21.824312"
 	},
 	{
 		"Name": "Grenada",
+		"Code": "GD",
 		"Latitude": "12.262776",
 		"Longitude": "-61.604171"
 	},
 	{
 		"Name": "Guatemala",
+		"Code": "GT",
 		"Latitude": "15.783471",
 		"Longitude": "-90.230759"
 	},
 	{
 		"Name": "Guinea",
+		"Code": "GN",
 		"Latitude": "9.945587",
 		"Longitude": "-9.696645"
 	},
 	{
 		"Name": "Guinea-Bissau",
+		"Code": "GW",
 		"Latitude": "11.803749",
 		"Longitude": "-15.180413"
 	},
 	{
 		"Name": "Guyana",
+		"Code": "GY",
 		"Latitude": "4.860416",
 		"Longitude": "-58.93018"
 	},
 	{
 		"Name": "Haiti",
+		"Code": "HT",
 		"Latitude": "18.971187",
 		"Longitude": "-72.285215"
 	},
 	{
 		"Name": "Honduras",
+		"Code": "HN",
 		"Latitude": "15.199999",
 		"Longitude": "-86.241905"
 	},
 	{
 		"Name": "Hungary",
+		"Code": "HU",
 		"Latitude": "47.162494",
 		"Longitude": "19.503304"
 	},
 	{
 		"Name": "Iceland",
+		"Code": "IS",
 		"Latitude": "64.963051",
 		"Longitude": "-19.020835"
 	},
 	{
 		"Name": "India",
+		"Code": "IN",
 		"Latitude": "20.593684",
 		"Longitude": "78.96288"
 	},
 	{
 		"Name": "Indonesia",
+		"Code": "ID",
 		"Latitude": "-0.789275",
 		"Longitude": "113.921327"
 	},
 	{
 		"Name": "Iran",
+		"Code": "IR",
 		"Latitude": "32.427908",
 		"Longitude": "53.688046"
 	},
 	{
 		"Name": "Iraq",
+		"Code": "IQ",
 		"Latitude": "33.223191",
 		"Longitude": "43.679291"
 	},
 	{
 		"Name": "Ireland",
+		"Code": "IE",
 		"Latitude": "53.41291",
 		"Longitude": "-8.24389"
 	},
 	{
 		"Name": "Israel",
+		"Code": "IL",
 		"Latitude": "31.046051",
 		"Longitude": "34.851612"
 	},
 	{
 		"Name": "Italy",
+		"Code": "IT",
 		"Latitude": "41.87194",
 		"Longitude": "12.56738"
 	},
 	{
 		"Name": "Jamaica",
+		"Code": "JM",
 		"Latitude": "18.109581",
 		"Longitude": "-77.297508"
 	},
 	{
 		"Name": "Japan",
+		"Code": "JP",
 		"Latitude": "36.204824",
 		"Longitude": "138.252924"
 	},
 	{
 		"Name": "Jordan",
+		"Code": "JO",
 		"Latitude": "30.585164",
 		"Longitude": "36.238414"
 	},
 	{
 		"Name": "Kazakhstan",
+		"Code": "KZ",
 		"Latitude": "48.019573",
 		"Longitude": "66.923684"
 	},
 	{
 		"Name": "Kenya",
+		"Code": "KE",
 		"Latitude": "-0.023559",
 		"Longitude": "37.906193"
 	},
 	{
 		"Name": "Kiribati",
+		"Code": "KI",
 		"Latitude": "-3.370417",
 		"Longitude": "-168.734039"
 	},
 	{
 		"Name": "Korea, North",
+		"Code": "KP",
 		"Latitude": "40.339852",
 		"Longitude": "127.510093"
 	},
 	{
 		"Name": "Korea, South",
+		"Code": "KR",
 		"Latitude": "35.907757",
 		"Longitude": "127.766922"
 	},
 	{
 		"Name": "Kosovo",
+		"Code": "XK",
 		"Latitude": "42.602636",
 		"Longitude": "20.902977"
 	},
 	{
 		"Name": "Kuwait",
+		"Code": "KW",
 		"Latitude": "29.375859",
 		"Longitude": "47.977405"
 	},
 	{
 		"Name": "Kyrgyzstan",
+		"Code": "KG",
 		"Latitude": "41.20438",
 		"Longitude": "74.766098"
 	},
 	{
 		"Name": "Laos",
+		"Code": "LA",
 		"Latitude": "19.85627",
 		"Longitude": "102.495496"
 	},
 	{
 		"Name": "Latvia",
+		"Code": "LV",
 		"Latitude": "56.879635",
 		"Longitude": "24.603189"
 	},
 	{
 		"Name": "Lebanon",
+		"Code": "LB",
 		"Latitude": "33.854721",
 		"Longitude": "35.862285"
 	},
 	{
 		"Name": "Lesotho",
+		"Code": "LS",
 		"Latitude": "-29.609988",
 		"Longitude": "28.233608"
 	},
 	{
 		"Name": "Liberia",
+		"Code": "LR",
 		"Latitude": "6.428055",
 		"Longitude": "-9.429499"
 	},
 	{
 		"Name": "Libya",
+		"Code": "LY",
 		"Latitude": "26.3351",
 		"Longitude": "17.228331"
 	},
 	{
 		"Name": "Liechtenstein",
+		"Code": "LI",
 		"Latitude": "47.166",
 		"Longitude": "9.555373"
 	},
 	{
 		"Name": "Lithuania",
+		"Code": "LT",
 		"Latitude": "55.169438",
 		"Longitude": "23.881275"
 	},
 	{
 		"Name": "Luxembourg",
+		"Code": "LU",
 		"Latitude": "49.815273",
 		"Longitude": "6.129583"
 	},
 	{
 		"Name": "Madagascar",
+		"Code": "MG",
 		"Latitude": "-18.766947",
 		"Longitude": "46.869107"
 	},
 	{
 		"Name": "Malawi",
+		"Code": "MW",
 		"Latitude": "-13.254308",
 		"Longitude": "34.301525"
 	},
 	{
 		"Name": "Malaysia",
+		"Code": "MY",
 		"Latitude": "4.210484",
 		"Longitude": "101.975766"
 	},
 	{
 		"Name": "Maldives",
+		"Code": "MV",
 		"Latitude": "3.202778",
 		"Longitude": "73.22068"
 	},
 	{
 		"Name": "Mali",
+		"Code": "ML",
 		"Latitude": "17.570692",
 		"Longitude": "-3.996166"
 	},
 	{
 		"Name": "Malta",
+		"Code": "MT",
 		"Latitude": "35.937496",
 		"Longitude": "14.375416"
 	},
 	{
 		"Name": "Marshall Islands",
+		"Code": "MH",
 		"Latitude": "7.131474",
 		"Longitude": "171.184478"
 	},
 	{
 		"Name": "Mauritania",
+		"Code": "MR",
 		"Latitude": "21.00789",
-		"Longitude": "-10.940835"
+		"Longitude": "10.940835"
 	},
 	{
 		"Name": "Mauritius",
+		"Code": "MU",
 		"Latitude": "-20.348404",
 		"Longitude": "57.552152"
 	},
 	{
 		"Name": "Mexico",
+		"Code": "MX",
 		"Latitude": "23.634501",
 		"Longitude": "-102.552784"
 	},
 	{
 		"Name": "Micronesia",
+		"Code": "FM",
 		"Latitude": "7.425554",
 		"Longitude": "150.550812"
 	},
 	{
 		"Name": "Moldova",
+		"Code": "MD",
 		"Latitude": "47.411631",
 		"Longitude": "28.369885"
 	},
 	{
 		"Name": "Monaco",
+		"Code": "MC",
 		"Latitude": "43.750298",
 		"Longitude": "7.412841"
 	},
 	{
 		"Name": "Mongolia",
+		"Code": "MN",
 		"Latitude": "46.862496",
 		"Longitude": "103.846656"
 	},
 	{
 		"Name": "Montenegro",
+		"Code": "ME",
 		"Latitude": "42.708678",
 		"Longitude": "19.37439"
 	},
 	{
 		"Name": "Morocco",
+		"Code": "MA",
 		"Latitude": "31.791702",
 		"Longitude": "-7.09262"
 	},
 	{
 		"Name": "Mozambique",
+		"Code": "MZ",
 		"Latitude": "-18.665695",
 		"Longitude": "35.529562"
 	},
 	{
 		"Name": "Myanmar",
-		"Latitude": "21.916221",
-		"Longitude": "95.955974"
+		"Code": "MM",
+		"Latitude": "21.913965",
+		"Longitude": "95.956223"
 	},
 	{
 		"Name": "Namibia",
+		"Code": "NA",
 		"Latitude": "-22.95764",
 		"Longitude": "18.49041"
 	},
 	{
 		"Name": "Nauru",
+		"Code": "NR",
 		"Latitude": "-0.522778",
 		"Longitude": "166.931503"
 	},
 	{
 		"Name": "Nepal",
+		"Code": "NP",
 		"Latitude": "28.394857",
 		"Longitude": "84.124008"
 	},
 	{
 		"Name": "Netherlands",
+		"Code": "NL",
 		"Latitude": "52.132633",
 		"Longitude": "5.291266"
 	},
 	{
 		"Name": "New Zealand",
+		"Code": "NZ",
 		"Latitude": "-40.900557",
 		"Longitude": "174.885971"
 	},
 	{
 		"Name": "Nicaragua",
+		"Code": "NI",
 		"Latitude": "12.865416",
 		"Longitude": "-85.207229"
 	},
 	{
 		"Name": "Niger",
+		"Code": "NE",
 		"Latitude": "17.607789",
 		"Longitude": "8.081666"
 	},
 	{
 		"Name": "Nigeria",
-		"Latitude": "9.082",
-		"Longitude": "8.675277"
+		"Code": "NG",
+		"Latitude": "9.0820",
+		"Longitude": "8.6753"
 	},
 	{
 		"Name": "North Macedonia",
-		"Latitude": "41.608635",
-		"Longitude": "21.745275"
+		"Code": "MK",
+		"Latitude": "41.6086",
+		"Longitude": "21.7453"
 	},
 	{
 		"Name": "Norway",
-		"Latitude": "60.472024",
-		"Longitude": "8.468946"
+		"Code": "NO",
+		"Latitude": "60.4720",
+		"Longitude": "8.4689"
 	},
 	{
 		"Name": "Oman",
-		"Latitude": "21.512583",
-		"Longitude": "55.923255"
+		"Code": "OM",
+		"Latitude": "21.4735",
+		"Longitude": "55.9754"
 	},
 	{
 		"Name": "Pakistan",
-		"Latitude": "30.375321",
-		"Longitude": "69.345116"
+		"Code": "PK",
+		"Latitude": "30.3753",
+		"Longitude": "69.3451"
 	},
 	{
 		"Name": "Palau",
+		"Code": "PW",
 		"Latitude": "7.51498",
 		"Longitude": "134.58252"
 	},
 	{
+		"Name": "Palestine",
+		"Code": "PS",
+		"Latitude": "31.9522",
+		"Longitude": "35.2332"
+	},
+	{
 		"Name": "Panama",
-		"Latitude": "8.537981",
-		"Longitude": "-80.782127"
+		"Code": "PA",
+		"Latitude": "8.5380",
+		"Longitude": "80.7821"
 	},
 	{
 		"Name": "Papua New Guinea",
-		"Latitude": "-6.314993",
-		"Longitude": "143.95555"
+		"Code": "PG",
+		"Latitude": "-6.3150",
+		"Longitude": "143.9555"
 	},
 	{
 		"Name": "Paraguay",
-		"Latitude": "-23.442503",
-		"Longitude": "-58.443832"
+		"Code": "PY",
+		"Latitude": "-23.4425",
+		"Longitude": "58.4438"
 	},
 	{
 		"Name": "Peru",
-		"Latitude": "-9.190347",
-		"Longitude": "-75.015152"
+		"Code": "PE",
+		"Latitude": "-9.1900",
+		"Longitude": "75.0152"
 	},
 	{
 		"Name": "Philippines",
-		"Latitude": "12.879721",
-		"Longitude": "121.774017"
+		"Code": "PH",
+		"Latitude": "13.0000",
+		"Longitude": "122.0000"
 	},
 	{
 		"Name": "Poland",
-		"Latitude": "51.919438",
-		"Longitude": "19.145136"
+		"Code": "PL",
+		"Latitude": "51.9194",
+		"Longitude": "19.1451"
 	},
 	{
 		"Name": "Portugal",
-		"Latitude": "39.399872",
-		"Longitude": "-8.224454"
+		"Code": "PT",
+		"Latitude": "39.3999",
+		"Longitude": "8.2245"
 	},
 	{
 		"Name": "Qatar",
-		"Latitude": "25.354826",
-		"Longitude": "51.183884"
+		"Code": "QA",
+		"Latitude": "25.3548",
+		"Longitude": "51.1839"
 	},
 	{
 		"Name": "Romania",
-		"Latitude": "45.943161",
-		"Longitude": "24.96676"
+		"Code": "RO",
+		"Latitude": "45.9432",
+		"Longitude": "24.9668"
 	},
 	{
 		"Name": "Russia",
-		"Latitude": "61.52401",
-		"Longitude": "105.318756"
+		"Code": "RU",
+		"Latitude": "61.5240",
+		"Longitude": "105.3188"
 	},
 	{
 		"Name": "Rwanda",
-		"Latitude": "-1.940278",
-		"Longitude": "29.873888"
+		"Code": "RW",
+		"Latitude": "-1.9403",
+		"Longitude": "29.8739"
 	},
 	{
 		"Name": "Saint Kitts and Nevis",
-		"Latitude": "17.357822",
-		"Longitude": "-62.782998"
+		"Code": "KN",
+		"Latitude": "17.3578",
+		"Longitude": "62.7822"
 	},
 	{
 		"Name": "Saint Lucia",
-		"Latitude": "13.909444",
-		"Longitude": "-60.978893"
+		"Code": "LC",
+		"Latitude": "13.9094",
+		"Longitude": "60.9789"
 	},
 	{
 		"Name": "Saint Vincent and the Grenadines",
-		"Latitude": "12.984305",
-		"Longitude": "-61.287228"
+		"Code": "VC",
+		"Latitude": "12.9843",
+		"Longitude": "61.2872"
 	},
 	{
 		"Name": "Samoa",
-		"Latitude": "-13.759029",
-		"Longitude": "-172.104629"
+		"Code": "WS",
+		"Latitude": "-13.7590",
+		"Longitude": "172.1046"
 	},
 	{
 		"Name": "San Marino",
-		"Latitude": "43.94236",
-		"Longitude": "12.457777"
+		"Code": "SM",
+		"Latitude": "43.9424",
+		"Longitude": "12.4578"
 	},
 	{
 		"Name": "Sao Tome and Principe",
-		"Latitude": "0.18636",
-		"Longitude": "6.613081"
+		"Code": "ST",
+		"Latitude": "0.1864",
+		"Longitude": "6.6131"
 	},
 	{
 		"Name": "Saudi Arabia",
-		"Latitude": "23.885942",
-		"Longitude": "45.079162"
+		"Code": "SA",
+		"Latitude": "23.8859",
+		"Longitude": "45.0792"
 	},
 	{
 		"Name": "Senegal",
-		"Latitude": "14.497401",
-		"Longitude": "-14.452362"
+		"Code": "SN",
+		"Latitude": "14.4974",
+		"Longitude": "14.4524"
 	},
 	{
 		"Name": "Serbia",
-		"Latitude": "44.016521",
-		"Longitude": "21.005859"
+		"Code": "RS",
+		"Latitude": "44.0165",
+		"Longitude": "21.0059"
 	},
 	{
 		"Name": "Seychelles",
-		"Latitude": "-4.679574",
-		"Longitude": "55.491977"
+		"Code": "SC",
+		"Latitude": "-4.6796",
+		"Longitude": "55.4920"
 	},
 	{
 		"Name": "Sierra Leone",
-		"Latitude": "8.460555",
-		"Longitude": "-11.779889"
+		"Code": "SL",
+		"Latitude": "8.4606",
+		"Longitude": "11.7799"
 	},
 	{
 		"Name": "Singapore",
-		"Latitude": "1.352083",
-		"Longitude": "103.819836"
+		"Code": "SG",
+		"Latitude": "1.3521",
+		"Longitude": "103.8198"
 	},
 	{
 		"Name": "Slovakia",
-		"Latitude": "48.669026",
-		"Longitude": "19.699024"
+		"Code": "SK",
+		"Latitude": "48.6690",
+		"Longitude": "19.6990"
 	},
 	{
 		"Name": "Slovenia",
-		"Latitude": "46.151241",
-		"Longitude": "14.995463"
+		"Code": "SI",
+		"Latitude": "46.1512",
+		"Longitude": "14.9955"
 	},
 	{
 		"Name": "Solomon Islands",
+		"Code": "SB",
 		"Latitude": "-9.744036",
 		"Longitude": "160.075952"
 	},
 	{
 		"Name": "Somalia",
-		"Latitude": "5.152149",
-		"Longitude": "46.199616"
+		"Code": "SO",
+		"Latitude": "5.1521",
+		"Longitude": "46.1996"
 	},
 	{
 		"Name": "South Africa",
-		"Latitude": "-30.559482",
-		"Longitude": "22.937506"
+		"Code": "ZA",
+		"Latitude": "-30.5595",
+		"Longitude": "22.9375"
 	},
 	{
 		"Name": "South Sudan",
-		"Latitude": "6.877",
-		"Longitude": "31.307"
+		"Code": "SS",
+		"Latitude": "6.8770",
+		"Longitude": "31.3070"
 	},
 	{
 		"Name": "Spain",
-		"Latitude": "40.463667",
-		"Longitude": "-3.74922"
+		"Code": "ES",
+		"Latitude": "40.4637",
+		"Longitude": "3.7492"
 	},
 	{
 		"Name": "Sri Lanka",
-		"Latitude": "7.873054",
-		"Longitude": "80.771797"
+		"Code": "LK",
+		"Latitude": "7.8731",
+		"Longitude": "80.7718"
 	},
 	{
 		"Name": "Sudan",
-		"Latitude": "12.862807",
-		"Longitude": "30.217636"
+		"Code": "SD",
+		"Latitude": "12.8628",
+		"Longitude": "30.2176"
 	},
 	{
 		"Name": "Suriname",
-		"Latitude": "3.919305",
-		"Longitude": "-56.027783"
+		"Code": "SR",
+		"Latitude": "3.9193",
+		"Longitude": "56.0278"
 	},
 	{
 		"Name": "Sweden",
-		"Latitude": "60.128161",
-		"Longitude": "18.643501"
+		"Code": "SE",
+		"Latitude": "60.1282",
+		"Longitude": "18.6435"
 	},
 	{
 		"Name": "Switzerland",
-		"Latitude": "46.818188",
-		"Longitude": "8.227512"
+		"Code": "CH",
+		"Latitude": "46.8182",
+		"Longitude": "8.2275"
 	},
 	{
 		"Name": "Syria",
-		"Latitude": "34.802075",
-		"Longitude": "38.996815"
+		"Code": "SY",
+		"Latitude": "34.8021",
+		"Longitude": "38.9968"
+	},
+	{
+		"Name": "Taiwan",
+		"Code": "TW",
+		"Latitude": "23.6978",
+		"Longitude": "120.9605"
 	},
 	{
 		"Name": "Tajikistan",
-		"Latitude": "38.861034",
-		"Longitude": "71.276093"
+		"Code": "TJ",
+		"Latitude": "38.8610",
+		"Longitude": "71.2761"
 	},
 	{
 		"Name": "Tanzania",
-		"Latitude": "-6.369028",
-		"Longitude": "34.888822"
+		"Code": "TZ",
+		"Latitude": "-6.3690",
+		"Longitude": "34.8888"
 	},
 	{
 		"Name": "Thailand",
-		"Latitude": "15.870032",
-		"Longitude": "100.992541"
+		"Code": "TH",
+		"Latitude": "15.8700",
+		"Longitude": "100.9925"
 	},
 	{
 		"Name": "Timor-Leste",
-		"Latitude": "-8.874217",
-		"Longitude": "125.727539"
+		"Code": "TL",
+		"Latitude": "-8.8742",
+		"Longitude": "125.7275"
 	},
 	{
 		"Name": "Togo",
-		"Latitude": "8.619543",
-		"Longitude": "0.824782"
+		"Code": "TG",
+		"Latitude": "8.6195",
+		"Longitude": "0.8248"
 	},
 	{
 		"Name": "Tonga",
-		"Latitude": "-21.178986",
-		"Longitude": "-175.198242"
+		"Code": "TO",
+		"Latitude": "-21.1789",
+		"Longitude": "175.1982"
 	},
 	{
 		"Name": "Trinidad and Tobago",
-		"Latitude": "10.691803",
-		"Longitude": "-61.222503"
+		"Code": "TT",
+		"Latitude": "10.6918",
+		"Longitude": "61.2225"
 	},
 	{
 		"Name": "Tunisia",
-		"Latitude": "33.886917",
-		"Longitude": "9.537499"
+		"Code": "TN",
+		"Latitude": "33.8869",
+		"Longitude": "9.5375"
 	},
 	{
 		"Name": "Turkey",
-		"Latitude": "38.963745",
-		"Longitude": "35.243322"
+		"Code": "TR",
+		"Latitude": "38.9637",
+		"Longitude": "35.2433"
 	},
 	{
 		"Name": "Turkmenistan",
-		"Latitude": "38.969719",
-		"Longitude": "59.556278"
+		"Code": "TM",
+		"Latitude": "38.9697",
+		"Longitude": "59.5563"
 	},
 	{
 		"Name": "Tuvalu",
-		"Latitude": "-7.109535",
-		"Longitude": "177.64933"
+		"Code": "TV",
+		"Latitude": "-7.1095",
+		"Longitude": "177.6493"
 	},
 	{
 		"Name": "Uganda",
-		"Latitude": "1.373333",
-		"Longitude": "32.290275"
+		"Code": "UG",
+		"Latitude": "1.3733",
+		"Longitude": "32.2903"
 	},
 	{
 		"Name": "Ukraine",
-		"Latitude": "48.379433",
-		"Longitude": "31.16558"
+		"Code": "UA",
+		"Latitude": "48.3794",
+		"Longitude": "31.1656"
 	},
 	{
 		"Name": "United Arab Emirates",
-		"Latitude": "23.424076",
-		"Longitude": "53.847818"
+		"Code": "AE",
+		"Latitude": "23.4241",
+		"Longitude": "53.8478"
 	},
 	{
 		"Name": "United Kingdom",
-		"Latitude": "55.378051",
-		"Longitude": "-3.435973"
+		"Code": "GB",
+		"Latitude": "55.3781",
+		"Longitude": "3.4360"
 	},
 	{
 		"Name": "United States",
-		"Latitude": "37.09024",
-		"Longitude": "-95.712891"
+		"Code": "US",
+		"Latitude": "37.0902",
+		"Longitude": "-95.7129"
 	},
 	{
 		"Name": "Uruguay",
-		"Latitude": "-32.522779",
-		"Longitude": "-55.765835"
+		"Code": "UY",
+		"Latitude": "-32.5228",
+		"Longitude": "55.7658"
 	},
 	{
 		"Name": "Uzbekistan",
-		"Latitude": "41.377491",
-		"Longitude": "64.585262"
+		"Code": "UZ",
+		"Latitude": "41.3775",
+		"Longitude": "64.5853"
 	},
 	{
 		"Name": "Vanuatu",
-		"Latitude": "-15.376706",
-		"Longitude": "166.959158"
+		"Code": "VU",
+		"Latitude": "-15.3767",
+		"Longitude": "166.9592"
 	},
 	{
 		"Name": "Vatican City",
-		"Latitude": "41.902916",
-		"Longitude": "12.453389"
+		"Code": "VA",
+		"Latitude": "41.9029",
+		"Longitude": "12.4534"
 	},
 	{
 		"Name": "Venezuela",
-		"Latitude": "6.42375",
-		"Longitude": "-66.58973"
+		"Code": "VE",
+		"Latitude": "6.4238",
+		"Longitude": "-66.5897"
 	},
 	{
 		"Name": "Vietnam",
-		"Latitude": "14.058324",
-		"Longitude": "108.277199"
+		"Code": "VN",
+		"Latitude": "14.0583",
+		"Longitude": "108.2772"
 	},
 	{
 		"Name": "Yemen",
-		"Latitude": "15.552727",
-		"Longitude": "48.516388"
+		"Code": "YE",
+		"Latitude": "15.5527",
+		"Longitude": "48.5164"
 	},
 	{
 		"Name": "Zambia",
-		"Latitude": "-13.133897",
-		"Longitude": "27.849332"
+		"Code": "ZM",
+		"Latitude": "-13.1339",
+		"Longitude": "27.8493"
 	},
 	{
 		"Name": "Zimbabwe",
-		"Latitude": "-19.015438",
-		"Longitude": "29.154857"
+		"Code": "ZW",
+		"Latitude": "-19.0154",
+		"Longitude": "29.1549"
 	}
 ]

@@ -146,7 +146,10 @@ namespace ProductsMicroservice.Services
 
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
-                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.Id);
+                product.IsAvailable = true;
+                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
+                product.Discount = storeProductInfo.Discount;
+                product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }
 
             return product;
@@ -246,7 +249,7 @@ namespace ProductsMicroservice.Services
 
             var db = GetDatabase();
 
-            var filter = Builders<ProductDocument>.Filter.Where(p => ids.Contains(p.Id.ToString()));
+            var filter = Builders<ProductDocument>.Filter.Where(p => ids.Contains(p.Id));
 
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
 
@@ -274,7 +277,9 @@ namespace ProductsMicroservice.Services
 
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
-                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.ProductId);
+                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.ProductId);
+                product.Discount = storeProductInfo.Discount;
+                product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }
 
             return products;
@@ -304,7 +309,10 @@ namespace ProductsMicroservice.Services
 
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
-                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.Id);
+                product.IsAvailable = true;
+                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
+                product.Discount = storeProductInfo.Discount;
+                product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }
         }
     }

@@ -95,7 +95,10 @@ export default function SearchBar(props: Props) {
 
     function onKeydown(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key == 'Enter') {
-            navigate(`/search/${event.currentTarget.value}`);
+            if (inputRef.current?.value == "")
+                navigate('/');
+            else
+                navigate(`/search/${event.currentTarget.value}`);
             setShowResults(false);
             inputRef?.current?.blur();
         }
@@ -137,13 +140,32 @@ export default function SearchBar(props: Props) {
                                     <Link to={`product/${product.productUrl}`} key={index}
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
-                                            <img className="col-span-2" src={`${baseProductsURL()}${product.coverImageUrl}`} />
+                                            <div className="relative col-span-2">
+                                                <img src={`${baseProductsURL()}${product.coverImageUrl}`} />
+                                                {product.discount > 0 &&
+                                                    <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
+                                                        <span>-{product.discount}%</span>
+                                                    </div>
+                                                }
+                                            </div>
                                             <div className="grid col-span-10 px-1">
                                                 <span>{product.name.find(name => name.key == language.code)?.value}</span>
                                                 <div className="line-clamp-2 text-gray-600 dark:text-gray-400 break-words">
                                                     {product.description.find(desc => desc.key == language.code)?.value}
                                                 </div>
-                                                <span>{product.price} лв.</span>
+                                                {product.discount > 0 ?
+                                                    <div className="flex space-x-1">
+                                                        <span className="line-through decoration-red-600 decoration-2">
+                                                            {product.price.toFixed(2)} лв.
+                                                        </span>
+                                                        <span>
+                                                            {product.discountedPrice.toFixed(2)} лв.
+                                                        </span>
+                                                    </div> :
+                                                    <>
+                                                        <span>{product.price.toFixed(2)} лв.</span>
+                                                    </>
+                                                }
                                             </div>
                                             <Separator className="my-2 col-span-12 dark:bg-gray-600" />
                                         </div>
@@ -172,13 +194,32 @@ export default function SearchBar(props: Props) {
                                     <Link to={`product/${product.productUrl}`} key={index}
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
-                                            <img className="col-span-2" src={`${baseProductsURL()}${product.coverImageUrl}`} />
+                                            <div className="relative col-span-2">
+                                                <img src={`${baseProductsURL()}${product.coverImageUrl}`} />
+                                                {product.discount > 0 &&
+                                                    <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
+                                                        <span>-{product.discount}%</span>
+                                                    </div>
+                                                }
+                                            </div>
                                             <div className="grid col-span-10 px-1">
                                                 <span>{product.name.find(name => name.key == language.code)?.value}</span>
                                                 <div className="line-clamp-2 text-gray-400 break-words">
                                                     {product.description.find(desc => desc.key == language.code)?.value}
                                                 </div>
-                                                <span>{product.price} лв.</span>
+                                                {product.discount > 0 ?
+                                                    <div className="flex space-x-1">
+                                                        <span className="line-through decoration-red-600 decoration-2">
+                                                            {product.price.toFixed(2)} лв.
+                                                        </span>
+                                                        <span>
+                                                            {product.discountedPrice.toFixed(2)} лв.
+                                                        </span>
+                                                    </div> :
+                                                    <>
+                                                        <span>{product.price.toFixed(2)} лв.</span>
+                                                    </>
+                                                }
                                             </div>
                                             <Separator className="my-2 col-span-12 dark:bg-gray-600" />
                                         </div>

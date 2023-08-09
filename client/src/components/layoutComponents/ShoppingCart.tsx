@@ -19,7 +19,7 @@ export default function ShoppingCart() {
                 </label>
             </div>
             <span className="border-l-2 border-l-white" />
-            <span className="text-gray-900 dark:text-white">{sum}</span>
+            <span className="text-gray-900 dark:text-white">{sum.toFixed(2)} лв.</span>
         </div>
     )
 }

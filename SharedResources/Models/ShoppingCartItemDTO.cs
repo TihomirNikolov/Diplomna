@@ -9,6 +9,7 @@
         public string ProductUrl { get; set; } = string.Empty;
         public string ProductId { get; set; } = string.Empty;
         public string StoreId { get; set; } = string.Empty;
-        public int StoreCount { get; set; }
+        public decimal Discount { get; set; }
+        public decimal DiscountedPrice { get; set; }
     }
 }

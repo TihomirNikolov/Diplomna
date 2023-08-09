@@ -1,10 +1,6 @@
 import { Item } from "@/utilities/types";
+import ProductBase from "./ProductBase";
 
-export default interface SearchProduct{
-    name: Item<string, string>[],
-    description: Item<string, string>[],
-    coverImageUrl: string,
-    productUrl: string,
-    coverTags: Item<string, Item<string, string>[]>[],
-    price: number
+export default interface SearchProduct extends ProductBase{
+    description: Item<string, string>[]
 }

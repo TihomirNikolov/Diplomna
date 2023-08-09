@@ -1,12 +1,7 @@
 import { Item } from "../../..";
+import ProductBase from "./ProductBase";
 
-export default interface CoverProduct {
-    id: string,
-    name: Item<string, string>[],
-    coverImageUrl: string,
-    productUrl: string,
-    price: number,
-    coverTags: Item<string, Item<string, string>[]>[],
+export default interface CoverProduct extends ProductBase{
     tags: Item<string, Item<string, string>[]>[],
     addedDate: Date,
     rating: number,

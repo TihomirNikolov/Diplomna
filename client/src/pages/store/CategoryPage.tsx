@@ -141,23 +141,23 @@ export default function CategoryPage() {
     function sortProducts(sortType: SortType, products: CoverProduct[]) {
         switch (sortType) {
             case 'lowestPrice':
-                var sortedProducts = products.sort((a, b) => a.price < b.price ? -1 : 1);
+                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.price < b.price) ? -1 : 1);
                 setProducts(sortedProducts);
                 return sortedProducts;
             case 'highestPrice':
-                var sortedProducts = products.sort((a, b) => a.price > b.price ? -1 : 1);
+                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.price > b.price) ? -1 : 1);
                 setProducts(sortedProducts);
                 return sortedProducts;
             case 'newest':
-                var sortedProducts = products.sort((a, b) => new Date(a.addedDate).getTime() > new Date(b.addedDate).getTime() ? -1 : 1);
+                var sortedProducts = products.sort((a, b) => a.isAvailable && (new Date(a.addedDate).getTime() > new Date(b.addedDate).getTime()) ? -1 : 1);
                 setProducts(sortedProducts);
                 return sortedProducts;
             case 'mostCommented':
-                var sortedProducts = products.sort((a, b) => a.comments > b.comments ? -1 : 1);
+                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.comments > b.comments) ? -1 : 1);
                 setProducts(sortedProducts);
                 return sortedProducts;
             case 'mostSold':
-                var sortedProducts = products.sort((a, b) => a.soldAmount > b.soldAmount ? -1 : 1);
+                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.soldAmount > b.soldAmount) ? -1 : 1);
                 setProducts(sortedProducts);
                 return sortedProducts;
         }

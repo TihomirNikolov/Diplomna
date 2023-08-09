@@ -9,7 +9,7 @@ export default function ShoppingCartPage() {
     const { t } = useTranslation();
     useTitle(t('title.shoppingCart'));
 
-    const { shoppingCartItems, changeShoppingCartItemCount, removeShoppingCartItem } = useShoppingCart();
+    const { shoppingCartItems, changeShoppingCartItemCount, removeShoppingCartItem, sum } = useShoppingCart();
     const { language } = useLanguage();
 
     function changeItemCount(e: React.FocusEvent<HTMLInputElement, Element>, item: ShoppingCartItem) {
@@ -34,16 +34,6 @@ export default function ShoppingCartPage() {
 
     function removeItem(item: ShoppingCartItem) {
         removeShoppingCartItem(item);
-    }
-
-    function calculateSum() {
-        var sum: number = 0;
-
-        for (var item of shoppingCartItems) {
-            sum = item.number * item.price;
-        }
-
-        return sum;
     }
 
     if (shoppingCartItems.length < 1) {
@@ -102,25 +92,37 @@ export default function ShoppingCartPage() {
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-center">
-                                    {item.price}
+                                    {item.discount > 0 ?
+                                        <div className="flex space-x-1">
+                                            <span className="line-through decoration-red-600 decoration-2">
+                                                {item.price.toFixed(2)} лв.
+                                            </span>
+                                            <span>
+                                                {item.discountedPrice.toFixed(2)} лв.
+                                            </span>
+                                        </div> :
+                                        <>
+                                            <span>{item.price.toFixed(2)} лв.</span>
+                                        </>
+                                    }
                                 </div>
                                 <div className="flex items-center justify-center gap-1">
                                     <button className="px-3 py-1 bg-gray-300 dark:bg-gray-900"
                                         onClick={() => decrementShoppingCartItemCount(item)}>
                                         -
                                     </button>
-                                    <input value={item.number}
+                                    <input defaultValue={item.number} key={item.number}
                                         className="px-2 py-1 border border-gray-300 dark:border-gray-700 bg-transparent w-12
                                         text-center focus:outline-none focus:outline-offset-0
                                          focus:outline-blue-600 focus:dark:outline-blue-600"
-                                         onBlur={(e) => changeItemCount(e, item)} />
+                                        onBlur={(e) => changeItemCount(e, item)} />
                                     <button className="px-3 py-1 bg-gray-300 dark:bg-gray-900"
                                         onClick={() => incrementShoppingCartItemCount(item)}>
                                         +
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-2 items-center justify-items-end">
-                                    <span>{item.number * item.price}</span>
+                                    <span>{(item.number * item.discountedPrice).toFixed(2)} лв.</span>
                                     <FontAwesomeIcon icon={['fas', 'x']} className="mr-2 cursor-pointer hover:text-red-600"
                                         onClick={() => removeItem(item)} />
                                 </div>
@@ -130,7 +132,7 @@ export default function ShoppingCartPage() {
                 </div>
                 <div className="flex flex-col">
                     <div className="text-black dark:text-white">
-                        {t('total')}: {calculateSum()}
+                        {t('total')}: {sum.toFixed(2)} лв.
                     </div>
                     <Link to="/checkout/finish" className="mt-2 px-5 py-2 w-48 text-white
                      bg-orange-600 rounded-lg hover:bg-orange-700 text-center">

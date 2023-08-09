@@ -149,7 +149,7 @@ export default function CategoryFilters({ category, products }: Props) {
                             <div key={key} className="text-black dark:text-white">
                                 <h1>{key}</h1>
                                 <div>
-                                    {Object.entries(value.values).map(([valueKey, value]) => {
+                                    {Object.entries(value.values).sort((a, b) => a[0].localeCompare(b[0])).map(([valueKey, value]) => {
                                         return (
                                             <div key={valueKey} className="flex">
                                                 <Checkbox checked={value.isChecked} id={valueKey}

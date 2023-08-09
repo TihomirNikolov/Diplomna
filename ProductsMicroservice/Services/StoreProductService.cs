@@ -2,6 +2,7 @@
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Documents;
 using ProductsMicroservice.Models.DTOs;
+using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Services
 {
@@ -62,7 +63,7 @@ namespace ProductsMicroservice.Services
             return true;
         }
 
-        public async Task<int> GetProductCountByStoreAsync(string storeId, string productId)
+        public async Task<StoreProductBase> GetProductInfoByStoreAsync(string storeId, string productId)
         {
             await CreateCollectionIfDoesntExistAsync();
             var db = GetDatabase();
@@ -71,7 +72,19 @@ namespace ProductsMicroservice.Services
 
             var storeProduct = await db.GetCollection<StoreProductDocument>(CollectionName).Find(filter).SingleOrDefaultAsync();
 
-            return storeProduct.Count;
+            return new StoreProductBase { Count = storeProduct.Count, Discount = storeProduct.Discount };
+        }
+
+        public async Task<bool> IsProductAvailableAsync(string productId)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+            var db = GetDatabase();
+
+            var filter = Builders<StoreProductDocument>.Filter.Where(s => s.ProductId == productId);
+
+            var product = await db.GetCollection<StoreProductDocument>(CollectionName).Find(filter).SingleOrDefaultAsync();
+
+            return product != null;
         }
     }
 }

@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { Dictionary, Product, ProductReview, axiosClient, baseProductsURL } from "../../utilities";
+import { Product, ProductReview, axiosClient, baseProductsURL } from "../../utilities";
 import axios from "axios";
-import { Input, Modal, NotFoundComponent, Reviews, Spinner, Textarea, useTitle } from "../../components";
-import { ShoppingCartItem, useFavourites, useLanguage, useShoppingCart, useUser } from "../../contexts";
+import { NotFoundComponent, Reviews, Spinner } from "../../components";
+import { ShoppingCartItem, useFavourites, useLanguage, useShoppingCart } from "../../contexts";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { InputHandle } from "../../components/inputs/Input";
 
 export default function ProductPage() {
     const { t } = useTranslation();
@@ -80,7 +79,10 @@ export default function ProductPage() {
                 number: 1,
                 price: product.price,
                 productUrl: productUrl ?? "",
-                productId: product.id
+                productId: product.id,
+                discount: product.discount,
+                storeId: product.storeId,
+                discountedPrice: product.discountedPrice
             }
             await addShoppingCartItem(shoppingCartItem);
         }
@@ -143,6 +145,16 @@ export default function ProductPage() {
                                 {product != undefined &&
                                     <div className="relative">
                                         <img src={`${baseProductsURL()}${product?.pictureUrls[0]}`} alt="product" />
+                                        {!product.isAvailable &&
+                                            <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">
+                                                <span>Изчерпан</span>
+                                            </div>
+                                        }
+                                        {product.discount > 0 &&
+                                            <div className="absolute w-24 top-7 -left-2 text-center bg-orange-600 rounded-lg -rotate-45">
+                                                <span>-{product.discount}%</span>
+                                            </div>
+                                        }
                                         <FontAwesomeIcon icon={['fas', 'bookmark']} size="2x"
                                             className={`absolute top-0 right-0 m-2 cursor-pointer
                                         ${isFavourited == true ? 'text-orange-500 hover:text-orange-600' :
@@ -167,17 +179,37 @@ export default function ProductPage() {
                             </div>
                             <div className="grid items-end">
                                 <div className="flex flex-col items-center">
-                                    <div className="text-black dark:text-white">
+                                    <div className="text-black dark:text-white flex space-x-1">
                                         <span>{t('price')}: </span>
-                                        <span >{product?.price}</span>
-                                    </div>
-                                    <button className="px-5 py-2 w-28 bg-orange-600 rounded-lg hover:bg-orange-700"
-                                        onClick={() => addToShoppingCart()}>
-                                        <div className="flex gap-1 items-center justify-center text-white">
-                                            <FontAwesomeIcon icon={['fas', 'shopping-cart']} />
-                                            <span>{t('buy')}</span>
+                                        <div>
+                                            {product != null &&
+                                                <>
+                                                    {product.discount > 0 ?
+                                                        <div className="flex space-x-1">
+                                                            <span className="line-through decoration-red-600 decoration-2">
+                                                                {product.price.toFixed(2)} лв.
+                                                            </span>
+                                                            <span>
+                                                                {product.discountedPrice.toFixed(2)} лв.
+                                                            </span>
+                                                        </div> :
+                                                        <>
+                                                            <span>{product.price.toFixed(2)} лв.</span>
+                                                        </>
+                                                    }
+                                                </>
+                                            }
                                         </div>
-                                    </button>
+                                    </div>
+                                    {product?.isAvailable &&
+                                        <button className="px-5 py-2 w-28 bg-orange-600 rounded-lg hover:bg-orange-700"
+                                            onClick={() => addToShoppingCart()}>
+                                            <div className="flex gap-1 items-center justify-center text-white">
+                                                <FontAwesomeIcon icon={['fas', 'shopping-cart']} />
+                                                <span>{t('buy')}</span>
+                                            </div>
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -1,16 +1,11 @@
 import { BaseCategory, Item, ProductReview } from "../../..";
+import ProductBase from "./ProductBase";
 
-export default interface Product{
-    id: string,
-    name: Item<string, string>[],
+export default interface Product extends ProductBase{
     description: Item<string, string>[],
     pictureUrls: string[],
-    coverImageUrl: string,
-    productUrl: string,
-    price: number,
     videoUrls: string[],
     reviews: ProductReview[],
     tags: Item<string, Item<string, string>[]>[],
-    coverTags: Item<string, Item<string, string>[]>[],
     categories: BaseCategory[]
 }

@@ -10,7 +10,9 @@ namespace ProductsMicroservice.Models.Products
         public string CoverImageUrl { get; set; } = string.Empty;
         public decimal Price { get; set; } = decimal.Zero;
         public string StoreId { get; set; } = string.Empty;
-        public int StoreCount { get; set; } = 0;
+        public bool IsAvailable { get; set; }
+        public decimal Discount { get; set; }
+        public decimal DiscountedPrice { get; set; }
         public List<Item<string, List<Item<string, string>>>> CoverTags { get; set; } = default!;
     }
 }
