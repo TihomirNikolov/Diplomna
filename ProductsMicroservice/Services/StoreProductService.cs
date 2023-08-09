@@ -1,8 +1,7 @@
 ﻿using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Documents;
-using ProductsMicroservice.Models.Favourites;
-using ProductsMicroservice.Models.Stores;
+using ProductsMicroservice.Models.DTOs;
 
 namespace ProductsMicroservice.Services
 {
@@ -43,6 +42,36 @@ namespace ProductsMicroservice.Services
             }
 
             return true;
+        }
+
+        public async Task<bool> BuyProductsFromStoreAsync(List<StoreProductDTO> storeProducts)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+            var db = GetDatabase();
+
+            foreach (var storeProduct in storeProducts)
+            {
+                var filter = Builders<StoreProductDocument>.Filter.Where(s => s.ProductId == storeProduct.ProductId && s.StoreId == storeProduct.StoreId);
+
+                var update = Builders<StoreProductDocument>.Update
+                    .Inc(s => s.Count, storeProduct.Count * -1);
+
+                await db.GetCollection<StoreProductDocument>(CollectionName).UpdateOneAsync(filter, update);
+            }
+
+            return true;
+        }
+
+        public async Task<int> GetProductCountByStoreAsync(string storeId, string productId)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+            var db = GetDatabase();
+
+            var filter = Builders<StoreProductDocument>.Filter.Where(s => s.ProductId == productId && s.StoreId == storeId);
+
+            var storeProduct = await db.GetCollection<StoreProductDocument>(CollectionName).Find(filter).SingleOrDefaultAsync();
+
+            return storeProduct.Count;
         }
     }
 }

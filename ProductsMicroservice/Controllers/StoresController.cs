@@ -42,7 +42,16 @@ namespace ProductsMicroservice.Controllers
         [Route("add/product")]
         public async Task<IActionResult> AddProductToStore([FromBody] AddProductToStoreRequest request)
         {
-            var result = await _storeProductService.AddProductToStoreAsync(request.ProductId, request.StoreId, request.Count);
+            var result = await _storeProductService.AddProductToStoreAsync(request.StoreProduct.ProductId, request.StoreProduct.StoreId, request.StoreProduct.Count);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("buy/products")]
+        public async Task<IActionResult> BuyProductFromStore([FromBody] BuyProductsFromStoreRequest request)
+        {
+            var result = await _storeProductService.BuyProductsFromStoreAsync(request.StoreProducts);
 
             return Ok();
         }

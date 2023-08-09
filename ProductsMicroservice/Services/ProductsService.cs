@@ -15,6 +15,7 @@ namespace ProductsMicroservice.Services
     {
         private readonly IHttpService _httpService;
         private readonly IStoresService _storesService;
+        private readonly IStoreProductService _storeProductService;
 
         private readonly IMapper _mapper;
 
@@ -27,12 +28,14 @@ namespace ProductsMicroservice.Services
                                IMapper mapper,
                                IHttpContextAccessor httpContextAccessor,
                                IHttpService httpService,
-                               IStoresService storesService) : base(mongoClient)
+                               IStoresService storesService,
+                               IStoreProductService storeProductService) : base(mongoClient)
         {
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _httpService = httpService;
             _storesService = storesService;
+            _storeProductService = storeProductService;
         }
 
 
@@ -90,31 +93,12 @@ namespace ProductsMicroservice.Services
             var db = GetDatabase();
 
             var collection = await db.GetCollection<ProductDocument>(CollectionName)
-                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories, 
-                c=> c.DisplayName.Any(name => name.Value == categoryName))).ToListAsync();
+                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories,
+                c => c.DisplayName.Any(name => name.Value == categoryName))).ToListAsync();
 
             var products = _mapper.Map<List<CoverProductDTO>>(collection);
 
-            var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
-
-            if (ipAddress.StartsWith("::ffff:"))
-            {
-                ipAddress = ipAddress.Substring("::ffff:".Length);
-            }
-
-            var userLocation = await _httpService.GetLocationByIpAddressAsync("161.149.146.201");
-
-            foreach(var product in products)
-            {
-                var stores = await _storesService.GetStoresByProductIdAsync(product.Id);
-
-                if(stores == null || stores.Count == 0) continue;
-
-                var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
-
-                product.StoreId = nearestStore.Store.Id;
-                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
-            }
+            await CalculatePrices(products);
 
             return products;
         }
@@ -137,10 +121,35 @@ namespace ProductsMicroservice.Services
 
             var db = GetDatabase();
 
-            var product = await db.GetCollection<ProductDocument>(CollectionName)
+            var dbProduct = await db.GetCollection<ProductDocument>(CollectionName)
                 .Find(Builders<ProductDocument>.Filter.Eq("ProductUrl", url)).FirstOrDefaultAsync();
 
-            return _mapper.Map<ProductDTO>(product);
+            var product = _mapper.Map<ProductDTO>(dbProduct);
+
+            var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+
+            if (ipAddress == null)
+                ipAddress = "161.149.146.201";
+
+            if (ipAddress.StartsWith("::ffff:"))
+            {
+                ipAddress = ipAddress.Substring("::ffff:".Length);
+            }
+
+            var userLocation = await _httpService.GetLocationByIpAddressAsync("161.149.146.201");
+
+            var stores = await _storesService.GetStoresByProductIdAsync(product.Id);
+
+            if (stores != null && stores.Count != 0)
+            {
+                var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
+
+                product.StoreId = nearestStore.Store.Id;
+                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.Id);
+            }
+
+            return product;
         }
 
         public async Task<bool> AddReviewAsync(ProductReview review, string productUrl)
@@ -180,13 +189,17 @@ namespace ProductsMicroservice.Services
 
             var filters = Builders<ProductDocument>.Filter.Or(
                 Builders<ProductDocument>.Filter.ElemMatch(p => p.Name, name => name.Value.ToLower().Contains(searchText.ToLower())),
-                Builders<ProductDocument>.Filter.ElemMatch(p => p.Description, desc => desc.Value.ToLower().Contains(searchText.ToLower())), 
+                Builders<ProductDocument>.Filter.ElemMatch(p => p.Description, desc => desc.Value.ToLower().Contains(searchText.ToLower())),
                 Builders<ProductDocument>.Filter.ElemMatch(p => p.Tags, tags => tags.Value.Any(t => t.Value.ToLower().Contains(searchText.ToLower())))
                 );
 
             var productDocuments = (await db.GetCollection<ProductDocument>(CollectionName).Find(filters).SortBy(p => p.Name).ToListAsync()).Take(3).ToList();
 
-            return _mapper.Map<List<SearchProductDTO>>(productDocuments);
+            var products = _mapper.Map<List<SearchProductDTO>>(productDocuments);
+
+            await CalculatePrices(products);
+
+            return products;
         }
 
         public async Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText)
@@ -203,7 +216,11 @@ namespace ProductsMicroservice.Services
 
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filters).ToListAsync();
 
-            return _mapper.Map<List<CoverProductDTO>>(productDocuments);
+            var products = _mapper.Map<List<CoverProductDTO>>(productDocuments);
+
+            await CalculatePrices(products);
+
+            return products;
         }
 
         public async Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls)
@@ -216,7 +233,11 @@ namespace ProductsMicroservice.Services
 
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
 
-            return _mapper.Map<List<SearchProductDTO>>(productDocuments);
+            var products = _mapper.Map<List<SearchProductDTO>>(productDocuments);
+
+            await CalculatePrices(products);
+
+            return products;
         }
 
         public async Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> ids)
@@ -229,7 +250,62 @@ namespace ProductsMicroservice.Services
 
             var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
 
-            return _mapper.Map<List<ShoppingCartItemDTO>>(productDocuments);
+            var products = _mapper.Map<List<ShoppingCartItemDTO>>(productDocuments);
+
+            var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+
+            if (ipAddress == null)
+                ipAddress = "161.149.146.201";
+
+            if (ipAddress.StartsWith("::ffff:"))
+            {
+                ipAddress = ipAddress.Substring("::ffff:".Length);
+            }
+
+            var userLocation = await _httpService.GetLocationByIpAddressAsync("161.149.146.201");
+
+            foreach (var product in products)
+            {
+                var stores = await _storesService.GetStoresByProductIdAsync(product.ProductId);
+
+                if (stores == null || stores.Count == 0) continue;
+
+                var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
+
+                product.StoreId = nearestStore.Store.Id;
+                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.ProductId);
+            }
+
+            return products;
+        }
+
+        private async Task CalculatePrices(IEnumerable<ProductDTOBase> products)
+        {
+            var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+
+            if (ipAddress == null)
+                ipAddress = "161.149.146.201";
+
+            if (ipAddress.StartsWith("::ffff:"))
+            {
+                ipAddress = ipAddress.Substring("::ffff:".Length);
+            }
+
+            var userLocation = await _httpService.GetLocationByIpAddressAsync("161.149.146.201");
+
+            foreach (var product in products)
+            {
+                var stores = await _storesService.GetStoresByProductIdAsync(product.Id);
+
+                if (stores == null || stores.Count == 0) continue;
+
+                var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
+
+                product.StoreId = nearestStore.Store.Id;
+                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.StoreCount = await _storeProductService.GetProductCountByStoreAsync(nearestStore.Store.Id, product.Id);
+            }
         }
     }
 }
