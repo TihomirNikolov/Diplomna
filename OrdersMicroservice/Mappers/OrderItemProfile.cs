@@ -9,6 +9,7 @@ namespace OrdersMicroservice.Mappers
         public OrderItemProfile() 
         {
             CreateMap<OrderItem, OrderItemDTO>().ReverseMap();
+            CreateMap<OrderItemDTO, StoreProductDTO>().ReverseMap();
         }
     }
 }

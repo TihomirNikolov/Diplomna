@@ -16,6 +16,33 @@ namespace OrdersMicroservice.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<bool> BuyProductsAsync(List<StoreProductDTO> storeProducts)
+        {
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var httpClient = new HttpClient(clientHandler);
+
+            var request = new BuyProductsRequest
+            {
+                StoreProducts = storeProducts
+            };
+
+            var json = JsonConvert.SerializeObject(request);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync("https://host.docker.internal:44322/api/stores/buy/products", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<bool> CreatePaymentAsync(string orderId, string cardId, string amount)
         {
             var clientHandler = new HttpClientHandler

@@ -2,6 +2,7 @@
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Documents;
 using ProductsMicroservice.Models.DTOs;
+using ProductsMicroservice.Models.Responses;
 using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Services
@@ -85,6 +86,31 @@ namespace ProductsMicroservice.Services
             var product = await db.GetCollection<StoreProductDocument>(CollectionName).Find(filter).SingleOrDefaultAsync();
 
             return product != null;
+        }
+
+        public async Task<AreProductsAvailableResponse?> AreProductsAvailableAsync(List<StoreProductDTO> storeProducts)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+            var db = GetDatabase();
+
+            var response = new AreProductsAvailableResponse();
+
+            foreach (var product in storeProducts)
+            {
+                var filter = Builders<StoreProductDocument>.Filter.Where(s => s.ProductId == product.ProductId && s.StoreId == product.StoreId);
+
+                var storeProduct = await db.GetCollection<StoreProductDocument>(CollectionName).Find(filter).SingleOrDefaultAsync();
+
+                if (storeProduct == null)
+                    return null;
+
+                if (storeProduct.Count < product.Count)
+                {
+                    response.UnavailableProducts.Add(new UnavailableProduct { ProductId = storeProduct.ProductId, StoreCount = storeProduct.Count });
+                }
+            }
+            response.IsSuccessful = response.UnavailableProducts.Count == 0;
+            return response;
         }
     }
 }

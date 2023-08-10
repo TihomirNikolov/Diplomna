@@ -48,6 +48,18 @@ namespace ProductsMicroservice.Controllers
         }
 
         [HttpPost]
+        [Route("available")]
+        public async Task<IActionResult> AreProductsAvailable([FromBody] AreProductsAvailableRequest request)
+        {
+            var result = await _storeProductService.AreProductsAvailableAsync(request.StoreProducts);
+
+            if (result == null)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
         [Route("buy/products")]
         public async Task<IActionResult> BuyProductFromStore([FromBody] BuyProductsFromStoreRequest request)
         {

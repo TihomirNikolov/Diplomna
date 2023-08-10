@@ -53,6 +53,14 @@ namespace OrdersMicroservice.Services
                 var savedOrder = await _dbContext.Orders.AddAsync(order);
                 await _dbContext.SaveChangesAsync();
 
+                var response = await _httpService.BuyProductsAsync(_mapper.Map<List<StoreProductDTO>>(orderItems));
+
+                if (!response)
+                {
+                    await transaction.RollbackAsync();
+                    return "";
+                }
+
                 if (cardPayment.IsPaymentWithNewCard)
                 {
                     var result = await _httpService.CreatePaymentWithNewCardAsync(savedOrder.Entity.Id, cardPayment.NewCard, sum.ToString());
