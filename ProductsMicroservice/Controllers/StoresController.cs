@@ -53,9 +53,6 @@ namespace ProductsMicroservice.Controllers
         {
             var result = await _storeProductService.AreProductsAvailableAsync(request.StoreProducts);
 
-            if (result == null)
-                return StatusCode(StatusCodes.Status500InternalServerError);
-
             return Ok(result);
         }
 

@@ -5,8 +5,11 @@ import { FinishPageAddressHandle } from "@/components/finishPage/FinishPageAddre
 import { FinishPagePaymentsHandle } from "@/components/finishPage/FinishPagePaymentsComponent";
 import { Textarea } from "@/components/ui/textarea";
 import { useShoppingCart, useUser } from "@/contexts";
-import { Address, authClient, axiosClient, baseOrdersURL, baseShoppingCartURL, notification } from "@/utilities";
+import { Address, authClient, axiosClient, baseOrdersURL, baseProductsURL, baseShoppingCartURL, notification } from "@/utilities";
 import { Card } from "@/utilities/models/checkout/Card";
+import { StoreProduct } from "@/utilities/models/store/Product";
+import { AreProductsAvailableRequest } from "@/utilities/requests";
+import { AreProductsAvailableResponse } from "@/utilities/responses";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useRef, useState } from "react";
@@ -77,6 +80,20 @@ export default function FinishOrderPage() {
         }
 
         try {
+
+            var storeProducts: StoreProduct[] = [];
+            for (var item of shoppingCartItems) {
+                storeProducts.push({ storeId: item.storeId, productId: item.productId, count: item.number });
+            }
+            var request: AreProductsAvailableRequest = {
+                storeProducts: storeProducts
+            }
+            var response = await axiosClient.post(`${baseProductsURL()}api/stores/available`, request);
+            var data = response.data as AreProductsAvailableResponse
+            if (!data.isSuccessful) {
+                notification.error('error', 'top-center');
+                return;
+            }
 
             var items: OrderItem[] = [];
             for (var item of shoppingCartItems) {

@@ -22,6 +22,11 @@ export default function ShoppingCardProvider(props: any) {
             var result = await authClient.get(`${baseShoppingCartURL()}api/shoppingcart/get/email`);
             var data = result.data as ShoppingCartItem[];
             setShoppingCartItems(data);
+            var sum = 0;
+            data.forEach(item => {
+                sum += item.number * item.discountedPrice;
+            });
+            setSum(sum);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {

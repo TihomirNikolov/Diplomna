@@ -87,8 +87,9 @@ export default function CoverProductCard(props: Props) {
                                 onClick={(event) => {
                                     event.preventDefault();
                                     onProductAdded(props.product);
-                                }
-                                } />}
+                                }}
+                            />
+                        }
 
                     </div>
                 </div>
@@ -100,7 +101,8 @@ export default function CoverProductCard(props: Props) {
                         return (
                             <div key={index} className="mt-2 h-6 flex overflow-hidden text-sm text-gray-400">
                                 <span>{item.key} : {item.value}</span>
-                            </div>)
+                            </div>
+                        )
                     })}
                 </div>
                 <div>

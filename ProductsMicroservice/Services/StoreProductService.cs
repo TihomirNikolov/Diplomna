@@ -106,10 +106,14 @@ namespace ProductsMicroservice.Services
 
                 if (storeProduct.Count < product.Count)
                 {
+                    if (response.UnavailableProducts == null)
+                    {
+                        response.UnavailableProducts = new List<UnavailableProduct>();
+                    }
                     response.UnavailableProducts.Add(new UnavailableProduct { ProductId = storeProduct.ProductId, StoreCount = storeProduct.Count });
                 }
             }
-            response.IsSuccessful = response.UnavailableProducts.Count == 0;
+            response.IsSuccessful = response.UnavailableProducts == null || response.UnavailableProducts.Count == 0;
             return response;
         }
     }

@@ -144,7 +144,7 @@ export default function ProductPage() {
                             <div className="h-56 w-40 md:h-full md:w-80">
                                 {product != undefined &&
                                     <div className="relative">
-                                        <img src={`${baseProductsURL()}${product?.pictureUrls[0]}`} alt="product" />
+                                        <img src={`${baseProductsURL()}${product?.pictureUrls[0]}`} alt="product" className="rounded-lg"/>
                                         {!product.isAvailable &&
                                             <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">
                                                 <span>Изчерпан</span>
@@ -201,7 +201,7 @@ export default function ProductPage() {
                                             }
                                         </div>
                                     </div>
-                                    {product?.isAvailable &&
+                                    {product?.isAvailable ?
                                         <button className="px-5 py-2 w-28 bg-orange-600 rounded-lg hover:bg-orange-700"
                                             onClick={() => addToShoppingCart()}>
                                             <div className="flex gap-1 items-center justify-center text-white">
@@ -209,6 +209,10 @@ export default function ProductPage() {
                                                 <span>{t('buy')}</span>
                                             </div>
                                         </button>
+                                        :
+                                        <div>
+                                            <span className="text-lg font-bold text-black dark:text-white">Продуктът е изчерпан</span>
+                                        </div>
                                     }
                                 </div>
                             </div>

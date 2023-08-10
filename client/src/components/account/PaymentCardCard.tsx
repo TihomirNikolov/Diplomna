@@ -30,7 +30,7 @@ export default function PaymentCardCard({ card, onCardDeleted }: Props) {
 
     return (
         <div className="relative text-white">
-            <img src={getCardSrc()} className="w-72 rounded-lg" />
+            <img src={getCardSrc()} className="w-72 rounded-lg" alt="card"/>
             <div className="absolute bottom-5 left-14">
                 <span className="text-2xl">{card.last4.padStart(16, '*')}</span>
             </div>

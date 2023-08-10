@@ -1,9 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useTitle } from "../../components";
 import { ShoppingCartItem, useLanguage, useShoppingCart } from "../../contexts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { baseProductsURL } from "@/utilities";
+import { axiosClient, baseProductsURL, notification } from "@/utilities";
+import axios from "axios";
+import { AreProductsAvailableRequest } from "@/utilities/requests";
+import { StoreProduct } from "@/utilities/models/store/Product";
+import { AreProductsAvailableResponse } from "@/utilities/responses";
 
 export default function ShoppingCartPage() {
     const { t } = useTranslation();
@@ -11,6 +15,8 @@ export default function ShoppingCartPage() {
 
     const { shoppingCartItems, changeShoppingCartItemCount, removeShoppingCartItem, sum } = useShoppingCart();
     const { language } = useLanguage();
+
+    const navigate = useNavigate();
 
     function changeItemCount(e: React.FocusEvent<HTMLInputElement, Element>, item: ShoppingCartItem) {
         var newCount = parseInt(e.target.value) || 0;
@@ -34,6 +40,32 @@ export default function ShoppingCartPage() {
 
     function removeItem(item: ShoppingCartItem) {
         removeShoppingCartItem(item);
+    }
+
+    async function onNavigate(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+        e.preventDefault();
+        try {
+            var storeProducts: StoreProduct[] = [];
+            for (var item of shoppingCartItems) {
+                storeProducts.push({ storeId: item.storeId, productId: item.productId, count: item.number });
+            }
+            var request: AreProductsAvailableRequest = {
+                storeProducts: storeProducts
+            }
+            var response = await axiosClient.post(`${baseProductsURL()}api/stores/available`, request);
+            var data = response.data as AreProductsAvailableResponse
+            if (data.isSuccessful) {
+                navigate('/checkout/finish');
+            }
+            else {
+                notification.error('error', 'top-center');
+            }
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+
+            }
+        }
     }
 
     if (shoppingCartItems.length < 1) {
@@ -72,10 +104,10 @@ export default function ShoppingCartPage() {
                     {shoppingCartItems.map((item, index) => {
                         return (
                             <div key={index} className="grid grid-cols-5 items-center
-                             text-black dark:text-white bg-white dark:bg-gray-800">
+                             text-black dark:text-white bg-white dark:bg-gray-800 rounded-lg">
                                 <div className="col-span-2">
                                     <div className="flex">
-                                        <img src={`${baseProductsURL()}${item.imageUrl}`} width={90} />
+                                        <img src={`${baseProductsURL()}${item.imageUrl}`} width={90} className="rounded-lg" />
                                         <div className="px-2">
                                             <Link to={`/product/${item.productUrl}`} className="hover:text-orange-500">
                                                 <div>
@@ -135,7 +167,7 @@ export default function ShoppingCartPage() {
                         {t('total')}: {sum.toFixed(2)} лв.
                     </div>
                     <Link to="/checkout/finish" className="mt-2 px-5 py-2 w-48 text-white
-                     bg-orange-600 rounded-lg hover:bg-orange-700 text-center">
+                     bg-orange-600 rounded-lg hover:bg-orange-700 text-center" onClick={(e) => onNavigate(e)}>
                         {t('checkOut')}
                     </Link>
                 </div>

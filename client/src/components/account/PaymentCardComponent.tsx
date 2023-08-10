@@ -140,7 +140,7 @@ const PaymentCardComponent = forwardRef<PaymentCardHandle, Props>(({ card, setCa
     return (
         <>
             <div className="relative">
-                <img src={imgSource} className="w-full md:w-96 justify-self-center rounded-lg" />
+                <img src={imgSource} className="w-full md:w-96 justify-self-center rounded-lg" alt="card"/>
                 <div className="absolute bottom-10 left-10">
                     <span className="text-black font-bold text-2xl">{card.cardNumber}</span>
                 </div>
