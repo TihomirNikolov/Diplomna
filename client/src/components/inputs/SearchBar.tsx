@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
 import { Link, useNavigate } from "react-router-dom";
+import { Image } from "../utilities";
 
 interface Props {
 
@@ -141,7 +142,7 @@ export default function SearchBar(props: Props) {
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <div className="relative col-span-2">
-                                                <img src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
+                                                <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
                                                 {product.discount > 0 &&
                                                     <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
                                                         <span>-{product.discount}%</span>
@@ -195,7 +196,7 @@ export default function SearchBar(props: Props) {
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <div className="relative col-span-2">
-                                                <img src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
+                                            <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
                                                 {product.discount > 0 &&
                                                     <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
                                                         <span>-{product.discount}%</span>

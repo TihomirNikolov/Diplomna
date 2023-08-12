@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next"
 import { useLanguage } from "../../contexts"
 import { Separator } from "@/components/ui/separator"
 import { SortingHandle } from "@/components/store/SortingComponent"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function CategoryPage() {
     const { t } = useTranslation();
@@ -22,14 +23,13 @@ export default function CategoryPage() {
 
     const [showProducts, setShowProducts] = useState<CoverProduct[]>([]);
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const [isCategoryFound, setIsCategoryFound] = useState<boolean>(false);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const navigate = useNavigate();
     const location = useLocation();
-
     const { language } = useLanguage();
 
     const sortingRef = useRef<SortingHandle>(null);
@@ -40,8 +40,10 @@ export default function CategoryPage() {
             var result = await fetchIfExists();
 
             if (result) {
+                setIsLoading(true);
                 var categoryDTO: CategoryDTO | null = await fetchCategoryData();
                 await fetchProducts(categoryDTO);
+                setIsLoading(false);
             }
         }
 
@@ -83,19 +85,16 @@ export default function CategoryPage() {
 
     async function fetchIfExists() {
         try {
-            setIsLoading(true);
             var url = encodeURIComponent(location.pathname.split('/category/')[1]);
-            var response = await axiosClient.get(`${baseProductsURL()}api/categories/exists/${url}`);
-            setIsSuccess(true);
-            setIsLoading(false);
+            await axiosClient.get(`${baseProductsURL()}api/categories/exists/${url}`);
+            setIsCategoryFound(true);
             return true;
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
 
             }
-            setIsSuccess(false);
-            setIsLoading(false);
+            setIsCategoryFound(false);
             return false;
         }
     }
@@ -181,14 +180,7 @@ export default function CategoryPage() {
         calculateProductsToShow(filteredProducts, page, sortingRef.current!.itemsPerPage);
     }
 
-    if (isLoading) {
-        return (
-            <div className="w-screen flex justify-center">
-                <Spinner />
-            </div>)
-    }
-
-    if (!isSuccess && !isLoading) {
+    if (!isCategoryFound && !isLoading) {
         return (
             <NotFoundComponent />
         )
@@ -198,64 +190,109 @@ export default function CategoryPage() {
         <div className="grid grid-cols-12">
             <div className="lg:col-start-3 col-span-2 hidden md:flex md:flex-col md:mr-2 ml-2 lg:ml-0">
                 <h1 className="text-black dark:text-white font-bold text-2xl mt-5">{t('categories')}</h1>
-                {category?.subCategories?.map((subCategory, index) => {
-                    return (
-                        <div key={index} className="text-black dark:text-white flex flex-col">
-                            <div>
-                                <FontAwesomeIcon icon={['fas', 'chevron-right']} className="pr-2 text-orange-500" />
-                                <Link to={`/category/${subCategory.urlPath}`}
-                                    className={`hover:text-orange-500 hover:dark:text-orange-500 
+                {isLoading ?
+                    <Skeleton className="h-24" />
+                    :
+                    <>
+                        {category?.subCategories?.map((subCategory, index) => {
+                            return (
+                                <div key={index} className="text-black dark:text-white flex flex-col">
+                                    <div>
+                                        <FontAwesomeIcon icon={['fas', 'chevron-right']} className="pr-2 text-orange-500" />
+                                        <Link to={`/category/${subCategory.urlPath}`}
+                                            className={`hover:text-orange-500 hover:dark:text-orange-500 
                                 ${category?.displayName.find(name => name.key == language.code)?.value == subCategory.displayName.find(name => name.key == language.code)?.value
-                                            ? 'text-orange-500 dark:text-orange-500' : ''}`}>
-                                    {subCategory.displayName.find(name => name.key == language.code)?.value}
-                                </Link>
-                            </div>
-                        </div>)
-                })}
-                {category != undefined && products != undefined && products.length > 0 &&
-                    <section>
-                        <Separator className="mt-4" />
-                        <CategoryFilters category={category} products={products} />
-                    </section>
+                                                    ? 'text-orange-500 dark:text-orange-500' : ''}`}>
+                                            {subCategory.displayName.find(name => name.key == language.code)?.value}
+                                        </Link>
+                                    </div>
+                                </div>)
+                        })}
+                    </>
+                }
+                {isLoading ?
+                    <Skeleton className="mt-4 h-56 w-full" />
+                    :
+                    <>
+                        {category != undefined && products != undefined && products.length > 0 &&
+                            <section>
+                                <Separator className="mt-4" />
+                                <CategoryFilters category={category} products={products} />
+                            </section>
+                        }
+                    </>
                 }
             </div>
             <div className="lg:col-start-5 lg:col-span-6 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
-                <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">
-                    {category?.displayName.find(name => name.key == language.code)?.value}
-                </h1>
+                {isLoading ?
+                    <div className="py-5">
+                        <Skeleton className="h-12" />
+                    </div>
+                    :
+                    <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">
+                        {category?.displayName.find(name => name.key == language.code)?.value}
+                    </h1>
+                }
+
                 <div className="flex flex-col gap-5">
                     <section className="flex flex-col gap-4 pb-2 border-b">
-                        <div className="flex gap-4 items-center justify-center">
-                            <SortingComponent
-                                ref={sortingRef}
-                                onItemsPerPageChanged={onItemsPerPageChanged}
-                                onSortingTypeChanged={onSortingTypeChanged} />
-                        </div>
-                        <div className="flex items-center justify-center">
+                        {isLoading ?
+                            <Skeleton className="h-36" />
+                            :
+                            <>
+                                <div className="flex gap-4 items-center justify-center">
+                                    <SortingComponent
+                                        ref={sortingRef}
+                                        onItemsPerPageChanged={onItemsPerPageChanged}
+                                        onSortingTypeChanged={onSortingTypeChanged} />
+                                </div>
+                                <div className="flex items-center justify-center">
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        onPageChanged={onPageChanged}
+                                        items={filteredProducts.length} />
+                                </div>
+
+                                <div className="flex items-center justify-start text-black dark:text-white">
+                                    <span>{t('foundResults')}: &nbsp;</span>
+                                    <span>{filteredProducts.length}</span>
+                                </div>
+                            </>
+                        }
+                    </section>
+
+                    <section className="flex flex-wrap gap-4 justify-center md:justify-start">
+                        {isLoading ?
+                            <>
+                                {new Array(10).fill(null).map((_, index) => {
+                                    return (
+                                        <div className="flex flex-col space-y-2" key={index}>
+                                            <Skeleton className="h-56 w-48" />
+                                            <Skeleton className="h-8 w-48" />
+                                            <Skeleton className="h-24 w-48" />
+                                        </div>
+                                    )
+                                })}
+                            </>
+                            :
+                            <>
+                                {showProducts.map((product, index) => {
+                                    return (
+                                        <CoverProductCard key={index} product={product} />
+                                    )
+                                })}
+                            </>
+                        }
+                    </section>
+                    <section className="flex items-center justify-center border-t pt-2">
+                        {isLoading ?
+                            <Skeleton className="h-12 w-full" />
+                            :
                             <Pagination
                                 currentPage={currentPage}
                                 onPageChanged={onPageChanged}
                                 items={filteredProducts.length} />
-                        </div>
-
-                        <div className="flex items-center justify-start text-black dark:text-white">
-                            <span>{t('foundResults')}: &nbsp;</span>
-                            <span>{filteredProducts.length}</span>
-                        </div>
-                    </section>
-
-                    <section className="flex flex-wrap gap-4 justify-center md:justify-start">
-                        {showProducts.map((product, index) => {
-                            return (
-                                <CoverProductCard key={index} product={product} />
-                            )
-                        })}
-                    </section>
-                    <section className="flex items-center justify-center border-t pt-2">
-                        <Pagination
-                            currentPage={currentPage}
-                            onPageChanged={onPageChanged}
-                            items={filteredProducts.length} />
+                        }
                     </section>
                 </div>
             </div>

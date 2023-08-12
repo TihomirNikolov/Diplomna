@@ -34,7 +34,7 @@ export default function Router() {
         })
     }
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
             <Routes>
                 <Route path={''} element={<HomePage />} />
                 {homeRoutes()}

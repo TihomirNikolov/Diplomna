@@ -8,6 +8,7 @@ import axios from "axios";
 import { AreProductsAvailableRequest } from "@/utilities/requests";
 import { StoreProduct } from "@/utilities/models/store/Product";
 import { AreProductsAvailableResponse } from "@/utilities/responses";
+import { Image } from "@/components/utilities";
 
 export default function ShoppingCartPage() {
     const { t } = useTranslation();
@@ -106,7 +107,9 @@ export default function ShoppingCartPage() {
                              text-black dark:text-white bg-white dark:bg-gray-800 rounded-lg">
                                 <div className="col-span-2">
                                     <div className="flex">
-                                        <img src={`${baseProductsURL()}${item.imageUrl}`} width={90} className="rounded-lg" />
+                                        <div>
+                                            <Image src={`${baseProductsURL()}${item.imageUrl}`} className="rounded-lg w-24" alt="shoppingCart" />
+                                        </div>
                                         <div className="px-2">
                                             <Link to={`/product/${item.productUrl}`} className="hover:text-orange-500">
                                                 <div>

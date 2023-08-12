@@ -4,6 +4,7 @@ import { useFavourites, useLanguage, useShoppingCart, useUser } from "../../cont
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import ReviewRating from "./ReviewRating"
+import { Image } from "../utilities"
 
 interface Props {
     product: CoverProduct
@@ -57,7 +58,7 @@ export default function CoverProductCard(props: Props) {
             <Link to={`/product/${props.product.productUrl}`}>
                 <div>
                     <div className="relative">
-                        <img src={`${baseProductsURL()}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
+                        <Image src={`${baseProductsURL()}${props.product.coverImageUrl}`} alt="product" className="rounded-lg h-full"
                             title={props.product.name.find(name => name.key == language.code)?.value} />
                         {!props.product.isAvailable &&
                             <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">

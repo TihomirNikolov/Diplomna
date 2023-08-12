@@ -4,5 +4,6 @@ import Spinner from "./Spinner";
 import NotFoundComponent from "./NotFoundComponent";
 import ScrollToTop from "./ScrollToTop";
 import ProgressBar from "./ProgressBar";
+import Image from "./Image";
 
-export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar }
+export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Image }

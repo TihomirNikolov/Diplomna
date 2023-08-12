@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { Listbox, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card } from "@/utilities/models/checkout/Card";
+import { Image } from "../utilities";
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const years = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032']
@@ -140,7 +141,7 @@ const PaymentCardComponent = forwardRef<PaymentCardHandle, Props>(({ card, setCa
     return (
         <>
             <div className="relative">
-                <img src={imgSource} className="w-full md:w-96 justify-self-center rounded-lg" alt="card"/>
+                <Image src={imgSource} alt="card" className="w-full md:w-96 justify-self-center rounded-lg" />
                 <div className="absolute bottom-10 left-10">
                     <span className="text-black font-bold text-2xl">{card.cardNumber}</span>
                 </div>

@@ -5,6 +5,7 @@ import mastercard from '../../assets/mastercard.png'
 import discover from '../../assets/discover.png'
 import americanEexpress from '../../assets/american-express.png'
 import emptyCard from '../../assets/empty-card.png'
+import { Image } from "../utilities"
 
 interface Props {
     card: Card,
@@ -30,7 +31,7 @@ export default function PaymentCardCard({ card, onCardDeleted }: Props) {
 
     return (
         <div className="relative text-white">
-            <img src={getCardSrc()} className="w-72 rounded-lg" alt="card"/>
+            <Image src={getCardSrc()} alt="card" className="rounded-lg"/>
             <div className="absolute bottom-5 left-14">
                 <span className="text-2xl">{card.last4.padStart(16, '*')}</span>
             </div>

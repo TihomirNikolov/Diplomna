@@ -6,6 +6,7 @@ import axios from "axios";
 import { Product, authClient, axiosClient, baseProductsURL } from "../../utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { Image } from "@/components/utilities";
 
 export default function WishlistPage() {
     const { t } = useTranslation();
@@ -53,7 +54,7 @@ export default function WishlistPage() {
                     <div key={index} className="flex justify-between p-5 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg mx-2 md:mx-0">
                         <Link to={`/product/${item.productUrl}`} className="flex gap-1">
                             <div className="relative w-48">
-                                <img src={`${baseProductsURL()}${item.coverImageUrl}`} alt="product" className="rounded-lg" />
+                                <Image src={`${baseProductsURL()}${item.coverImageUrl}`} alt="product" className="rounded-lg" />
                                 {!item.isAvailable &&
                                     <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">
                                         <span>Изчерпан</span>

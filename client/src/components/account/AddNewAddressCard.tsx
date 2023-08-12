@@ -8,8 +8,9 @@ export default function AddNewAddressCard() {
 
     return (
         <>
-            <Link to='/account/address/add' className="bg-white dark:bg-gray-700 rounded-lg shadow-lg w-72 cursor-pointer">
-                <div className="flex flex-col py-24 items-center">
+            <Link to='/account/address/add' className="flex items-center justify-center
+             bg-white dark:bg-gray-700 rounded-lg shadow-lg w-72 h-60 cursor-pointer">
+                <div className="flex flex-col items-center">
                     <FontAwesomeIcon icon={['fas', 'plus']} />
                     <div>{t('address.addNewAddress')}</div>
                 </div>

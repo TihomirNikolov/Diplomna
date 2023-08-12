@@ -22,7 +22,7 @@ export default function ChangeEmailPage() {
         async function fetch() {
             try {
                 setIsLoading(true);
-                var response = await axiosClient.put(`${baseUserURL()}api/user/change-email/${emailChangeToken!}`);
+                await axiosClient.put(`${baseUserURL()}api/user/change-email/${emailChangeToken!}`);
                 setIsSuccess(true);
                 await logout();
                 navigate('');

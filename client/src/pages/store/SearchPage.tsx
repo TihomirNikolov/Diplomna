@@ -8,7 +8,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 export default function SearchPage() {
     const { t } = useTranslation();
-    useTitle(t('category'));
+    const { searchText } = useParams();
+    useTitle(searchText ?? '');
 
     const [products, setProducts] = useState<CoverProduct[]>([])
 
@@ -20,7 +21,6 @@ export default function SearchPage() {
 
     const location = useLocation();
 
-    const { searchText } = useParams();
 
     const sortingRef = useRef<SortingHandle>(null);
 
