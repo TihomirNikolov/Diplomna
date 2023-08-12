@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { CoverProduct, baseProductsURL } from "../../utilities"
-import { useFavourites, useLanguage, useShoppingCart } from "../../contexts"
+import { useFavourites, useLanguage, useShoppingCart, useUser } from "../../contexts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import ReviewRating from "./ReviewRating"
@@ -16,6 +16,7 @@ export default function CoverProductCard(props: Props) {
     const { favouritesItems, addFavourite, removeFavourite } = useFavourites();
 
     const { language } = useLanguage();
+    const { isAuthenticated } = useUser();
 
     useEffect(() => {
         var isFavourite = favouritesItems.filter(item => item == props.product.productUrl).length > 0;
@@ -68,6 +69,11 @@ export default function CoverProductCard(props: Props) {
                                 <span>-{props.product.discount}%</span>
                             </div>
                         }
+                        {props.product.isNew &&
+                            <div className="absolute w-12 top-1 right-1 text-center bg-orange-600 rounded-lg">
+                                <span>Нов</span>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="flex justify-between pt-2">
@@ -76,12 +82,14 @@ export default function CoverProductCard(props: Props) {
                         <ReviewRating rating={props.product.rating} />
                     </div>
                     <div className="flex gap-1">
-                        <FontAwesomeIcon icon={['fas', 'heart']} size="lg"
-                            className={`${isFavourited == true ? 'text-pink-500' : ''} hover:text-pink-600`}
-                            onClick={((event) => {
-                                event.preventDefault();
-                                changeFavourite(isFavourited);
-                            })} />
+                        {isAuthenticated &&
+                            <FontAwesomeIcon icon={['fas', 'heart']} size="lg"
+                                className={`${isFavourited == true ? 'text-pink-500' : ''} hover:text-pink-600`}
+                                onClick={((event) => {
+                                    event.preventDefault();
+                                    changeFavourite(isFavourited);
+                                })} />
+                        }
                         {props.product.isAvailable &&
                             <FontAwesomeIcon icon={['fas', 'cart-shopping']} size="lg" className="hover:text-orange-500"
                                 onClick={(event) => {

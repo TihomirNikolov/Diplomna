@@ -57,7 +57,7 @@ export default function AddPaymentCardPage() {
     return (
         <div className="grid grid-cols-5 mx-1 md:ml-0 md:mr-0">
             <div className="col-span-5 lg:col-span-3 lg:col-start-2">
-                <h1 className="text-black dark:text-white font-bold mb-5">{t('card.addNewCard')}</h1>
+                <h1 className="text-black dark:text-white font-bold my-3 text-2xl">{t('card.addNewCard')}</h1>
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                     <div className="grid">
                         <form className="grid p-5 space-y-5" onSubmit={onSubmit}>

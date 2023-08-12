@@ -31,7 +31,7 @@ export default function AddressPage() {
 
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
-    const [initial, setInitial] = useState<Address>(initialInputs);
+    const [address, setAddress] = useState<Address>(initialInputs);
 
     const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
     const [isDefaultAddressLocked, setIsDefaultAddressLocked] = useState<boolean>(false);
@@ -46,7 +46,7 @@ export default function AddressPage() {
             try {
                 var response = await authClient.get(`${baseUserURL()}api/user/address/id/${id}`);
                 var data = response.data as Address;
-                setInitial(data);
+                setAddress(data);
                 setIsDefaultAddressLocked(data.isDefault);
             }
             catch (error) {
@@ -60,7 +60,7 @@ export default function AddressPage() {
 
             useEffect(() => {
                 if (address != null) {
-                    setInitial(address as Address);
+                    setAddress(address as Address);
                     setIsDefaultAddress((address as Address).isDefault);
                     setIsDefaultAddressLocked((address as Address).isDefault);
                 }
@@ -96,19 +96,6 @@ export default function AddressPage() {
             return;
         }
 
-        var address = {
-            firstName: addressRef.current?.address.firstName,
-            lastName: addressRef.current?.address.lastName,
-            phoneNumber: addressRef.current?.address.phoneNumber,
-            streetAddress: addressRef.current?.address.streetAddress,
-            country: addressRef.current?.address.country,
-            region: addressRef.current?.address.region,
-            city: addressRef.current?.address.city,
-            postalCode: addressRef.current?.address.postalCode,
-            isDefault: isDefaultAddress,
-            id: initial.id
-        }
-
         try {
             var response = await authClient.put(`${baseUserURL()}api/user/edit-address`, address);
             setIsDefaultAddressLocked(true);
@@ -126,19 +113,7 @@ export default function AddressPage() {
             addressRef.current?.showValidation();
             return;
         }
-
-        var address = {
-            firstName: addressRef.current?.address.firstName,
-            lastName: addressRef.current?.address.lastName,
-            phoneNumber: addressRef.current?.address.phoneNumber,
-            streetAddress: addressRef.current?.address.streetAddress,
-            country: addressRef.current?.address.country,
-            region: addressRef.current?.address.region,
-            city: addressRef.current?.address.city,
-            postalCode: addressRef.current?.address.postalCode,
-            isDefault: isDefaultAddress
-        }
-
+        
         try {
             var response = await authClient.post(`${baseUserURL()}api/user/add-new-address`, address);
         }
@@ -157,7 +132,7 @@ export default function AddressPage() {
                     <div className="grid">
                         <form className="p-5 space-y-5" onSubmit={onSubmit}>
                             <div>
-                                <AddressComponent ref={addressRef}/>
+                                <AddressComponent ref={addressRef} address={address} setAddress={setAddress}/>
                             </div>
 
                             <Checkbox

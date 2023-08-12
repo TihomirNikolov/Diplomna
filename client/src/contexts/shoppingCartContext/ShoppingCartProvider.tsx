@@ -67,23 +67,33 @@ export default function ShoppingCardProvider(props: any) {
 
     async function addItem(shoppingCartItem: ShoppingCartItem) {
         try {
-            var updatedItems: ShoppingCartItem[] = [];
             if (isAuthenticated) {
                 var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/email`,
                     { productId: shoppingCartItem.productId, number: shoppingCartItem.number });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: shoppingCartItem.number });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
 
-            setShoppingCartItems(updatedItems);
+            var items = [...shoppingCartItems];
+
+            var item = items.find(item => item.productId == shoppingCartItem.productId)
+
+            if (item != null) {
+                item.number += shoppingCartItem.number;
+            }
+            else {
+                items.push({
+                    name: shoppingCartItem.name, coverTags: shoppingCartItem.coverTags, discount: shoppingCartItem.discount,
+                    discountedPrice: shoppingCartItem.discountedPrice, imageUrl: shoppingCartItem.imageUrl, number: shoppingCartItem.number,
+                    price: shoppingCartItem.price, productId: shoppingCartItem.productId, productUrl: shoppingCartItem.productUrl, storeId: shoppingCartItem.storeId
+                })
+            }
+
+            setShoppingCartItems(items);
             var sum = 0;
-            updatedItems.forEach(item => {
+            items.forEach(item => {
                 sum += item.number * item.discountedPrice;
             });
             setSum(sum);
@@ -98,23 +108,19 @@ export default function ShoppingCardProvider(props: any) {
 
     async function removeItem(shoppingCartItem: ShoppingCartItem) {
         try {
-            var updatedItems: ShoppingCartItem[] = [];
-
             if (isAuthenticated) {
                 var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/email`,
                     { productId: shoppingCartItem.productId });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
-            setShoppingCartItems(updatedItems);
+            var items = shoppingCartItems.filter(i => i.productId != shoppingCartItem.productId);
+
+            setShoppingCartItems(items);
             var sum = 0;
-            updatedItems.forEach(item => {
+            items.forEach(item => {
                 sum += item.number * item.discountedPrice;
             });
             setSum(sum);
@@ -128,24 +134,26 @@ export default function ShoppingCardProvider(props: any) {
 
     async function changeCount(shoppingCartItem: ShoppingCartItem, newCount: number) {
         try {
-            var updatedItems: ShoppingCartItem[] = [];
-
             if (isAuthenticated) {
                 var result = await authClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/email`,
                     { productId: shoppingCartItem.productId, number: newCount });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
             else {
                 var result = await axiosClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: newCount });
-
-                updatedItems = result.data as ShoppingCartItem[];
             }
 
-            setShoppingCartItems(updatedItems);
+            var items = [...shoppingCartItems];
+
+            var item = items.find(i => i.productId == shoppingCartItem.productId);
+
+            if(item != null){
+                item.number = newCount;
+            }
+
+            setShoppingCartItems(items);
             var sum = 0;
-            updatedItems.forEach(item => {
+            items.forEach(item => {
                 sum += item.number * item.discountedPrice;
             });
             setSum(sum);

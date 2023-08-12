@@ -16,61 +16,49 @@ namespace ShoppingCartMicroservice.Services
             _redis = redis;
         }
 
-        public async Task<List<ShoppingCartItem>> AddItemToShoppingCartByBrowserIdAsync(string browserId, string productId, int number)
+        public async Task AddItemToShoppingCartByBrowserIdAsync(string browserId, string productId, int number)
         {
             var url = $"shoppingcart/browserId:{browserId}";
 
-            var items = await AddItemToShoppingCartAsync(url, productId, number);
-
-            return items;
+            await AddItemToShoppingCartAsync(url, productId, number);
         }
 
-        public async Task<List<ShoppingCartItem>> AddItemToShoppingCartByEmailAsync(string email, string productId, int number)
+        public async Task AddItemToShoppingCartByEmailAsync(string email, string productId, int number)
         {
             var url = $"shoppingcart/email:{email}";
 
-            var items = await AddItemToShoppingCartAsync(url, productId, number);
-
-            return items;
+            await AddItemToShoppingCartAsync(url, productId, number);
         }
 
-        public async Task<List<ShoppingCartItem>> UpdateItemToShoppingCartByBrowserIdAsync(string browserId, string productId, int number)
+        public async Task UpdateItemToShoppingCartByBrowserIdAsync(string browserId, string productId, int number)
         {
             var url = $"shoppingcart/browserId:{browserId}";
 
-            var items = await UpdateShoppingCartItemAsync(url, productId, number);
-
-            return items;
+            await UpdateShoppingCartItemAsync(url, productId, number);
         }
 
-        public async Task<List<ShoppingCartItem>> UpdateItemToShoppingCartByEmailAsync(string email, string productId, int number)
+        public async Task UpdateItemToShoppingCartByEmailAsync(string email, string productId, int number)
         {
             var url = $"shoppingcart/email:{email}";
 
-            var items = await UpdateShoppingCartItemAsync(url, productId, number);
-
-            return items;
+            await UpdateShoppingCartItemAsync(url, productId, number);
         }
 
-        public async Task<List<ShoppingCartItem>> DeleteShoppingCartItemByBrowserIdAsync(string browserId, string productId)
+        public async Task RemoveShoppingCartItemByBrowserIdAsync(string browserId, string productId)
         {
             var url = $"shoppingcart/browserId:{browserId}";
 
-            var items = await DeleteShoppingCartItemAsync(url, productId);
-
-            return items;
+            await DeleteShoppingCartItemAsync(url, productId);
         }
 
-        public async Task<List<ShoppingCartItem>> DeleteShoppingCartItemByEmailAsync(string email, string productId)
+        public async Task RemoveShoppingCartItemByEmailAsync(string email, string productId)
         {
             var url = $"shoppingcart/email:{email}";
 
-            var items = await DeleteShoppingCartItemAsync(url, productId);
-
-            return items;
+            await DeleteShoppingCartItemAsync(url, productId);
         }
 
-        private async Task<List<ShoppingCartItem>> AddItemToShoppingCartAsync(string url, string productId, int number)
+        private async Task AddItemToShoppingCartAsync(string url, string productId, int number)
         {
             var db = _redis.GetDatabase();
 
@@ -97,31 +85,9 @@ namespace ShoppingCartMicroservice.Services
             }
 
             await db.StringSetAsync(url, JsonConvert.SerializeObject(shoppingCartItemDocuments));
-
-            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartItemDocuments.Select(s => s.ProductId).ToList());
-
-            var mergedCollections = shoppingCartItemDocuments.Join(
-                shoppingCartItems,
-                itemA => itemA.ProductId,
-                itemB => itemB.ProductId,
-                (itemA, itemB) => new ShoppingCartItem
-                {
-                    ProductId = itemA.ProductId,
-                    ProductUrl= itemB.ProductUrl,
-                    CoverTags = itemB.CoverTags,
-                    ImageUrl = itemB.ImageUrl,
-                    Name = itemB.Name,
-                    Number = itemA.Number,
-                    Price = itemB.Price,
-                    Discount = itemB.Discount,
-                    DiscountedPrice = itemB.DiscountedPrice,
-                    StoreId = itemB.StoreId
-                }).ToList();
-
-            return mergedCollections;
         }
 
-        private async Task<List<ShoppingCartItem>> UpdateShoppingCartItemAsync(string url, string productId, int number)
+        private async Task UpdateShoppingCartItemAsync(string url, string productId, int number)
         {
             var db = _redis.GetDatabase();
 
@@ -138,31 +104,9 @@ namespace ShoppingCartMicroservice.Services
                     await db.StringSetAsync(url, JsonConvert.SerializeObject(shoppingCartItemDocuments));
                 }
             }
-
-            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartItemDocuments.Select(s => s.ProductId).ToList());
-
-            var mergedCollections = shoppingCartItemDocuments.Join(
-                shoppingCartItems,
-                itemA => itemA.ProductId,
-                itemB => itemB.ProductId,
-                (itemA, itemB) => new ShoppingCartItem
-                {
-                    ProductId = itemA.ProductId,
-                    ProductUrl= itemB.ProductUrl,
-                    CoverTags = itemB.CoverTags,
-                    ImageUrl = itemB.ImageUrl,
-                    Name = itemB.Name,
-                    Number = itemA.Number,
-                    Price = itemB.Price,
-                    Discount = itemB.Discount,
-                    DiscountedPrice = itemB.DiscountedPrice,
-                    StoreId = itemB.StoreId
-                }).ToList();
-
-            return mergedCollections;
         }
 
-        private async Task<List<ShoppingCartItem>> DeleteShoppingCartItemAsync(string url, string productId)
+        private async Task DeleteShoppingCartItemAsync(string url, string productId)
         {
             var db = _redis.GetDatabase();
 
@@ -178,49 +122,23 @@ namespace ShoppingCartMicroservice.Services
                     await db.StringSetAsync(url, JsonConvert.SerializeObject(shoppingCartItemDocuments));
                 }
             }
-
-            var shoppingCartItems = await HttpRequests.GetShoppingCartItemsInformationAsync(shoppingCartItemDocuments.Select(s => s.ProductId).ToList());
-
-            var mergedCollections = shoppingCartItemDocuments.Join(
-                shoppingCartItems,
-                itemA => itemA.ProductId,
-                itemB => itemB.ProductId,
-                (itemA, itemB) => new ShoppingCartItem
-                {
-                    ProductId = itemA.ProductId,
-                    ProductUrl = itemB.ProductUrl,
-                    CoverTags = itemB.CoverTags,
-                    ImageUrl = itemB.ImageUrl,
-                    Name = itemB.Name,
-                    Number = itemA.Number,
-                    Price = itemB.Price,
-                    Discount = itemB.Discount,
-                    DiscountedPrice = itemB.DiscountedPrice,
-                    StoreId = itemB.StoreId
-                }).ToList();
-
-            return mergedCollections;
         }
 
-        public async Task<List<ShoppingCartItem>> DeleteShoppingCartByEmailAsync(string email)
+        public async Task DeleteShoppingCartByEmailAsync(string email)
         {
             var url = $"shoppingcart/email:{email}";
 
-            var items = await DeleteShoppingCartAsync(url);
-
-            return items;
+            await DeleteShoppingCartAsync(url);
         }
 
-        public async Task<List<ShoppingCartItem>> DeleteShoppingCartByBrowserIdAsync(string browserId)
+        public async Task DeleteShoppingCartByBrowserIdAsync(string browserId)
         {
             var url = $"shoppingcart/browserId:{browserId}";
 
-            var items = await DeleteShoppingCartAsync(url);
-
-            return items;
+            await DeleteShoppingCartAsync(url);
         }
 
-        public async Task<List<ShoppingCartItem>> DeleteShoppingCartAsync(string url)
+        public async Task DeleteShoppingCartAsync(string url)
         {
             var db = _redis.GetDatabase();
 
@@ -228,8 +146,6 @@ namespace ShoppingCartMicroservice.Services
             {
                 await db.KeyDeleteAsync(url);
             }
-
-            return new List<ShoppingCartItem>();
         }
     }
 }

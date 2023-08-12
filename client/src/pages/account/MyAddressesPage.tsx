@@ -28,20 +28,23 @@ export default function MyAddressesPage() {
         fetchAddresses();
     }, [])
 
+    function onDelete(id: number) {
+        var newAddresses = addresses.filter(a => a.id != id);
+        setAddresses(newAddresses);
+    }
+
     return (
-        <div>
-            <div className="mx-1 md:ml-0 md:mr-0 mb-2 md:mb-0">
-                <h1 className="text-black dark:text-white font-bold text-2xl mb-5">{t('myAddresses')}</h1>
-                <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
-                    <AddNewAddressCard />
-                    {addresses.sort((a, b) => a.isDefault && !b.isDefault ? -1
-                        : !a.isDefault && b.isDefault ? 1 : a.id - b.id).map((address, index) => {
-                            return (
-                                <AddressCard key={index} address={address} />
-                            )
-                        })}
-                </div>
-            </div>
+        <div className="mx-1 md:ml-0 md:mr-0 mb-2 md:mb-0">
+            <h1 className="text-black dark:text-white font-bold text-2xl mb-5">{t('myAddresses')}</h1>
+            <section className="flex flex-wrap gap-4 justify-center sm:justify-start">
+                <AddNewAddressCard />
+                {addresses.sort((a, b) => a.isDefault && !b.isDefault ? -1
+                    : !a.isDefault && b.isDefault ? 1 : a.id - b.id).map((address, index) => {
+                        return (
+                            <AddressCard key={index} address={address} onDelete={onDelete} />
+                        )
+                    })}
+            </section>
         </div>
     )
 }

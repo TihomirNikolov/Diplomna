@@ -51,18 +51,18 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.AddItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
+            await _redisService.AddItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpPost]
         [Route("add/browserid")]
         public async Task<IActionResult> AddItemToShoppingCartByBrowserId([FromBody] AddShoppingCartItemBrowserId request)
         {
-            var shoppingCartItems = await _redisService.AddItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
+            await _redisService.AddItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpPost]
@@ -73,18 +73,18 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByEmailAsync(email, request.ProductId);
+            await _redisService.RemoveShoppingCartItemByEmailAsync(email, request.ProductId);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpPost]
         [Route("remove/browserId")]
         public async Task<IActionResult> RemoveItemFromShoppingCartByEmail([FromBody] RemoveShoppingCartItemByBrowserId request)
         {
-            var shoppingCartItems = await _redisService.DeleteShoppingCartItemByBrowserIdAsync(request.BrowserId, request.ProductId);
+            await _redisService.RemoveShoppingCartItemByBrowserIdAsync(request.BrowserId, request.ProductId);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpPost]
@@ -108,18 +108,18 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
+            await _redisService.UpdateItemToShoppingCartByEmailAsync(email, request.ProductId, request.Number);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpPut]
         [Route("update/browserid")]
         public async Task<IActionResult> UpdateShoppingCartItemByBrowserId([FromBody] AddShoppingCartItemBrowserId request)
         {
-            var shoppingCartItems = await _redisService.UpdateItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
+            await _redisService.UpdateItemToShoppingCartByBrowserIdAsync(request.BrowserId, request.ProductId, request.Number);
 
-            return Ok(shoppingCartItems);
+            return Ok();
         }
 
         [HttpDelete]
@@ -130,18 +130,18 @@ namespace ShoppingCartMicroservice.Controllers
 
             var email = await HttpRequests.GetUserEmailAsync(token);
 
-            var items = await _redisService.DeleteShoppingCartByEmailAsync(email);
+            await _redisService.DeleteShoppingCartByEmailAsync(email);
 
-            return Ok(items);
+            return Ok();
         }
 
         [HttpDelete]
         [Route("delete/browserid/{browserId}")]
         public async Task<IActionResult> DeleteShoppingCartByBrowserId(string browserId)
         {
-            var items = await _redisService.DeleteShoppingCartByBrowserIdAsync(browserId);
+           await _redisService.DeleteShoppingCartByBrowserIdAsync(browserId);
 
-            return Ok(items);
+            return Ok();
         }
     }
 }

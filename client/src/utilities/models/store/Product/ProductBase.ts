@@ -10,5 +10,6 @@ export default interface ProductBase{
     isAvailable: boolean,
     discount: number,
     discountedPrice: number,
-    coverTags: Item<string, Item<string, string>[]>[]
+    coverTags: Item<string, Item<string, string>[]>[],
+    isNew: boolean
 }

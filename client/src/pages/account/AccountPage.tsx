@@ -112,98 +112,92 @@ export default function AccountPage() {
     }
 
     return (
-        <div>
-            <div className="mx-1 md:ml-0 md:mr-0 space-y-2 mb-2 md:mb-0">
-                <h1 className="text-black dark:text-white font-bold mb-5 text-2xl">{t('profile')}</h1>
-                <div className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
-                    <h1 className="text-black dark:text-white font-bold text-2xl">{t('profileData')}</h1>
-                    <ProfileDataItem>
-                        <ProfileDataItem.Icon>
-                            <FontAwesomeIcon icon={["fas", "user"]} size="lg" />
-                        </ProfileDataItem.Icon>
-                        <ProfileDataItem.Content>
-                            <h1>{t('name')}</h1>
-                            <label>
-                                <span>{userInfo.firstName}&nbsp;</span>
-                                <span>{userInfo.lastName}</span>
-                            </label>
-                        </ProfileDataItem.Content>
-                        <ProfileDataItem.Edit>
-                            <ChangeName userInfo={userInfo} setUserInfo={setUserInfo} />
-                        </ProfileDataItem.Edit>
-                    </ProfileDataItem>
+        <div className="mx-1 md:ml-0 md:mr-0 space-y-2 mb-2 md:mb-0">
+            <h1 className="text-black dark:text-white font-bold mb-5 text-2xl">{t('profile')}</h1>
+            <section className="p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
+                <h1 className="text-black dark:text-white font-bold text-2xl">{t('profileData')}</h1>
+                <ProfileDataItem>
+                    <ProfileDataItem.Icon>
+                        <FontAwesomeIcon icon={["fas", "user"]} size="lg" />
+                    </ProfileDataItem.Icon>
+                    <ProfileDataItem.Content>
+                        <h1>{t('name')}</h1>
+                        <label>
+                            <span>{userInfo.firstName}&nbsp;</span>
+                            <span>{userInfo.lastName}</span>
+                        </label>
+                    </ProfileDataItem.Content>
+                    <ProfileDataItem.Edit>
+                        <ChangeName userInfo={userInfo} setUserInfo={setUserInfo} />
+                    </ProfileDataItem.Edit>
+                </ProfileDataItem>
 
-                    <Line />
+                <Line />
 
-                    <ProfileDataItem>
-                        <ProfileDataItem.Icon>
-                            <FontAwesomeIcon icon={["fas", "envelope"]} size="lg" />
-                        </ProfileDataItem.Icon>
-                        <ProfileDataItem.Content>
-                            <h1>Email</h1>
-                            <label>{userInfo.email}</label>
-                        </ProfileDataItem.Content>
-                        {/* <ProfileDataItem.Edit>
+                <ProfileDataItem>
+                    <ProfileDataItem.Icon>
+                        <FontAwesomeIcon icon={["fas", "envelope"]} size="lg" />
+                    </ProfileDataItem.Icon>
+                    <ProfileDataItem.Content>
+                        <h1>Email</h1>
+                        <label>{userInfo.email}</label>
+                    </ProfileDataItem.Content>
+                    {/* <ProfileDataItem.Edit>
                             <ChangeEmail userInfo={userInfo} setUserInfo={setUserInfo} />
                         </ProfileDataItem.Edit> */}
-                    </ProfileDataItem>
+                </ProfileDataItem>
 
-                    <Line />
+                <Line />
 
-                    <ProfileDataItem>
-                        <ProfileDataItem.Icon>
-                            <FontAwesomeIcon icon={["fas", "lock"]} size="lg" />
-                        </ProfileDataItem.Icon>
-                        <ProfileDataItem.Content>
-                            <h1>{t('password')}</h1>
-                            <label>********</label>
-                        </ProfileDataItem.Content>
-                        <ProfileDataItem.Edit>
-                            <ChangePassword refreshLogins={fetchLoginInfo} />
-                        </ProfileDataItem.Edit>
-                    </ProfileDataItem>
-                </div>
+                <ProfileDataItem>
+                    <ProfileDataItem.Icon>
+                        <FontAwesomeIcon icon={["fas", "lock"]} size="lg" />
+                    </ProfileDataItem.Icon>
+                    <ProfileDataItem.Content>
+                        <h1>{t('password')}</h1>
+                        <label>********</label>
+                    </ProfileDataItem.Content>
+                    <ProfileDataItem.Edit>
+                        <ChangePassword refreshLogins={fetchLoginInfo} />
+                    </ProfileDataItem.Edit>
+                </ProfileDataItem>
+            </section>
+            <section className="flex flex-col gap-2 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
+                <h1 className="font-bold text-2xl">{t('devices')}</h1>
+                <BlackWhiteButton className="flex w-full md:w-1/3" onClick={deleteAllSessions}>{t('exitAllDevices')}</BlackWhiteButton>
 
-                <div className="flex flex-col gap-2 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
-                    <h1 className="font-bold text-2xl">{t('devices')}</h1>
-                    <div className="flex w-full md:w-1/3">
-                        <BlackWhiteButton className="w-full" onClick={deleteAllSessions}>{t('exitAllDevices')}</BlackWhiteButton>
-                    </div>
-                    <div className="py-3 flex flex-wrap gap-3">
+                <div className="py-3 flex flex-wrap gap-3">
 
-                        {loginInfo.map((item, key) => {
-                            return (
-                                <div key={key} className="flex flex-col p-1 border-2 rounded-lg w-full sm:w-64">
-                                    <div className="flex p-1">
-                                        <div>
-                                            {getBrowserImage(item.deviceType)}
-                                        </div>
-                                        <div className="truncate ml-1">
-                                            {item.deviceType}
-                                        </div>
-                                        <div className="ml-auto px-1 hover:bg-gray-300 hover:dark:bg-gray-500 cursor-pointer">
-                                            <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600"
-                                                onClick={() => deleteSession(item.id, item.token)} />
-                                        </div>
-                                    </div>
+                    {loginInfo.map((item, key) => {
+                        return (
+                            <div key={key} className="flex flex-col p-1 border-2 rounded-lg w-full sm:w-64">
+                                <div className="flex p-1">
                                     <div>
-                                        <div className="flex">
-                                            {t('loggedInOn')}&nbsp;
-                                            {moment(item.createdTime).format("DD-MM-YYYY HH:mm:ss")}
-                                        </div>
+                                        {getBrowserImage(item.deviceType)}
                                     </div>
-                                </div>)
-                        })}
-                    </div>
+                                    <div className="truncate ml-1">
+                                        {item.deviceType}
+                                    </div>
+                                    <div className="ml-auto px-1 hover:bg-gray-300 hover:dark:bg-gray-500 cursor-pointer">
+                                        <FontAwesomeIcon icon={["fas", "x"]} className="text-red-600"
+                                            onClick={() => deleteSession(item.id, item.token)} />
+                                    </div>
+                                </div>
+                                <div className="flex">
+                                    {t('loggedInOn')}&nbsp;
+                                    {moment(item.createdTime).format("DD-MM-YYYY HH:mm:ss")}
+                                </div>
+                            </div>)
+                    })}
                 </div>
-                <div className="flex flex-col gap-3 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
-                    <h1 className="font-bold text-2xl text-red-600">{t('deleteAccount')}</h1>
-                    <span>{t('deleteWarning')}</span>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-                        <DeleteAccount />
-                    </div>
+            </section>
+            <section className="flex flex-col gap-3 p-3 bg-lightBackground dark:bg-gray-700 rounded-lg shadow-lg">
+                <h1 className="font-bold text-2xl text-red-600">{t('deleteAccount')}</h1>
+                <span>{t('deleteWarning')}</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                    <DeleteAccount />
                 </div>
-            </div>
+            </section>
         </div>
     )
 }

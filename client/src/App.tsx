@@ -95,17 +95,17 @@ function App() {
   }, [])
 
   return (
-    <div className='bg-lightBackground dark:bg-darkBackground-900'>
+    <>
       <BrowserRouter>
         <ScrollToTop />
-        <div className='min-h-screen'>
-          <Layout />
+        <Layout />
+        <main className='min-h-screen'>
           <Routes />
-        </div>
+        </main>
         <Footer />
         <ToastContainer theme={theme} />
       </BrowserRouter>
-    </div>
+    </>
   )
 }
 

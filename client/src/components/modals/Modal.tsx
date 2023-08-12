@@ -28,7 +28,7 @@ export default function Modal(props: Props) {
     }
 
     return (
-        <div>
+        <>
             <div onClick={openModal}>
                 {props.children[0]}
             </div>
@@ -72,7 +72,7 @@ export default function Modal(props: Props) {
                     </div>
                 </Dialog>
             </Transition>
-        </div>
+        </>
     )
 }
 

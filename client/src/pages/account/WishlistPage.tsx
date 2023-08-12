@@ -47,7 +47,7 @@ export default function WishlistPage() {
     }
 
     return (
-        <div className="mt-5">
+        <section className="mt-5">
             {products?.map((item, index) => {
                 return (
                     <div key={index} className="flex justify-between p-5 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg mx-2 md:mx-0">
@@ -76,6 +76,6 @@ export default function WishlistPage() {
                     </div>
                 )
             })}
-        </div>
+        </section>
     )
 }

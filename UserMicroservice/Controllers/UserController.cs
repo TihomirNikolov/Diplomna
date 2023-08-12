@@ -410,6 +410,30 @@ namespace UserMicroservice.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpDelete]
+        [Route("remove-address/{addressId}")]
+        public async Task<IActionResult> RemoveAddress(string addressId)
+        {
+            if(string.IsNullOrEmpty(addressId))
+                return BadRequest();
+
+            var email = Request.GetEmailFromRequest(_authHelper);
+
+            if (string.IsNullOrEmpty(email))
+                return Forbid();
+
+            var result = await _userService.RemoveAddressAsync(email, addressId);
+
+            if (result.Status == StatusEnum.NotFound)
+                return NotFound();
+            else if (result.Status == StatusEnum.Failure)
+                return BadRequest();
+
+            return Ok();
+
+        }
+
         #endregion
 
         #endregion

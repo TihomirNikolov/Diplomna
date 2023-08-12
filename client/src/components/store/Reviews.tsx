@@ -111,7 +111,7 @@ export default function Reviews(props: Props) {
     }
 
     return (
-        <div className="grid">
+        <section className="grid">
             <h1 className="pt-10 pb-4 text-2xl font-bold justify-self-center">{t('reviews')}</h1>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col items-center">
@@ -229,6 +229,6 @@ export default function Reviews(props: Props) {
                     }
                 </div>
             </div>
-        </div>
+        </section>
     )
 }

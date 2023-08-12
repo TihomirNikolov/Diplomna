@@ -149,36 +149,36 @@ export default function FinishOrderPage() {
                 <h1 className="text-black dark:text-white text-2xl font-bold">{t('title.finishOrder')}</h1>
                 <div className="grid md:grid-cols-6 space-x-2 mt-10">
                     <div className="col-span-4">
-                        <div className="border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
+                        <section className="border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
                             <h1 className="text-black dark:text-white text-2xl font-bold py-2">{t('address.address')}</h1>
                             <FinishPageAddressComponent ref={addressRef} address={address} setAddress={setAddress} />
-                        </div>
-                        <div className="mt-10 border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
+                        </section>
+                        <section className="mt-10 border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
                             <h1 className="text-black dark:text-white text-2xl font-bold py-2">{t('paymentMethod')}</h1>
                             <FinishPagePaymentsComponent ref={paymentsRef}
                                 card={card} setCard={setCard}
                                 newCard={newCard} setNewCard={setNewCard} />
-                        </div>
+                        </section>
                     </div>
 
-                    <div className="col-span-2 hidden md:block">
+                    <section className="col-span-2 hidden md:block">
                         <Finish sum={sum} onSubmit={onSubmit} />
-                    </div>
+                    </section>
 
                 </div>
 
-                <div className="mt-10 border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
+                <section className="mt-10 border border-gray-300 dark:border-gray-800 rounded-lg px-2 py-2">
                     <div className="flex items-center space-x-2 py-2">
                         <FontAwesomeIcon icon={['fas', 'comment']} size="2x" className="text-black dark:text-white" />
                         <h1 className="text-black dark:text-white text-2xl font-bold">{t('addComment')}</h1>
                     </div>
                     <Textarea className="text-black dark:text-white" placeholder={t('comment') || ''} value={comment}
                         onChange={(e) => setComment(e.target.value)} />
-                </div>
+                </section>
 
-                <div className="col-span-2 md:hidden">
+                <section className="col-span-2 md:hidden">
                     <Finish sum={sum} onSubmit={onSubmit} />
-                </div>
+                </section>
             </div>
         </div>
     )

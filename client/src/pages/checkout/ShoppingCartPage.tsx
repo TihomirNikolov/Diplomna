@@ -82,7 +82,6 @@ export default function ShoppingCartPage() {
     }
 
     return (
-
         <div className="grid grid-cols-12">
             <div className="col-start-3 col-span-8">
                 <h1 className="py-5 text-3xl text-black dark:text-white">{t('yourCart')}</h1>
@@ -100,7 +99,7 @@ export default function ShoppingCartPage() {
                         {t('sum')}
                     </div>
                 </div>
-                <div className="py-2">
+                <section className="py-2">
                     {shoppingCartItems.map((item, index) => {
                         return (
                             <div key={index} className="grid grid-cols-5 items-center
@@ -161,7 +160,7 @@ export default function ShoppingCartPage() {
                             </div>
                         )
                     })}
-                </div>
+                </section>
                 <div className="flex flex-col">
                     <div className="text-black dark:text-white">
                         {t('total')}: {sum.toFixed(2)} лв.

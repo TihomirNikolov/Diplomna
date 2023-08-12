@@ -106,9 +106,10 @@ export default function SearchPage() {
         <div className="grid grid-cols-12">
             <div className="lg:col-start-3 lg:col-span-8 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
                 <h1 className="text-black dark:text-white font-bold text-4xl py-5 flex items-center justify-center">
+                    {searchText}
                 </h1>
                 <div className="flex flex-col gap-5">
-                    <div className="flex flex-col gap-4 pb-2 border-b">
+                    <section className="flex flex-col gap-4 pb-2 border-b">
                         <div className="flex gap-4 items-center justify-center">
                             <SortingComponent
                                 ref={sortingRef}
@@ -128,21 +129,21 @@ export default function SearchPage() {
                             <span>{t('foundResults')}: &nbsp;</span>
                             <span>{products.length}</span>
                         </div>
-                    </div>
+                    </section>
 
-                    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <section className="flex flex-wrap gap-4 justify-center md:justify-start">
                         {showProducts.map((product, index) => {
                             return (
                                 <CoverProductCard key={index} product={product} />
                             )
                         })}
-                    </div>
-                    <div className="flex items-center justify-center border-t pt-2">
+                    </section>
+                    <section className="flex items-center justify-center border-t pt-2">
                         <Pagination
                             currentPage={currentPage}
                             onPageChanged={onPageChanged}
                             items={products.length} />
-                    </div>
+                    </section>
                 </div>
             </div>
         </div>

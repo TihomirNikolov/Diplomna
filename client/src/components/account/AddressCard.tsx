@@ -1,11 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Address } from "../../utilities"
+import { Address, authClient, baseUserURL } from "../../utilities"
 import { BlackWhiteButton } from "../buttons"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 interface Props {
-    address: Address
+    address: Address,
+    onDelete: (id: number) => void
 }
 
 export default function AddressCard(props: Props) {
@@ -16,8 +18,16 @@ export default function AddressCard(props: Props) {
         navigate('/account/address/edit/id/' + props.address.id, { state: { address: props.address } });
     }
 
-    function onDelete() {
-        
+    async function onDelete() {
+        try{
+            await authClient.delete(`${baseUserURL()}api/user/remove-address/${props.address.id}`)
+            props.onDelete(props.address.id);
+        }
+        catch(error){
+            if(axios.isAxiosError(error)){
+
+            }
+        }
     }
 
     return (

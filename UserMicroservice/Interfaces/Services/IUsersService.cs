@@ -22,5 +22,6 @@ namespace UserMicroservice.Interfaces.Services
         Task<Response> ChangePasswordAsync(string email, string oldPassword, string newPassword);
         Task<Response> RevokeAllAsync(string email);
         Task<Response> RevokeByIdAsync(string email, string id);
+        Task<Response> RemoveAddressAsync(string email, string addressId);
     }
 }

@@ -57,8 +57,8 @@ export default function Layout() {
     }
 
     return (
-        <>
-            <nav className="bg-white border-gray-200 dark:bg-gray-800 sticky top-0 z-40">
+        <header className="sticky top-0 z-40">
+            <nav className="bg-white border-gray-200 dark:bg-gray-800">
                 <div className="grid grid-cols-2 sm:grid-cols-3 py-4">
                     <div className="grid grid-cols-4 items-center">
                         <div className="md:hidden">
@@ -91,6 +91,6 @@ export default function Layout() {
                         <span className="underline hover:text-blue-600 cursor-pointer" onClick={async () => resendEmail()}>{t('resendEmail')}</span>
                     </h1>
                 </div>}
-        </>
+        </header>
     )
 }

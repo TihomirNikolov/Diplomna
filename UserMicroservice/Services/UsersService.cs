@@ -373,6 +373,28 @@ namespace UserMicroservice.Services
 
             return new Response { Status = StatusEnum.Success };
         }
+
+        public async Task<Response> RemoveAddressAsync(string email, string addressId)
+        {
+            var result = int.TryParse(addressId, out var parsedAddressId);
+            if(!result)
+                return new Response { Status = StatusEnum.Failure };
+
+            var userInfo = await _context.UserInfos.Include(u => u.User).Include(u => u.Addresses).FirstOrDefaultAsync(u => u.User.Email!.ToLower() == email.ToLower());
+
+            if (userInfo == null || userInfo.Addresses == null)
+                return new Response { Status = StatusEnum.NotFound, Message = "User info not found"};
+
+            var address = userInfo.Addresses.FirstOrDefault(a => a.Id == parsedAddressId);
+
+            if (address == null)
+                return new Response { Status = StatusEnum.NotFound, Message = "Address  not found" };
+
+            userInfo.Addresses.Remove(address);
+            await _context.SaveChangesAsync();
+
+            return new Response { Status = StatusEnum.Success };
+        }
     }
 }
 

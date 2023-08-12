@@ -14,5 +14,6 @@ namespace ProductsMicroservice.Models.Products
         public decimal Discount { get; set; }
         public decimal DiscountedPrice { get; set; }
         public List<Item<string, List<Item<string, string>>>> CoverTags { get; set; } = default!;
+        public bool IsNew { get; set; }
     }
 }

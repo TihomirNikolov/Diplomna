@@ -213,10 +213,10 @@ export default function CategoryPage() {
                         </div>)
                 })}
                 {category != undefined && products != undefined && products.length > 0 &&
-                    <div>
+                    <section>
                         <Separator className="mt-4" />
                         <CategoryFilters category={category} products={products} />
-                    </div>
+                    </section>
                 }
             </div>
             <div className="lg:col-start-5 lg:col-span-6 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
@@ -224,7 +224,7 @@ export default function CategoryPage() {
                     {category?.displayName.find(name => name.key == language.code)?.value}
                 </h1>
                 <div className="flex flex-col gap-5">
-                    <div className="flex flex-col gap-4 pb-2 border-b">
+                    <section className="flex flex-col gap-4 pb-2 border-b">
                         <div className="flex gap-4 items-center justify-center">
                             <SortingComponent
                                 ref={sortingRef}
@@ -242,24 +242,23 @@ export default function CategoryPage() {
                             <span>{t('foundResults')}: &nbsp;</span>
                             <span>{filteredProducts.length}</span>
                         </div>
-                    </div>
+                    </section>
 
-                    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <section className="flex flex-wrap gap-4 justify-center md:justify-start">
                         {showProducts.map((product, index) => {
                             return (
                                 <CoverProductCard key={index} product={product} />
                             )
                         })}
-                    </div>
-                    <div className="flex items-center justify-center border-t pt-2">
+                    </section>
+                    <section className="flex items-center justify-center border-t pt-2">
                         <Pagination
                             currentPage={currentPage}
                             onPageChanged={onPageChanged}
                             items={filteredProducts.length} />
-                    </div>
+                    </section>
                 </div>
             </div>
-
         </div>
     )
 }
