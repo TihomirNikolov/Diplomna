@@ -43,7 +43,8 @@
         "address": "Address",
         "postCode": "Postcode",
         "city": "City",
-        "region": "Region"
+        "region": "Region",
+        "country": "Country"
     },
     "card": {
         "addNewCard": "Add a new card",

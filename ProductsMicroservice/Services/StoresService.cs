@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Documents;
+using ProductsMicroservice.Models.DTOs;
 using ProductsMicroservice.Models.Products;
 using ProductsMicroservice.Models.Stores;
 using StackExchange.Redis;

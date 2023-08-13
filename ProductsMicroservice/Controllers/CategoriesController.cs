@@ -4,6 +4,9 @@ using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models;
 using ProductsMicroservice.Models.Requests;
+using SharedResources.Extensions;
+using SharedResources.Helpers;
+using System.Net;
 using System.Web;
 
 namespace ProductsMicroservice.Controllers
@@ -39,10 +42,58 @@ namespace ProductsMicroservice.Controllers
             var category = await _categoryService.GetSubCategoriesCategoryByUrl(decodedUrl);
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _redisService.VisitCategoryAsync(decodedUrl);
+            Task.Run(async () =>
+            {
+                var userId = "";
+                var idType = "";
+
+                var token = Request.GetAuthorizationToken();
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    var email = await HttpRequests.GetUserEmailAsync(token);
+                    userId = email;
+                    idType = "email";
+                }
+                else
+                {
+                    var browserId = Request.Headers["BrowserId"].ToString();
+                    userId = browserId;
+                    idType = "browserid";
+                }
+                _redisService.VisitCategoryAsync(decodedUrl, userId, idType);
+            });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
+
             return Ok(category);
+        }
+
+        [HttpGet]
+        [Route("user")]
+        public async Task<IActionResult> GetCategoriesWithNewstProductsForUser()
+        {
+            string userId;
+            string idType;
+
+            var token = Request.GetAuthorizationToken();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                var email = await HttpRequests.GetUserEmailAsync(token);
+                userId = email;
+                idType = "email";
+            }
+            else
+            {
+                var browserId = Request.Headers["BrowserId"].ToString();
+                userId = browserId;
+                idType = "browserid";
+            }
+
+            var categories = await _redisService.GetUserCategoriesWithNewsestProductsAsync(userId, idType);
+
+            return Ok(categories);
         }
 
         [HttpGet]

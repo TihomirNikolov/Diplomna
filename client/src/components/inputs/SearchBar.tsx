@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts";
-import { SearchCategory, SearchProduct, baseProductsURL } from "@/utilities";
+import { SearchCategory, SearchProduct, axiosClient, baseProductsURL } from "@/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -27,7 +27,7 @@ export default function SearchBar(props: Props) {
 
     async function fetchPopularProducts() {
         try {
-            var result = await axios.get(`${baseProductsURL()}api/products/visits/most-popular`);
+            var result = await axiosClient.get(`${baseProductsURL()}api/products/visits/most-popular`);
 
             var data = result.data as SearchProduct[];
             setPopularProducts(data);
@@ -42,7 +42,7 @@ export default function SearchBar(props: Props) {
 
     async function fetchPopularCategories() {
         try {
-            var result = await axios.get(`${baseProductsURL()}api/categories/visits/most-popular`);
+            var result = await axiosClient.get(`${baseProductsURL()}api/categories/visits/most-popular`);
 
             var data = result.data as SearchCategory[];
             setPopularCategories(data);
@@ -80,7 +80,7 @@ export default function SearchBar(props: Props) {
             return;
         }
         try {
-            var result = await axios.get(`${baseProductsURL()}api/products/search/${text}`);
+            var result = await axiosClient.get(`${baseProductsURL()}api/products/search/${text}`);
 
             var data = result.data as SearchProduct[];
 

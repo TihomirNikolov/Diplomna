@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProductsMicroservice.Models.Documents;
+using ProductsMicroservice.Models.DTOs;
 using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Mappers

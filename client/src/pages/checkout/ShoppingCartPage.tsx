@@ -83,10 +83,10 @@ export default function ShoppingCartPage() {
     }
 
     return (
-        <div className="grid grid-cols-12">
-            <div className="col-start-3 col-span-8">
+        <div className="grid md:grid-cols-12 px-2">
+            <div className="md:col-start-3 md:col-span-8">
                 <h1 className="py-5 text-3xl text-black dark:text-white">{t('yourCart')}</h1>
-                <div className="grid grid-cols-5 text-black dark:text-white place-items-center">
+                <div className="hidden md:grid grid-cols-5 text-black dark:text-white md:place-items-center">
                     <div className="col-span-2">
                         {t('product')}
                     </div>
@@ -103,12 +103,12 @@ export default function ShoppingCartPage() {
                 <section className="py-2">
                     {shoppingCartItems.map((item, index) => {
                         return (
-                            <div key={index} className="grid grid-cols-5 items-center
+                            <div key={index} className="grid md:grid-cols-5 md:items-center
                              text-black dark:text-white bg-white dark:bg-gray-800 rounded-lg">
-                                <div className="col-span-2">
+                                <div className="md:col-span-2">
                                     <div className="flex">
                                         <div>
-                                            <Image src={`${baseProductsURL()}${item.imageUrl}`} className="rounded-lg w-24" alt="shoppingCart" />
+                                            <Image src={`${baseProductsURL()}${item.imageUrl}`} className="rounded-lg w-48" alt="shoppingCart" />
                                         </div>
                                         <div className="px-2">
                                             <Link to={`/product/${item.productUrl}`} className="hover:text-orange-500">
@@ -123,6 +123,8 @@ export default function ShoppingCartPage() {
                                                     </div>)
                                             })}
                                         </div>
+                                        <FontAwesomeIcon icon={['fas', 'x']} className="md:hidden block mr-2 mt-2 cursor-pointer hover:text-red-600"
+                                            onClick={() => removeItem(item)} />
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-center">
@@ -155,9 +157,9 @@ export default function ShoppingCartPage() {
                                         +
                                     </button>
                                 </div>
-                                <div className="grid grid-cols-2 items-center justify-items-end">
+                                <div className="grid md:grid-cols-2 items-center justify-center md:justify-items-end">
                                     <span>{(item.number * item.discountedPrice).toFixed(2)} лв.</span>
-                                    <FontAwesomeIcon icon={['fas', 'x']} className="mr-2 cursor-pointer hover:text-red-600"
+                                    <FontAwesomeIcon icon={['fas', 'x']} className="hidden md:block mr-2 cursor-pointer hover:text-red-600"
                                         onClick={() => removeItem(item)} />
                                 </div>
                             </div>

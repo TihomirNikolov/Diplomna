@@ -12,19 +12,14 @@ interface Props {
 
 export default function AddressCard(props: Props) {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-
-    function onEdit() {
-        navigate('/account/address/edit/id/' + props.address.id, { state: { address: props.address } });
-    }
 
     async function onDelete() {
-        try{
+        try {
             await authClient.delete(`${baseUserURL()}api/user/remove-address/${props.address.id}`)
             props.onDelete(props.address.id);
         }
-        catch(error){
-            if(axios.isAxiosError(error)){
+        catch (error) {
+            if (axios.isAxiosError(error)) {
 
             }
         }
@@ -53,10 +48,15 @@ export default function AddressCard(props: Props) {
                     <span>{props.address.phoneNumber}</span>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <BlackWhiteButton className="w-full" onClick={() => onEdit()}>
-                        {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} />
-                    </BlackWhiteButton>
-                    <BlackWhiteButton className={`w-full ${props.address.isDefault ? 'invisible' : ''}`}
+                    <Link to={`/account/address/edit/id/${props.address.id}`} state={{ address: props.address }}
+                        className="border-2 border-black dark:border-white px-5 py-1 rounded-lg 
+                            hover:bg-black hover:dark:bg-white text-black dark:text-white
+                             hover:text-white hover:dark:text-black">
+                        <div className="flex items-center justify-center">
+                            {t("edit")} <FontAwesomeIcon icon={["fas", "pen-to-square"]} />
+                        </div>
+                    </Link>
+                    <BlackWhiteButton className={`w-full ${props.address.isDefault ? 'hidden' : ''}`}
                         onClick={() => onDelete()}>
                         {t("delete")} <FontAwesomeIcon icon={["fas", "trash"]} />
                     </BlackWhiteButton>

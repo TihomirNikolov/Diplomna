@@ -1,4 +1,6 @@
-﻿namespace ProductsMicroservice.Models.Stores
+﻿using ProductsMicroservice.Models.DTOs;
+
+namespace ProductsMicroservice.Models.Stores
 {
     public class NearestStore
     {

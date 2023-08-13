@@ -64,7 +64,7 @@ export default function Layout() {
                         <div className="md:hidden">
                             <CategoriesComponent />
                         </div>
-                        <div className="col-start-3">
+                        <div className="flex justify-center md:justify-start col-start-2 col-span-2 md:col-start-3 md:col-span-1">
                             <Link to='/' className="text-white">Home</Link>
                         </div>
                     </div>
@@ -83,8 +83,11 @@ export default function Layout() {
                         <CategoriesComponent />
                     </div>
                 </div>
+                <div className="flex justify-center items-center mx-4 sm:hidden">
+                    <SearchBar />
+                </div>
             </nav>
-            { isUserLoaded && isAuthenticated && !isEmailConfirmed &&
+            {isUserLoaded && isAuthenticated && !isEmailConfirmed &&
                 <div className="grid place-items-center">
                     <h1 className="text-black dark:text-white">
                         {t('emailNotConfirmed')}&nbsp;

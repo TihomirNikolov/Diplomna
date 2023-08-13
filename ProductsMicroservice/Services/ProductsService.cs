@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using ProductsMicroservice.Helpers;
 using ProductsMicroservice.Interfaces;
-using ProductsMicroservice.Models;
 using ProductsMicroservice.Models.Documents;
+using ProductsMicroservice.Models.DTOs;
 using ProductsMicroservice.Models.Products;
 using SharedResources.Models;
-using System.Linq;
 
 namespace ProductsMicroservice.Services
 {
@@ -59,7 +57,11 @@ namespace ProductsMicroservice.Services
             var collection = await db.GetCollection<ProductDocument>(CollectionName)
                 .Find(Builders<ProductDocument>.Filter.Where(p => productUrls.Contains(p.ProductUrl))).ToListAsync();
 
-            return _mapper.Map<List<ProductDTO>>(collection);
+            var products = _mapper.Map<List<ProductDTO>>(collection);
+
+            await CalculatePrices(products);
+
+            return products;
         }
 
         public async Task<bool> CreateProductAsync(Product product)
@@ -283,6 +285,20 @@ namespace ProductsMicroservice.Services
             }
 
             return products;
+        }
+
+
+        public async Task AddProductsToCategoryAsync(List<SearchCategoryWithProductsDTO> categories)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            foreach(var category in categories)
+            {
+                var products = await GetCoverProductsByCategoryAsync(category.DisplayName[0].Value);
+                category.Products = products.OrderByDescending(p => p.AddedDate).Take(10).ToList();
+            }
         }
 
         private async Task CalculatePrices(IEnumerable<ProductDTOBase> products)

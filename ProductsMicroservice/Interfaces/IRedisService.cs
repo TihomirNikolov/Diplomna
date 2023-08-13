@@ -1,5 +1,5 @@
 ﻿using ProductsMicroservice.Models.Categories;
-using ProductsMicroservice.Models.Products;
+using ProductsMicroservice.Models.DTOs;
 using ProductsMicroservice.Models.Redis;
 
 namespace ProductsMicroservice.Interfaces
@@ -9,7 +9,8 @@ namespace ProductsMicroservice.Interfaces
         Task VisitProductAsync(string productUrl);
         Task<ProductVisit> GetProductVisitsByUrlAsync(string url);
         Task<List<SearchProductDTO>> GetMostPopularProductsAsync();
-        Task VisitCategoryAsync(string categoryUrl);
+        Task VisitCategoryAsync(string categoryUrl, string id, string idType);
         Task<List<SearchCategoryDTO>> GetMostPopularCategoriesAsync();
+        Task<List<SearchCategoryWithProductsDTO>> GetUserCategoriesWithNewsestProductsAsync(string id, string idType);
     }
 }

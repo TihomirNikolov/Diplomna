@@ -2,12 +2,13 @@ import { Combobox, Transition } from "@headlessui/react";
 import { FixedSizeList as List } from "react-window"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { Fragment, forwardRef, useImperativeHandle, useState } from "react";
+import { Fragment, forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
 
 interface Props {
     labelText: string,
-    onChanged?: (country: Country) => void
+    onChanged?: (country: Country) => void,
+    initialCountry?: string
 }
 
 type Country = {
@@ -29,6 +30,10 @@ const CountriesComboBox = forwardRef<CountriesComboboxHandle, Props>((props: Pro
     const [selected, setSelected] = useState<Country>(Countries[0]);
 
     const [query, setQuery] = useState('');
+
+    useEffect(() => {
+        setSelected(Countries.find(c => c.countryCode == props.initialCountry) || Countries[0]);
+    }, [props.initialCountry])
 
     useImperativeHandle(ref, () => ({
         selectedCountry: selected

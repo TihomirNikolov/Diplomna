@@ -1,7 +1,8 @@
 ﻿using ProductsMicroservice.Models.Categories;
+using ProductsMicroservice.Models.Products;
 using SharedResources.Models;
 
-namespace ProductsMicroservice.Models.Products
+namespace ProductsMicroservice.Models.DTOs
 {
     public class ProductDTO : ProductDTOBase
     {

@@ -97,7 +97,7 @@ export default function AddressPage() {
         }
 
         try {
-            var response = await authClient.put(`${baseUserURL()}api/user/edit-address`, address);
+            await authClient.put(`${baseUserURL()}api/user/edit-address`, address);
             setIsDefaultAddressLocked(true);
             notification.success('Successfully eddited your address', 'top-center');
         }
@@ -115,7 +115,7 @@ export default function AddressPage() {
         }
         
         try {
-            var response = await authClient.post(`${baseUserURL()}api/user/add-new-address`, address);
+            await authClient.post(`${baseUserURL()}api/user/add-new-address`, address);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {

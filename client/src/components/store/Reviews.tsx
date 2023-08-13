@@ -100,7 +100,7 @@ export default function Reviews(props: Props) {
                 review: review,
                 productUrl: props.product?.productUrl ?? ""
             }
-            var response = await authClient.post(`${baseProductsURL()}api/products/remove-review`, data);
+            await authClient.post(`${baseProductsURL()}api/products/remove-review`, data);
             props.onRemoveReview(review);
         }
         catch (error) {

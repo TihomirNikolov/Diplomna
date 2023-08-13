@@ -1,4 +1,3 @@
-import './App.css'
 import { Footer, Layout, Routes, ScrollToTop } from './components'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -30,6 +29,13 @@ function App() {
   }
 
   useEffect(() => {
+    checkForUserId();
+    
+    axiosClient.interceptors.request.use((config) => {
+      config.headers['BrowserId'] = localStorage.getItem('uuid');
+      return config;
+    })
+
     authClient.interceptors.request.use((config) => {
       config.headers['Authorization'] = 'Bearer ' + getAccessToken();
       config.headers['RefreshToken'] = getRefreshToken();
@@ -90,16 +96,12 @@ function App() {
     );
   }, [])
 
-  useEffect(() => {
-    checkForUserId();
-  }, [])
-
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
         <Layout />
-        <main className='min-h-screen'>
+        <main className='min-h-screen bg-lightBackground dark:bg-darkBackground-900'>
           <Routes />
         </main>
         <Footer />

@@ -60,40 +60,40 @@ const AddressComponent = forwardRef<AddressComponentHandle, Props>(({ address, s
     return (
         <>
             <div className="col-span-2">
-                <CountriesComboBox labelText="" ref={countriesCombobox}
-                    onChanged={(country) => setAddress(prev => { return { ...prev, country: country.country } })} />
+                <CountriesComboBox labelText={t('address.country')} ref={countriesCombobox} initialCountry={address.country}
+                    onChanged={(country) => setAddress(prev => { return { ...prev, country: country.countryCode } })} />
             </div>
-            <Input ref={firstNameInput}
+            <Input ref={firstNameInput} initialValue={address.firstName}
                 type="text" placeholder={t('firstName')}
                 validate={validateFirstName} immediateValdation={true}
                 validationMessage={t('errorInput.threeCharactersRequired')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, firstName: value } })} />
-            <Input ref={lastNameInput}
+            <Input ref={lastNameInput} initialValue={address.lastName}
                 type="text" placeholder={t('lastName')}
                 validate={validateLastName} immediateValdation={true}
                 validationMessage={t('errorInput.threeCharactersRequired')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, lastName: value } })} />
-            <Input ref={mobileNumberInput}
+            <Input ref={mobileNumberInput} initialValue={address.phoneNumber}
                 type="text" placeholder={t('address.mobileTelephoneNumber')}
                 validate={validateMobileNumber} immediateValdation={true}
                 validationMessage={t('errorInput.mobileNumberInvalid')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, phoneNumber: value } })} />
-            <Input ref={streetAddressInput}
+            <Input ref={streetAddressInput} initialValue={address.streetAddress}
                 type="text" placeholder={t('address.address')}
                 validate={validateStreetAddress} immediateValdation={true}
                 validationMessage={t('errorInput.fiveCharactersRequired')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, streetAddress: value } })} />
-            <Input ref={postalCodeInput}
+            <Input ref={postalCodeInput} initialValue={address.postalCode}
                 type="tel" placeholder={t('address.postCode')}
                 validate={validatePostalCode} immediateValdation={true}
                 validationMessage={t('errorInput.postalCodeInvalid')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, postalCode: value } })} />
-            <Input ref={regionInput}
+            <Input ref={regionInput} initialValue={address.region}
                 type="text" placeholder={t('address.region')}
                 validate={validateRegion} immediateValdation={true}
                 validationMessage={t('errorInput.twoCharactersRequired')!}
                 onChange={(value) => setAddress(prev => { return { ...prev, region: value } })} />
-            <Input ref={cityInput}
+            <Input ref={cityInput} initialValue={address.city}
                 type="text" placeholder={t('address.city')}
                 validate={validateCity} immediateValdation={true}
                 validationMessage={t('errorInput.twoCharactersRequired')!}

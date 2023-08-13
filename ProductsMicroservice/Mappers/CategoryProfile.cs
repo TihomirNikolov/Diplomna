@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProductsMicroservice.Models.Categories;
 using ProductsMicroservice.Models.Documents;
+using ProductsMicroservice.Models.DTOs;
 
 namespace ProductsMicroservice.Mappers
 {
@@ -11,6 +12,7 @@ namespace ProductsMicroservice.Mappers
             CreateMap<CategoryDocument, Category>();
             CreateMap<Category,CategoryDTO>();
             CreateMap<CategoryDocument, SearchCategoryDTO>();
+            CreateMap<SearchCategoryDTO, SearchCategoryWithProductsDTO>().ReverseMap();
         }
     }
 }

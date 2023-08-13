@@ -14,11 +14,26 @@ export default function AccountLayout(props: any) {
     { path: '/payments/cards', translate: 'title.paymentCards' },
     { path: '/wishlist', translate: "wishlist" }];
 
+
+    function getDefaultPath(path: string) {
+        var defPath: string = '';
+        var slashCount = 0;
+        for (var c of path) {
+            if (slashCount == 3)
+                break;
+            if (c == '/')
+                slashCount++;
+            if (slashCount < 3)
+                defPath += c;
+        }
+        return defPath;
+    }
+
     return (
         <div className="md:grid md:grid-cols-12 text-black dark:text-white rounded-lg">
             <div className="col-start-3 col-span-8">
                 <nav className="md:flex flex-col mt-5">
-                    <Tabs defaultValue={location.pathname}>
+                    <Tabs defaultValue={getDefaultPath(location.pathname)}>
                         <TabsList className="w-full flex h-full flex-wrap">
                             {paths.map((path, index) => {
                                 return <TabsTrigger key={index} value={path.path}

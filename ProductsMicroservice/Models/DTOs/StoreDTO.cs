@@ -1,6 +1,7 @@
-﻿using SharedResources.Models;
+﻿using ProductsMicroservice.Models.Stores;
+using SharedResources.Models;
 
-namespace ProductsMicroservice.Models.Stores
+namespace ProductsMicroservice.Models.DTOs
 {
     public class StoreDTO
     {

@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useRef, useState } from "react"
-import { CategoryDTO, CoverProduct, SortType, axiosClient, baseProductsURL, sortingParams, sortings } from "../../utilities"
+import { CategoryDTO, CoverProduct, SortType, authClient, axiosClient, baseProductsURL, sortingParams, sortings } from "../../utilities"
 import axios from "axios"
 import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, SortingComponent, Spinner, useTitle } from "../../components"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Listbox, Transition } from "@headlessui/react"
 import { useTranslation } from "react-i18next"
-import { useLanguage } from "../../contexts"
+import { useLanguage, useUser } from "../../contexts"
 import { Separator } from "@/components/ui/separator"
 import { SortingHandle } from "@/components/store/SortingComponent"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -31,6 +31,7 @@ export default function CategoryPage() {
 
     const location = useLocation();
     const { language } = useLanguage();
+    const { isAuthenticated } = useUser();
 
     const sortingRef = useRef<SortingHandle>(null);
 
@@ -73,7 +74,12 @@ export default function CategoryPage() {
     async function fetchCategoryData() {
         try {
             var url = encodeURIComponent(location.pathname.split('/category/')[1]);
-            var response = await axiosClient.get(`${baseProductsURL()}api/categories/${url}`);
+            if (isAuthenticated) {
+                var response = await authClient.get(`${baseProductsURL()}api/categories/${url}`);
+            }
+            else{
+                var response = await axiosClient.get(`${baseProductsURL()}api/categories/${url}`);
+            }
             var data = response.data as CategoryDTO;
             setCategory(data);
             return data;

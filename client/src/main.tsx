@@ -7,6 +7,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import './index.css'
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 
 const queryClient = new QueryClient();
 

@@ -1,4 +1,5 @@
-﻿using ProductsMicroservice.Models.Stores;
+﻿using ProductsMicroservice.Models.DTOs;
+using ProductsMicroservice.Models.Stores;
 
 namespace ProductsMicroservice.Interfaces
 {

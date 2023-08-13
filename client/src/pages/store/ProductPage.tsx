@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 import { Image } from "@/components/utilities";
+import { Carousel } from "react-responsive-carousel";
 
 export default function ProductPage() {
     const { t } = useTranslation();
@@ -145,7 +146,15 @@ export default function ProductPage() {
                         <div className="p-5">
                             <div className="h-56 w-40 md:h-full md:w-80">
                                 <div className="relative">
-                                    <Image src={`${baseProductsURL()}${product!.pictureUrls[0]}`} alt="product" className="rounded-lg" />
+                                    <Carousel showThumbs showStatus={false} showIndicators={false}>
+                                        {product?.pictureUrls.map((url, index) => {
+                                            return (
+                                                <>
+                                                    <img src={`${baseProductsURL()}${url}`} alt="product" className="rounded-lg" />
+                                                </>
+                                            )
+                                        })}
+                                    </Carousel>
                                     {!product!.isAvailable &&
                                         <div className="absolute w-24 bottom-7 -right-2 text-center bg-red-600 rounded-lg -rotate-45">
                                             <span>Изчерпан</span>

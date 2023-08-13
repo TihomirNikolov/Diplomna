@@ -1,6 +1,6 @@
 ﻿using SharedResources.Models;
 
-namespace ProductsMicroservice.Models.Products
+namespace ProductsMicroservice.Models.DTOs
 {
     public class ProductDTOBase
     {

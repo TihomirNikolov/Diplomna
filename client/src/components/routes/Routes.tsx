@@ -4,6 +4,7 @@ import ProtectedRoute from './ProtectedRoute'
 import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
 import { Suspense, lazy } from 'react'
+import UserLoadedRoute from './UserLoadedRoute'
 
 const AccountPage = lazy(() => import('../../pages').then((module) => ({ default: module.AccountPage })));
 const AddressPage = lazy(() => import('../../pages').then((module) => ({ default: module.AddressPage })));
@@ -36,14 +37,16 @@ export default function Router() {
     return (
         <Suspense fallback={<div></div>}>
             <Routes>
-                <Route path={''} element={<HomePage />} />
-                {homeRoutes()}
                 <Route path='/checkout/cart' element={<ShoppingCartPage />} />
                 <Route path='/checkout/finish' element={<FinishOrderPage />} />
                 <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
                 <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
-                <Route path='/category/*' element={<CategoryPage />} />
-                <Route path='/product/:productUrl' element={<ProductPage />} />
+                <Route element={<UserLoadedRoute />}>
+                    <Route path={''} element={<HomePage />} />
+                    {homeRoutes()}
+                    <Route path='/category/*' element={<CategoryPage />} />
+                    <Route path='/product/:productUrl' element={<ProductPage />} />
+                </Route>
                 <Route path='/search/:searchText' element={<SearchPage />} />
                 <Route element={<AuthRoute />}>
                     <Route path='/login' element={<LoginPage />} />

@@ -1,4 +1,5 @@
-﻿using ProductsMicroservice.Models.Products;
+﻿using ProductsMicroservice.Models.DTOs;
+using ProductsMicroservice.Models.Products;
 using SharedResources.Models;
 
 namespace ProductsMicroservice.Interfaces
@@ -18,5 +19,6 @@ namespace ProductsMicroservice.Interfaces
         Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText);
         Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls);
         Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> ids);
+        Task AddProductsToCategoryAsync(List<SearchCategoryWithProductsDTO> categories); 
     }
 }
