@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OrdersMicroservice.Interfaces;
 using OrdersMicroservice.Models;
 using OrdersMicroservice.Models.Database;
@@ -91,6 +92,13 @@ namespace OrdersMicroservice.Services
 
                 return "";
             }
+        }
+
+        public async Task<List<OrderDTO>> GetOrdersAsync(string id)
+        {
+            var orders = await _dbContext.Orders.Include(o => o.OrderItems).Include(o => o.Address).Where(o => o.UniqueId.ToLower() == id.ToLower()).ToListAsync();
+
+            return _mapper.Map<List<OrderDTO>>(orders);
         }
     }
 }

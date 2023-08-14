@@ -39,5 +39,18 @@ namespace OrdersMicroservice.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<IActionResult> GetOrders()
+        {
+            var token = Request.GetAuthorizationToken();
+
+            var email = await HttpRequests.GetUserEmailAsync(token);
+
+            var result = await _ordersService.GetOrdersAsync(email);
+
+            return Ok(result);
+        }
     }
 }
