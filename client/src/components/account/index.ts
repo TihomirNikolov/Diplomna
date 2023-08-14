@@ -10,10 +10,11 @@ import AddNewPaymentCard from "./AddNewPaymentCard";
 import PaymentCardCard from "./PaymentCardCard";
 import AddressComponent from "./AddressComponent";
 import PaymentCardComponent from "./PaymentCardComponent";
+import OrderCard from "./OrderCard";
 
 export {
     AccountProfile, ChangeEmail, ChangeName,
     ChangePassword, AddNewAddressCard, AddressCard,
     DeleteAccount, Avatar, AddNewPaymentCard, PaymentCardCard,
-    AddressComponent, PaymentCardComponent
+    AddressComponent, PaymentCardComponent, OrderCard
 }

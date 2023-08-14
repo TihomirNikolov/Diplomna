@@ -28,6 +28,11 @@ namespace OrdersMicroservice.Controllers
 
             var response = await _ordersService.CreateOrderAsync(email, request.OrderItems, request.Address, request.Comment, request.CardPayment);
 
+            if (string.IsNullOrEmpty(response))
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
             return Ok(response);
         }
 
@@ -36,6 +41,11 @@ namespace OrdersMicroservice.Controllers
         public async Task<IActionResult> CreateOrderByBrowserId([FromBody] AddOrderByBrowserIdRequest request)
         {
             var response = await _ordersService.CreateOrderAsync(request.BrowserId, request.OrderItems, request.Address, request.Comment, request.CardPayment);
+
+            if (string.IsNullOrEmpty(response))
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             return Ok(response);
         }
@@ -49,6 +59,18 @@ namespace OrdersMicroservice.Controllers
             var email = await HttpRequests.GetUserEmailAsync(token);
 
             var result = await _ordersService.GetOrdersAsync(email);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("get/id/{orderId}")]
+        public async Task<IActionResult> GetOrderById(string orderId)
+        {
+            var result = await _ordersService.GetOrderByIdAsync(orderId);
+
+            if (result == null)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
             return Ok(result);
         }

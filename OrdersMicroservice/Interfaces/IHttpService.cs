@@ -9,5 +9,7 @@ namespace OrdersMicroservice.Interfaces
         Task<bool> CreatePaymentAsync(string orderId, string cardId, string amount);
 
         Task<bool> CreatePaymentWithNewCardAsync(string orderId, CardDTO newCard, string amount);
+
+        Task<List<FullOrderItemDTO>?> GetOrderItemsAsync(List<string> ids);
     }
 }

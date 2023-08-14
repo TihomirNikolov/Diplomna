@@ -19,6 +19,7 @@ namespace ProductsMicroservice.Interfaces
         Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText);
         Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls);
         Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> ids);
+        Task<List<OrderItemDTO>> GetOrderItemsInformationAsync(List<string> ids);
         Task AddProductsToCategoryAsync(List<SearchCategoryWithProductsDTO> categories); 
     }
 }

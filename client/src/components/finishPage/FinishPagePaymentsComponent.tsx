@@ -59,6 +59,7 @@ const FinishPagePaymentsComponent = forwardRef<FinishPagePaymentsHandle, Props>(
             setCards(data);
             if (data.length > 0) {
                 setSelectedCard(data[0]);
+                setCard(data[0]);
             }
         }
         catch (error) {

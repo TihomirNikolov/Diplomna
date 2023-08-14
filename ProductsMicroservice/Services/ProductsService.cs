@@ -147,7 +147,7 @@ namespace ProductsMicroservice.Services
                 var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
 
                 product.StoreId = nearestStore.Store.Id;
-                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
                 product.IsAvailable = true;
                 var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
                 product.Discount = storeProductInfo.Discount;
@@ -278,7 +278,7 @@ namespace ProductsMicroservice.Services
                 var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
 
                 product.StoreId = nearestStore.Store.Id;
-                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
                 var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.ProductId);
                 product.Discount = storeProductInfo.Discount;
                 product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
@@ -287,6 +287,20 @@ namespace ProductsMicroservice.Services
             return products;
         }
 
+        public async Task<List<OrderItemDTO>> GetOrderItemsInformationAsync(List<string> ids)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var filter = Builders<ProductDocument>.Filter.Where(p => ids.Contains(p.Id));
+
+            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filter).ToListAsync();
+
+            var products = _mapper.Map<List<OrderItemDTO>>(productDocuments);
+
+            return products;
+        }
 
         public async Task AddProductsToCategoryAsync(List<SearchCategoryWithProductsDTO> categories)
         {
@@ -324,7 +338,7 @@ namespace ProductsMicroservice.Services
                 var nearestStore = LocationHelper.GetNearestStore(stores, userLocation.Latitude, userLocation.Longitude);
 
                 product.StoreId = nearestStore.Store.Id;
-                product.Price = product.Price + product.Price * (decimal)nearestStore.Coefficient;
+                product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
                 product.IsAvailable = true;
                 var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
                 product.Discount = storeProductInfo.Discount;

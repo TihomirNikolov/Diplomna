@@ -11,5 +11,7 @@ namespace OrdersMicroservice.Models.DTOs
         public string OrderSum { get; set; } = string.Empty;
 
         public OrderStatusEnum Status { get; set; }
+
+        public DateTime OrderDate { get; set; }
     }
 }

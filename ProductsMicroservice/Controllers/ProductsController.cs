@@ -170,6 +170,15 @@ namespace ProductsMicroservice.Controllers
             return Ok(shoppingCartItems);
         }
 
+        [HttpPost]
+        [Route("order")]
+        public async Task<IActionResult> GetOrderItemsInformation([FromBody] GetOrderItemsRequest request)
+        {
+            var orderItems = await _productsService.GetOrderItemsInformationAsync(request.ProductIds);
+
+            return Ok(orderItems);
+        }
+
         #endregion
     }
 }

@@ -3,6 +3,7 @@ using OrdersMicroservice.Interfaces;
 using OrdersMicroservice.Models.DTOs;
 using OrdersMicroservice.Models.HttpRequests;
 using SharedResources.Extensions;
+using SharedResources.Models;
 using System.Text;
 
 namespace OrdersMicroservice.Services
@@ -33,7 +34,7 @@ namespace OrdersMicroservice.Services
             var json = JsonConvert.SerializeObject(request);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync("https://host.docker.internal:44322/api/stores/buy/products", content);
+            var response = await httpClient.PostAsync("https://host.docker.internal:44320/api/stores/buy/products", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -100,6 +101,33 @@ namespace OrdersMicroservice.Services
             }
 
             return false;
+        }
+
+        public async Task<List<FullOrderItemDTO>?> GetOrderItemsAsync(List<string> ids)
+        {
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var httpClient = new HttpClient(clientHandler);
+
+            var request = new GetOrderItemsRequest
+            {
+                ProductIds = ids
+            };
+
+            var json = JsonConvert.SerializeObject(request);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync("https://host.docker.internal:44320/api/products/order", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<List<FullOrderItemDTO>>(await response.Content.ReadAsStringAsync());
+            }
+
+            return null;
         }
     }
 }

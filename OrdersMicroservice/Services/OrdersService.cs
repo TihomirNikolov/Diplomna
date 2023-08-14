@@ -38,7 +38,8 @@ namespace OrdersMicroservice.Services
                     UniqueId = uniqueId,
                     Comment = comment,
                     Status = OrderStatusEnum.New,
-                    Address = mappedAddress
+                    Address = mappedAddress,
+                    OrderDate= DateTime.Now
                 };
 
                 decimal sum = 0;
@@ -99,6 +100,35 @@ namespace OrdersMicroservice.Services
             var orders = await _dbContext.Orders.Include(o => o.OrderItems).Include(o => o.Address).Where(o => o.UniqueId.ToLower() == id.ToLower()).ToListAsync();
 
             return _mapper.Map<List<OrderDTO>>(orders);
+        }
+
+        public async Task<OrderWithItemsDTO?> GetOrderByIdAsync(string id)
+        {
+            var order = await _dbContext.Orders.Include(o => o.OrderItems).Include(o => o.Address).FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+                return null;
+
+            var orderItems = await _httpService.GetOrderItemsAsync(order.OrderItems.Select(o => o.ProductId).ToList());
+
+            if (orderItems == null)
+                return null;
+
+            var mappedOrder = _mapper.Map<OrderWithItemsDTO>(order);
+
+            foreach(var item in orderItems)
+            {
+                var mappedItem = mappedOrder.OrderItems.FirstOrDefault(o => o.ProductId == item.ProductId);
+
+                if (mappedItem == null)
+                    continue;
+
+                mappedItem.ProductId = item.ProductId;
+                mappedItem.Name = item.Name;
+                mappedItem.ImageUrl = item.ImageUrl;
+            }
+
+            return mappedOrder;
         }
     }
 }

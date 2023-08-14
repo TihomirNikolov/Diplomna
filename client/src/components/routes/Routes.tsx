@@ -15,6 +15,7 @@ const ForgottenPasswordPage = lazy(() => import('../../pages').then((module) => 
 const LoginPage = lazy(() => import('../../pages').then((module) => ({ default: module.LoginPage })));
 const MyAddressesPage = lazy(() => import('../../pages').then((module) => ({ default: module.MyAddressesPage })));
 const MyOrdersPage = lazy(() => import('../../pages').then((module) => ({ default: module.MyOrdersPage })));
+const OrderPage = lazy(() => import('../../pages').then((module) => ({ default: module.OrderPage })));
 const NotFoundPage = lazy(() => import('../../pages').then((module) => ({ default: module.NotFoundPage })));
 const PaymentCardsPage = lazy(() => import('../../pages').then((module) => ({ default: module.PaymentCardsPage })));
 const AddPaymentCardPage = lazy(() => import('../../pages').then((module) => ({ default: module.AddPaymentCardPage })));
@@ -59,7 +60,8 @@ export default function Router() {
                     <Route path='/account/address' element={<AccountLayout><MyAddressesPage /></AccountLayout>} />
                     <Route path='/payments/cards' element={<AccountLayout><PaymentCardsPage /></AccountLayout>} />
                     <Route path='/payments/cards/add' element={<AccountLayout><AddPaymentCardPage /></AccountLayout>} />
-                    <Route path='/account/history' element={<AccountLayout><MyOrdersPage /></AccountLayout>} />
+                    <Route path='/sales/order/history' element={<AccountLayout><MyOrdersPage /></AccountLayout>} />
+                    <Route path='/sales/order/:orderId' element={<AccountLayout><OrderPage /></AccountLayout>} />
                     <Route path='/wishlist' element={<AccountLayout><WishlistPage /></AccountLayout>} />
                     <Route path='/account/address/add' element={<AccountLayout><AddressPage /></AccountLayout>} />
                     <Route path='/account/address/edit/id/:id' element={<AccountLayout><AddressPage /></AccountLayout>} />

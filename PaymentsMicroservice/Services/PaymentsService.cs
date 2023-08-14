@@ -45,11 +45,11 @@ namespace PaymentsMicroservice.Services
                 if (card == null)
                     return false;
 
-                long.TryParse(amount, out var longAmount);
+                decimal.TryParse(amount, out var decimalAmount);
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = longAmount * 100,
+                    Amount = (long)(decimalAmount * 100),
                     Currency = "BGN",
                     PaymentMethod = card.CardId,
                     Customer = card.Customer.CutomerId
@@ -57,8 +57,6 @@ namespace PaymentsMicroservice.Services
 
                 var service = new PaymentIntentService();
                 var result = service.Create(options);
-
-                decimal.TryParse(amount, out var decimalAmount);
 
                 var payment = new Payment
                 {

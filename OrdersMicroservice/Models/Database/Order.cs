@@ -13,6 +13,8 @@ namespace OrdersMicroservice.Models.Database
 
         public OrderStatusEnum Status { get; set; }
 
+        public DateTime OrderDate { get; set; }
+
         public List<OrderItem> OrderItems { get; set; } = default!;
 
         public Address Address { get; set; } = default!;

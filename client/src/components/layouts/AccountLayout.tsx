@@ -8,11 +8,13 @@ export default function AccountLayout(props: any) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const paths: { path: string, translate: string }[] = [{ path: '/account', translate: 'account' },
-    { path: '/account/address', translate: 'myAddresses' },
-    { path: '/account/history', translate: 'myHistory' },
-    { path: '/payments/cards', translate: 'title.paymentCards' },
-    { path: '/wishlist', translate: "wishlist" }];
+    const paths: { path: string, translate: string }[] = [
+        { path: '/account', translate: 'account' },
+        { path: '/account/address', translate: 'myAddresses' },
+        { path: '/sales/order/history', translate: 'myHistory' },
+        { path: '/payments/cards', translate: 'title.paymentCards' },
+        { path: '/wishlist', translate: "wishlist" }
+    ];
 
 
     function getDefaultPath(path: string) {
@@ -26,7 +28,10 @@ export default function AccountLayout(props: any) {
             if (slashCount < 3)
                 defPath += c;
         }
-        return defPath;
+
+        var matchPath = paths.find(p => p.path.includes(defPath))
+        
+        return matchPath?.path;
     }
 
     return (

@@ -6,9 +6,10 @@ import PaymentCardsPage from "./PaymentCardsPage";
 import ChangeEmailPage from "./ChangeEmailPage";
 import AddressPage from "./AddressPage";
 import AddPaymentCardPage from "./AddPaymentCardPage";
+import OrderPage from "./OrderPage";
 
 export {
     AccountPage, MyAddressesPage, MyOrdersPage,
     WishlistPage, PaymentCardsPage, ChangeEmailPage, AddressPage,
-    AddPaymentCardPage
+    AddPaymentCardPage, OrderPage
 }

@@ -8,5 +8,7 @@ namespace OrdersMicroservice.Interfaces
         Task<string> CreateOrderAsync(string uniqueId, List<OrderItemDTO> orderItems, AddressDTO address, string comment, CardPaymentDTO cardPayment);
 
         Task<List<OrderDTO>> GetOrdersAsync(string id);
+
+        Task<OrderWithItemsDTO?> GetOrderByIdAsync(string id);
     }
 }

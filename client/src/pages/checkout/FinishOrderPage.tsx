@@ -6,6 +6,7 @@ import { FinishPagePaymentsHandle } from "@/components/finishPage/FinishPagePaym
 import { Textarea } from "@/components/ui/textarea";
 import { useShoppingCart, useUser } from "@/contexts";
 import { Address, authClient, axiosClient, baseOrdersURL, baseProductsURL, baseShoppingCartURL, notification } from "@/utilities";
+import { OrderItem } from "@/utilities/models/account";
 import { Card } from "@/utilities/models/checkout/Card";
 import { StoreProduct } from "@/utilities/models/store/Product";
 import { AreProductsAvailableRequest } from "@/utilities/requests";
@@ -42,12 +43,6 @@ const initialCard: Card = {
     id: '',
     last4: '',
     type: ''
-}
-
-interface OrderItem {
-    productId: string,
-    count: string,
-    sum: string
 }
 
 export default function FinishOrderPage() {
@@ -97,10 +92,12 @@ export default function FinishOrderPage() {
 
             var items: OrderItem[] = [];
             for (var item of shoppingCartItems) {
+                var price = item.discount > 0 ? item.discountedPrice : item.price
                 items.push({
                     productId: item.productId,
                     count: item.number.toString(),
-                    sum: (item.price * item.number).toString()
+                    sum: (price * item.number).toString(),
+                    storeId: item.storeId
                 })
             }
             if (isAuthenticated) {
