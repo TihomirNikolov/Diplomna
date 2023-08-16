@@ -20,7 +20,7 @@ namespace ChatbotMicroservice.Services
         {
             try
             {
-                var response = await _openAiApi.Chat.CreateChatCompletionAsync(new OpenAI_API.Chat.ChatRequest()
+                var response = await _openAiApi.Chat.CreateChatCompletionAsync(new ChatRequest()
                 { 
                     Model =  Model.ChatGPTTurbo,
                     Temperature = 0.1,
