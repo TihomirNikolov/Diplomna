@@ -149,9 +149,9 @@ export default function ProductPage() {
                                     <Carousel showThumbs showStatus={false} showIndicators={false}>
                                         {product?.pictureUrls.map((url, index) => {
                                             return (
-                                                <>
+                                                <React.Fragment key={index}>
                                                     <img src={`${baseProductsURL()}${url}`} alt="product" className="rounded-lg" />
-                                                </>
+                                                </React.Fragment>
                                             )
                                         })}
                                     </Carousel>

@@ -7,10 +7,11 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { FavouritesItem, Role, User, useFavourites, useTheme, useUser } from './contexts'
-import { authClient, axiosClient, baseProductsURL, baseUserURL, getAccessToken, getRefreshToken, getTokenObject, removeTokenObject, setTokenObject } from './utilities'
+import { User, useTheme, useUser } from './contexts'
+import { authClient, axiosClient, baseUserURL, getAccessToken, getRefreshToken, removeTokenObject, setTokenObject } from './utilities'
 import { AxiosRequestConfig } from 'axios'
 import { v4 as uuidv4 } from 'uuid'
+import { Chatbot } from './components/utilities'
 
 library.add(fab, fas, far)
 
@@ -30,7 +31,7 @@ function App() {
 
   useEffect(() => {
     checkForUserId();
-    
+
     axiosClient.interceptors.request.use((config) => {
       config.headers['BrowserId'] = localStorage.getItem('uuid');
       return config;
@@ -104,6 +105,7 @@ function App() {
         <main className='min-h-screen bg-lightBackground dark:bg-darkBackground-900'>
           <Routes />
         </main>
+        <Chatbot />
         <Footer />
         <ToastContainer theme={theme} />
       </BrowserRouter>

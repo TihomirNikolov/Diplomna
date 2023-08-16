@@ -5,5 +5,6 @@ import NotFoundComponent from "./NotFoundComponent";
 import ScrollToTop from "./ScrollToTop";
 import ProgressBar from "./ProgressBar";
 import Image from "./Image";
+import Chatbot from "./Chatbot";
 
-export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Image }
+export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Image, Chatbot }

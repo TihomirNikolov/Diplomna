@@ -38,7 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartMicroservice", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationMicroservice", "LocationMicroservice\LocationMicroservice.csproj", "{CFDC2027-C000-451F-93E5-0AF0AF93709B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedResources", "SharedResources\SharedResources.csproj", "{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedResources", "SharedResources\SharedResources.csproj", "{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotMicroservice", "ChatbotMicroservice\ChatbotMicroservice.csproj", "{D570E166-ECB5-4BF2-B67B-A198CE566CAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED3D7587-ECE2-41CB-8CA0-B73E6F258122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D570E166-ECB5-4BF2-B67B-A198CE566CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D570E166-ECB5-4BF2-B67B-A198CE566CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D570E166-ECB5-4BF2-B67B-A198CE566CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D570E166-ECB5-4BF2-B67B-A198CE566CAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

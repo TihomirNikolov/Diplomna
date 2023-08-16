@@ -50,9 +50,9 @@ export default function CategoriesComponent() {
             <Menu>
                 {({ open }) => (
                     <>
-                        <Menu.Button className="bg-transparent md:bg-orange-500 p-2 focus:outline-none w-full font-bold text-lg">
+                        <Menu.Button className="bg-transparent md:bg-orange-500 text-white p-2 focus:outline-none w-full font-bold text-lg">
                             <div className="flex gap-1 items-center justify-center">
-                                <FontAwesomeIcon icon={['fas', 'bars']} className="text-black dark:text-white md:text-black md:dark:text-black" />
+                                <FontAwesomeIcon icon={['fas', 'bars']} className="text-white" />
                                 <span className="hidden md:block">{t('categories')}</span>
                             </div>
                         </Menu.Button>

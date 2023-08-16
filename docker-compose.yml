@@ -61,6 +61,11 @@ services:
      depends_on:
         ms-sql-server:
             condition: service_healthy
+  chatbotmicroservice:
+     image: ${DOCKER_REGISTRY-}chatbotmicroservice
+     build:
+        context: .
+        dockerfile: ChatbotMicroservice/Dockerfile
   #website:
   #  build:
   #      context: ./client

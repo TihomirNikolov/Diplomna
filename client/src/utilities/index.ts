@@ -1,6 +1,6 @@
 import { LoginResponse, LoginModel, SignUpModel } from './authentication';
 import classNames from './ConditionalClassNames'
-import { baseUserURL, baseOrdersURL, basePaymentsURL, baseProductsURL, baseShoppingCartURL } from './urls';
+import { baseUserURL, baseOrdersURL, basePaymentsURL, baseProductsURL, baseShoppingCartURL, baseChatbotUrl } from './urls';
 import { notification } from './toasts';
 import { authClient, axiosClient } from './axiosClients';
 import {
@@ -20,7 +20,7 @@ import {
 import { Dictionary, KeyValuePair, Item } from './types';
 
 export {
-    classNames, baseUserURL, baseOrdersURL, basePaymentsURL, baseProductsURL, baseShoppingCartURL,
+    classNames, baseUserURL, baseOrdersURL, basePaymentsURL, baseProductsURL, baseShoppingCartURL, baseChatbotUrl,
     notification, authClient, axiosClient,
     getAccessToken, getRefreshToken, getTokenObject, setAccessToken, setRefreshToken, setTokenObject, removeTokenObject,
     validateEmail, validatePassword, validateCity, validateFirstName,
