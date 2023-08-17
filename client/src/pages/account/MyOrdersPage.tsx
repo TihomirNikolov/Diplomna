@@ -45,12 +45,13 @@ export default function MyOrdersPage() {
                     })}
                 </div>
                 :
-                <>
+                <div className="flex flex-col gap-2">
                     {orders.map((order, index) => {
                         return (
                             <OrderCard key={index} order={order} />
                         )
-                    })}</>
+                    })}
+                </div>
             }
         </div>
     )
