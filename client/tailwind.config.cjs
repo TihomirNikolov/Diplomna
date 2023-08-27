@@ -18,6 +18,10 @@ module.exports = {
       },
     },
     extend: {
+      maxWidth: {
+        '1/2': '50%',
+        '3/4': '75%'
+      },
       colors: {
         facebook: '#385499',
         facebookHover: '#314a86',
