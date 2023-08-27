@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Transition } from "@headlessui/react";
 import axios from "axios";
 import { Fragment, useState } from "react";
+import TypeWriter from "./TypeWriter";
 
 interface Message {
     text: string,
     fromUser: boolean,
-    isError?: boolean
+    isError?: boolean,
+    isNewMessage: boolean
 }
 
 export default function Chatbot() {
@@ -25,7 +27,7 @@ export default function Chatbot() {
 
         setMessages(prev => {
             return (
-                [...prev, { text: input, fromUser: true }]
+                [...prev, { text: input, fromUser: true, isNewMessage: true }]
             )
         })
 
@@ -37,7 +39,8 @@ export default function Chatbot() {
                     [...prev,
                     {
                         text: data,
-                        fromUser: false
+                        fromUser: false,
+                        isNewMessage: true
                     }]
                 )
             })
@@ -50,7 +53,8 @@ export default function Chatbot() {
                         {
                             text: "There was an error in generating response. Please try again later",
                             fromUser: false,
-                            isError: true
+                            isError: true,
+                            isNewMessage: true
                         }]
                     )
                 })
@@ -58,6 +62,16 @@ export default function Chatbot() {
         }
         setInput('');
         setIsChatbotWriting(false);
+    }
+
+    function onTextWritten(message: string) {
+        var updatedMessages = [...messages]
+
+        var updatedMessage = updatedMessages.find(m => m.text == message);
+        if (updatedMessage != null) {
+            updatedMessage.isNewMessage = false;
+            setMessages(updatedMessages);
+        }
     }
 
     return (
@@ -80,13 +94,21 @@ export default function Chatbot() {
                             <div className="flex flex-col p-2 h-[450px] gap-2 break-words overflow-auto">
                                 {messages.map((message, index) => {
                                     return (
-                                        <div key={index} className='w-full grid'>
-                                            <span className={`p-2 rounded  w-1/2 
-                                            ${message.fromUser ? 'bg-blue-500 text-white dark:text-black'
-                                                    : `justify-self-end text-white dark:text-black 
+                                        <div key={index} className='grid'>
+                                            {message.isNewMessage ?
+                                                <TypeWriter text={message.text} onTextWritten={onTextWritten}
+                                                    className={`p-2 rounded max-w-3/4 text-white dark:text-black
+                                            ${message.fromUser ? 'bg-blue-500 justify-self-start'
+                                                            : `justify-self-end
+                                                    ${message.isError ? 'bg-red-500' : 'bg-green-500'}`}`} />
+                                                :
+                                                <span className={`p-2 rounded max-w-3/4 text-white dark:text-black 
+                                            ${message.fromUser ? 'bg-blue-500 justify-self-start'
+                                                        : `justify-self-end
                                                     ${message.isError ? 'bg-red-500' : 'bg-green-500'}`}`}>
-                                                {message.text}
-                                            </span>
+                                                    {message.text}
+                                                </span>
+                                            }
                                         </div>
                                     )
                                 })}

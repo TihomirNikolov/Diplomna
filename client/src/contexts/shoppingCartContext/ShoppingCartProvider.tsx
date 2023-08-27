@@ -68,11 +68,11 @@ export default function ShoppingCardProvider(props: any) {
     async function addItem(shoppingCartItem: ShoppingCartItem) {
         try {
             if (isAuthenticated) {
-                var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/email`,
+                await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/email`,
                     { productId: shoppingCartItem.productId, number: shoppingCartItem.number });
             }
             else {
-                var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/browserid`,
+                await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/add/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: shoppingCartItem.number });
             }
 
@@ -109,11 +109,11 @@ export default function ShoppingCardProvider(props: any) {
     async function removeItem(shoppingCartItem: ShoppingCartItem) {
         try {
             if (isAuthenticated) {
-                var result = await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/email`,
+                await authClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/email`,
                     { productId: shoppingCartItem.productId });
             }
             else {
-                var result = await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/browserid`,
+                await axiosClient.post(`${baseShoppingCartURL()}api/shoppingcart/remove/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId });
             }
             var items = shoppingCartItems.filter(i => i.productId != shoppingCartItem.productId);
@@ -135,11 +135,11 @@ export default function ShoppingCardProvider(props: any) {
     async function changeCount(shoppingCartItem: ShoppingCartItem, newCount: number) {
         try {
             if (isAuthenticated) {
-                var result = await authClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/email`,
+                await authClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/email`,
                     { productId: shoppingCartItem.productId, number: newCount });
             }
             else {
-                var result = await axiosClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/browserid`,
+                await axiosClient.put(`${baseShoppingCartURL()}api/shoppingcart/update/browserid`,
                     { browserId: localStorage.getItem('uuid'), productId: shoppingCartItem.productId, number: newCount });
             }
 
@@ -147,7 +147,7 @@ export default function ShoppingCardProvider(props: any) {
 
             var item = items.find(i => i.productId == shoppingCartItem.productId);
 
-            if(item != null){
+            if (item != null) {
                 item.number = newCount;
             }
 
@@ -188,17 +188,25 @@ export default function ShoppingCardProvider(props: any) {
     }
 
     async function deleteShoppingCart() {
-        if (isAuthenticated) {
-            var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/email`);
+        try {
+            var data: ShoppingCartItem[] = [];
+            if (isAuthenticated) {
+                var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/email`);
 
-            var data = response.data as ShoppingCartItem[];
+                data = response.data as ShoppingCartItem[];
+            }
+            else {
+                var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/browserId/${localStorage.getItem('uuid')}`);
+
+                data = response.data as ShoppingCartItem[];
+            }
             setShoppingCartItems(data);
+            setSum(0);
         }
-        else {
-            var response = await authClient.delete(`${baseShoppingCartURL()}api/shoppingcart/delete/browserId/${localStorage.getItem('uuid')}`);
+        catch (error) {
+            if (axios.isAxiosError(error)) {
 
-            var data = response.data as ShoppingCartItem[];
-            setShoppingCartItems(data);
+            }
         }
     }
 

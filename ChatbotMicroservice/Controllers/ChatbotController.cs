@@ -20,12 +20,15 @@ namespace ChatbotMicroservice.Controllers
         [Route("send")]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request)
         {
-            var result = await _chatbotService.SendAsync(request.Message);
+            //var result = await _chatbotService.SendAsync(request.Message);
 
-            if (string.IsNullOrEmpty(result))
-                return StatusCode(StatusCodes.Status500InternalServerError);
+            //if (string.IsNullOrEmpty(result))
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
 
-            return Ok(result);
+            //return Ok(result);
+            await Task.Delay(3000);
+
+            return Ok("Result");
         }
     }
 }

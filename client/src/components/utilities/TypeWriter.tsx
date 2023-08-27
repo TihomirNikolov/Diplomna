@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 interface Props {
     text: string,
-    className: string
+    className: string,
+    onTextWritten?: (message: string) => void
 }
 
-export default function TypeWriter({ text, className }: Props) {
+export default function TypeWriter({ text, className, onTextWritten }: Props) {
     const [currentText, setCurrentText] = useState<string>('');
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
@@ -17,6 +18,9 @@ export default function TypeWriter({ text, className }: Props) {
             }, 50);
 
             return () => clearTimeout(timeout);
+        }
+        else{
+            onTextWritten?.(text);
         }
     }, [currentIndex, text]);
 
