@@ -1,40 +1,37 @@
-import { CategoryDTO, CoverProduct, Dictionary, Filter, Product, sortingParams } from "@/utilities"
-import { ScrollArea } from "../ui/scroll-area"
-import { useEffect, useState } from "react"
 import { useLanguage } from "@/contexts";
-import { Separator } from "../ui/separator";
-import { Checkbox } from "../inputs";
+import { Filter, Item, sortingParams } from "@/utilities";
+import { Dispatch, SetStateAction, forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { Checkbox } from "../inputs";
+import { Separator } from "../ui/separator";
 
 interface Props {
-    category: CategoryDTO,
-    products: CoverProduct[]
+    filters: Item<Item<string, string>[], Filter>[],
+    checkedFilters: { key: string, values: string[] }[],
+    setCheckedFilters: Dispatch<SetStateAction<{
+        key: string;
+        values: string[];
+    }[]>>
 }
 
-export default function CategoryFilters({ category, products }: Props) {
-    const [filters, setFilters] = useState<Dictionary<Filter>>({});
+export type CategoryFiltersHandle = {
+    checkedFilters: { key: string, values: string[] }[]
+}
 
+const CategoryFilters = forwardRef<CategoryFiltersHandle, Props>(({ filters, checkedFilters, setCheckedFilters }: Props, ref) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
-    const [checkedFilters, setCheckedFilters] = useState<{ key: string, values: string[] }[]>([]);
+    
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     const { language } = useLanguage();
 
+    useImperativeHandle(ref, () => ({
+        checkedFilters: checkedFilters
+    }))
+
     function changeFilterState(filterKey: string, filterValuesKey: string, isChecked: boolean) {
-        setFilters((prevState) => {
-            const updatedFilters = { ...prevState };
-
-            const updatedFiltersValues = { ...updatedFilters[filterKey] };
-
-            updatedFiltersValues.values[filterValuesKey].isChecked = isChecked;
-
-            updatedFilters[filterKey] = updatedFiltersValues;
-
-            return updatedFilters
-        })
-
         if (isChecked) {
             setCheckedFilters(prev => {
                 var newFilters = [...prev];
@@ -95,66 +92,25 @@ export default function CategoryFilters({ category, products }: Props) {
     }, [checkedFilters])
 
     useEffect(() => {
-        var categoryTags = category!.tags.find(tag => tag.key == language.code)?.value;
-
-        if (categoryTags == undefined) {
-            setFilters({});
-            return
-        }
-
-        var filters: Dictionary<Filter> = {};
-
-        var urlSearchParams = new URLSearchParams(location.search);
-        var params = Object.fromEntries(urlSearchParams.entries());
-
-        var checkedFilters: { key: string, values: string[] }[] = [];
-        for (var [key, value] of Object.entries(params)) {
-            var values = value.split('|');
-            if (!sortingParams.includes(key)) {
-                checkedFilters.push({ key: key, values: values });
-            }
-        }
-        setCheckedFilters(checkedFilters);
-
-        for (var product of products) {
-            for (var categoryTag of categoryTags) {
-                var productTags = product.tags.find(tag => tag.key == language.code)?.value!;
-                var tag = productTags.find(tag => tag.key == categoryTag)?.value;
-                if (tag != undefined) {
-                    if (productTags.find(tag => tag.key == categoryTag)?.value != undefined) {
-                        if (filters[categoryTag] == undefined) {
-                            filters[categoryTag] = { values: {} };
-                        }
-                        if (filters[categoryTag].values[tag] == undefined) {
-                            filters[categoryTag].values[tag] = { count: 0, isChecked: params[categoryTag] != undefined && params[categoryTag].split('|').includes(tag) };
-                            filters[categoryTag].values[tag].count = 1;
-                        }
-                        else {
-                            filters[categoryTag].values[tag].count += 1;
-                        }
-                    }
-                }
-            }
-        }
-        setFilters(filters);
         setIsInitialized(true);
-    }, [category, location.search])
+    }, [filters, location.search])
 
     return (
         <div>
             {filters != undefined &&
                 <div className="space-y-2">
-                    {Object.entries(filters).map(([key, value]) => {
+                    {filters.map((filter, index) => {
                         return (
-                            <div key={key} className="text-black dark:text-white">
-                                <h1>{key}</h1>
+                            <div key={index} className="text-black dark:text-white">
+                                <h1>{filter.key.find(k => k.key == language.code)?.value}</h1>
                                 <div>
-                                    {Object.entries(value.values).sort((a, b) => a[0].localeCompare(b[0])).map(([valueKey, value]) => {
+                                    {filter.value.values.sort((a, b) => a.key.find(k => k.key == language.code)!.value.localeCompare(b.key.find(k => k.key == language.code)!.value)).map((values, index) => {
                                         return (
-                                            <div key={valueKey} className="flex">
-                                                <Checkbox checked={value.isChecked} id={valueKey}
-                                                    onChange={() => changeFilterState(key, valueKey, !value.isChecked)}
-                                                    labelText={`${valueKey} (${value.count})`} />
+                                            <div key={index} className="flex">
+                                                <Checkbox checked={checkedFilters.find(cf => cf.key == filter.key.find(k => k.key == language.code)?.value)?.values.includes(values.key.find(k => k.key == language.code)!.value) ?? false}
+                                                    id={values.key.find(k => k.key == language.code)!.value}
+                                                    onChange={() => changeFilterState(filter.key.find(k => k.key == language.code)!.value, values.key.find(k => k.key == language.code)!.value, !checkedFilters.find(cf => cf.key == filter.key.find(k => k.key == language.code)?.value)?.values.includes(values.key.find(k => k.key == language.code)!.value) ?? false)}
+                                                    labelText={`${values.key.find(k => k.key == language.code)!.value} (${values.value.count})`} />
                                             </div>
                                         )
                                     })}
@@ -167,4 +123,6 @@ export default function CategoryFilters({ category, products }: Props) {
             }
         </div>
     )
-}
+})
+
+export default CategoryFilters;

@@ -100,8 +100,11 @@ namespace UserMicroservice.Controllers
 
             var result = await _authService.LoginAsync(model.Email, model.Password);
 
-            if (result.Status == StatusEnum.Failure || result.Data == null)
+            if (result.Status == StatusEnum.Forbid)
                 return Forbid();
+
+            if (result.Status == StatusEnum.Failure || result.Data == null)
+                return Unauthorized();
 
             if (result.Status == StatusEnum.InternalError)
                 return StatusCode(StatusCodes.Status500InternalServerError);

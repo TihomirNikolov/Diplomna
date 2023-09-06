@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models;
+using ProductsMicroservice.Models.Categories;
 using ProductsMicroservice.Models.Requests;
+using ProductsMicroservice.Models.Responses;
 using SharedResources.Extensions;
 using SharedResources.Helpers;
 using System.Net;
@@ -15,14 +19,27 @@ namespace ProductsMicroservice.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
+        private readonly IProductsService _productsService;
         private ICategoriesService _categoryService;
         private readonly IRedisService _redisService;
 
-        public CategoriesController(ICategoriesService categoriesService,
+        public CategoriesController(IProductsService productsService,
+                                    ICategoriesService categoriesService,
                                     IRedisService redisService)
         {
+            _productsService = productsService;
             _categoryService = categoriesService;
             _redisService = redisService;
+        }
+
+        [HttpPost]
+        [Route("seed")]
+        public async Task<IActionResult> SeedCategories()
+        {
+            var json = await System.IO.File.ReadAllTextAsync("Resources/categories.json");
+            var categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(json);
+            await _categoryService.SeedCategoriesAsync(categories);
+            return Ok();
         }
 
         [HttpGet]
@@ -65,8 +82,16 @@ namespace ProductsMicroservice.Controllers
             });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
+            var count = await _productsService.GetProductCountByCategoryUrlAsync(decodedUrl);
 
-            return Ok(category);
+            var tags = await _productsService.GetTagsAsync(category);
+
+            return Ok(new CategoryResponse
+            {
+                Category= category,
+                NumberOfProducts = count,
+                Tags = tags
+            });
         }
 
         [HttpGet]

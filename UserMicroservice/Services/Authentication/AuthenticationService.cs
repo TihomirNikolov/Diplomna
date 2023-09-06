@@ -24,6 +24,7 @@ namespace UserMicroservice.Services.Authentication
         private readonly IHangfireHelper _hangfireHelper;
 
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _dbContext;
 
         private readonly IEmailService _emailService;
@@ -38,6 +39,7 @@ namespace UserMicroservice.Services.Authentication
         public AuthenticationService(IAuthenticationHelper authHelper,
                                      IHangfireHelper hangfireHelper,
                                      UserManager<ApplicationUser> userManager,
+                                     SignInManager<ApplicationUser> signInManager,
                                      ApplicationDbContext dbContext,
                                      IEmailService emailService,
                                      IConfiguration configuration,
@@ -46,6 +48,7 @@ namespace UserMicroservice.Services.Authentication
             _authHelper = authHelper;
             _hangfireHelper = hangfireHelper;
             _userManager = userManager;
+            _signInManager = signInManager;
             _dbContext = dbContext;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
@@ -59,8 +62,17 @@ namespace UserMicroservice.Services.Authentication
         public async Task<Response<LoginResponse>> LoginAsync(string email, string password)
         {
             var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => email.ToLower() == u.Email.ToLower());
-            if (user == null || !await _userManager.CheckPasswordAsync(user, password))
+            if (user == null)
             {
+                return new Response<LoginResponse> { Status = StatusEnum.Failure, Message = "User not found" };
+            }
+            var result = await _signInManager.PasswordSignInAsync(user, password, false, true);
+            if (!result.Succeeded)
+            {
+                if (result.IsLockedOut)
+                {
+                    return new Response<LoginResponse> { Status = StatusEnum.Forbid, Message = "User is locked out" };
+                }
                 return new Response<LoginResponse> { Status = StatusEnum.Failure, Message = "User not found" };
             }
 
@@ -123,7 +135,8 @@ namespace UserMicroservice.Services.Authentication
                 {
                     FirstName = firstName,
                     LastName = lastName,
-                }
+                },
+                LockoutEnabled = true
             };
 
             var emailVerificationToken = _authHelper.GenerateToken();

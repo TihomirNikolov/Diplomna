@@ -1,0 +1,2882 @@
+[
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Гейминг"
+			},
+			{
+				"Key": "en",
+				"Value": "Гейминг"
+			}
+		],
+		"UrlPath": "gaming",
+		"Icon": "gamepad",
+		"CategoryId": "f2d2314e-31c9-473a-9c01-de0d65f98af0",
+		"ParentCategoryId": null
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Видеоигри"
+			},
+			{
+				"Key": "en",
+				"Value": "Видеоигри"
+			}
+		],
+		"UrlPath": "gaming/games",
+		"Icon": null,
+		"CategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4",
+		"ParentCategoryId": "f2d2314e-31c9-473a-9c01-de0d65f98af0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Игри за PS5"
+			},
+			{
+				"Key": "en",
+				"Value": "Игри за PS5"
+			}
+		],
+		"UrlPath": "gaming/games/ps5",
+		"Icon": null,
+		"CategoryId": "57d1e124-fa68-4924-8390-360a46bafbec",
+		"ParentCategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Игри за PS4"
+			},
+			{
+				"Key": "en",
+				"Value": "Игри за PS4"
+			}
+		],
+		"UrlPath": "gaming/games/ps4",
+		"Icon": null,
+		"CategoryId": "a6d3d40a-e787-4928-8d94-d6dab387596d",
+		"ParentCategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Игри за PC"
+			},
+			{
+				"Key": "en",
+				"Value": "Игри за PC"
+			}
+		],
+		"UrlPath": "gaming/games/pc",
+		"Icon": null,
+		"CategoryId": "a713f18e-948b-4276-a5eb-16ffa163c2f7",
+		"ParentCategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Игри за Xbox"
+			},
+			{
+				"Key": "en",
+				"Value": "Игри за Xbox"
+			}
+		],
+		"UrlPath": "gaming/games/xbox-one",
+		"Icon": null,
+		"CategoryId": "886153a7-b962-491b-846e-cca801924fbd",
+		"ParentCategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Игри за Nintendo Switch"
+			},
+			{
+				"Key": "en",
+				"Value": "Игри за Nintendo Switch"
+			}
+		],
+		"UrlPath": "gaming/games/nintendo-switch",
+		"Icon": null,
+		"CategoryId": "287ab33b-526f-4a78-9bee-fe982c876e7b",
+		"ParentCategoryId": "bdc5881e-1a6a-485e-bb17-7b4bd39ae5b4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Гейминг периферия"
+			},
+			{
+				"Key": "en",
+				"Value": "Гейминг периферия"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories",
+		"Icon": null,
+		"CategoryId": "a7d83311-37e8-4273-b5e1-70794473a788",
+		"ParentCategoryId": "f2d2314e-31c9-473a-9c01-de0d65f98af0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Mишки"
+			},
+			{
+				"Key": "en",
+				"Value": "Mишки"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/mice",
+		"Icon": null,
+		"CategoryId": "93a03e74-e383-445f-bc0e-f1388c7f780e",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Kлавиатури"
+			},
+			{
+				"Key": "en",
+				"Value": "Kлавиатури"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/keyboards",
+		"Icon": null,
+		"CategoryId": "9ba52aaa-ba9c-436d-8595-ca691dc4fa37",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Падове за мишки"
+			},
+			{
+				"Key": "en",
+				"Value": "Падове за мишки"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/mosepads",
+		"Icon": null,
+		"CategoryId": "2556563e-c598-4e12-8536-76747a762a5b",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Слушалки"
+			},
+			{
+				"Key": "en",
+				"Value": "Слушалки"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/headphones-with-microphone",
+		"Icon": null,
+		"CategoryId": "b73a5c14-4722-486a-923e-b06107a29110",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Комплекти"
+			},
+			{
+				"Key": "en",
+				"Value": "Комплекти"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/gaming-sets",
+		"Icon": null,
+		"CategoryId": "813dc7ef-8e5c-4163-a7aa-6f36d6209c52",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Столове"
+			},
+			{
+				"Key": "en",
+				"Value": "Столове"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/chairs",
+		"Icon": null,
+		"CategoryId": "28771f4e-ca9b-4ea9-9427-7dc30a508fe7",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Бюра"
+			},
+			{
+				"Key": "en",
+				"Value": "Бюра"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/desks",
+		"Icon": null,
+		"CategoryId": "fc93f49b-8dee-4100-aeed-2207b2d984e8",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Контролери и волани"
+			},
+			{
+				"Key": "en",
+				"Value": "Контролери и волани"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/controllers",
+		"Icon": null,
+		"CategoryId": "dda04310-2654-4e7b-a774-7c38978b8004",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Конзолни аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Конзолни аксесоари"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/console",
+		"Icon": null,
+		"CategoryId": "60e1e66a-ed0c-415c-8d9b-56218998182a",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Чанти и раници"
+			},
+			{
+				"Key": "en",
+				"Value": "Чанти и раници"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/accessories",
+		"Icon": null,
+		"CategoryId": "9d84dedd-f591-4d7e-86f4-e47718da1257",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Геймърски очила"
+			},
+			{
+				"Key": "en",
+				"Value": "Геймърски очила"
+			}
+		],
+		"UrlPath": "gaming/gaming-accessories/glasses",
+		"Icon": null,
+		"CategoryId": "7e1d3115-4d56-4337-a5eb-763a67c6278f",
+		"ParentCategoryId": "a7d83311-37e8-4273-b5e1-70794473a788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Гейминг компютри"
+			},
+			{
+				"Key": "en",
+				"Value": "Гейминг компютри"
+			}
+		],
+		"UrlPath": "gaming/gaming-computers",
+		"Icon": null,
+		"CategoryId": "ac491544-db79-4e5f-9435-f9c647e2c990",
+		"ParentCategoryId": "f2d2314e-31c9-473a-9c01-de0d65f98af0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Геймърски конфигурации"
+			},
+			{
+				"Key": "en",
+				"Value": "Геймърски конфигурации"
+			}
+		],
+		"UrlPath": "gaming/gaming-computers/gaiming-configurations",
+		"Icon": null,
+		"CategoryId": "2ea49a25-6416-4a86-b44a-997273c2d408",
+		"ParentCategoryId": "ac491544-db79-4e5f-9435-f9c647e2c990"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Геймърски лаптопи"
+			},
+			{
+				"Key": "en",
+				"Value": "Геймърски лаптопи"
+			}
+		],
+		"UrlPath": "gaming/gaming-computers/gaming-laptops",
+		"Icon": null,
+		"CategoryId": "7b0e15d4-b351-4c42-84fb-1c86c189a1e3",
+		"ParentCategoryId": "ac491544-db79-4e5f-9435-f9c647e2c990"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Монитори"
+			},
+			{
+				"Key": "en",
+				"Value": "Монитори"
+			}
+		],
+		"UrlPath": "gaming/gaming-computers/monitors",
+		"Icon": null,
+		"CategoryId": "52cbb66f-9ff4-4c7f-8c40-3a6c0c38cfdf",
+		"ParentCategoryId": "ac491544-db79-4e5f-9435-f9c647e2c990"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Конзоли"
+			},
+			{
+				"Key": "en",
+				"Value": "Конзоли"
+			}
+		],
+		"UrlPath": "gaming/console-and-accessories",
+		"Icon": "",
+		"CategoryId": "6e419b2b-415b-4b54-bc3b-39869508b97a",
+		"ParentCategoryId": "f2d2314e-31c9-473a-9c01-de0d65f98af0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "PlayStation 5"
+			},
+			{
+				"Key": "en",
+				"Value": "PlayStation 5"
+			}
+		],
+		"UrlPath": "gaming/console-and-accessories/playstation-5",
+		"Icon": null,
+		"CategoryId": "d548804b-9964-4120-8d21-13612f3335e7",
+		"ParentCategoryId": "6e419b2b-415b-4b54-bc3b-39869508b97a"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "PlayStation 4"
+			},
+			{
+				"Key": "en",
+				"Value": "PlayStation 4"
+			}
+		],
+		"UrlPath": "gaming/console-and-accessories/playstation",
+		"Icon": null,
+		"CategoryId": "1ff1cb1c-8a75-4604-b57f-5cf3bb5ad5e9",
+		"ParentCategoryId": "6e419b2b-415b-4b54-bc3b-39869508b97a"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Nintendo"
+			},
+			{
+				"Key": "en",
+				"Value": "Nintendo"
+			}
+		],
+		"UrlPath": "gaming/console-and-accessories/nintendo",
+		"Icon": null,
+		"CategoryId": "6f44570a-9af5-4fc8-8d5d-fb9f59015bda",
+		"ParentCategoryId": "6e419b2b-415b-4b54-bc3b-39869508b97a"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Лаптопи, РС и монитори"
+			},
+			{
+				"Key": "en",
+				"Value": "Лаптопи, РС и монитори"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers",
+		"Icon": "laptop",
+		"CategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13",
+		"ParentCategoryId": null
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Лаптопи"
+			},
+			{
+				"Key": "en",
+				"Value": "Лаптопи"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/laptops",
+		"Icon": null,
+		"CategoryId": "0ab57bcf-95fb-483c-a64c-d04afd6ac364",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Монитори"
+			},
+			{
+				"Key": "en",
+				"Value": "Монитори"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/monitors",
+		"Icon": null,
+		"CategoryId": "9bbc6ae0-0a9a-40d3-9199-abdf8303eeb4",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Настолни компютри"
+			},
+			{
+				"Key": "en",
+				"Value": "Настолни компютри"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/desktop",
+		"Icon": null,
+		"CategoryId": "cec24b78-57b4-4a28-b5a9-bf54afaba76e",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "PC компоненти"
+			},
+			{
+				"Key": "en",
+				"Value": "PC компоненти"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components",
+		"Icon": null,
+		"CategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Процесори"
+			},
+			{
+				"Key": "en",
+				"Value": "Процесори"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/processors",
+		"Icon": null,
+		"CategoryId": "8faed661-8345-4a85-96ea-34fbfe8988fa",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Дънни платки"
+			},
+			{
+				"Key": "en",
+				"Value": "Дънни платки"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/motherboards",
+		"Icon": null,
+		"CategoryId": "0037f813-10ba-45fa-b4d7-170dd3eae947",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Оперативна памет"
+			},
+			{
+				"Key": "en",
+				"Value": "Оперативна памет"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/desktop-ram",
+		"Icon": null,
+		"CategoryId": "9e1fe35b-c11f-492f-a7ea-08b28f93e001",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Видеокарти"
+			},
+			{
+				"Key": "en",
+				"Value": "Видеокарти"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/graphic-cards",
+		"Icon": null,
+		"CategoryId": "9c606799-0d72-439f-9a8f-621214c6fe67",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "SSD"
+			},
+			{
+				"Key": "en",
+				"Value": "SSD"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/ssd",
+		"Icon": null,
+		"CategoryId": "8b3643da-8939-4f1c-9110-f4b2864517bd",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "HDD"
+			},
+			{
+				"Key": "en",
+				"Value": "HDD"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/hard-disk",
+		"Icon": null,
+		"CategoryId": "53c8f743-be4e-48f6-af4e-10b68eb2e6fa",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Захранвания"
+			},
+			{
+				"Key": "en",
+				"Value": "Захранвания"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/power-supply",
+		"Icon": null,
+		"CategoryId": "44811b97-ee84-42dc-9fff-5fcf12df1d00",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Компютърни кутии"
+			},
+			{
+				"Key": "en",
+				"Value": "Компютърни кутии"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/desktop-case",
+		"Icon": null,
+		"CategoryId": "87fe556d-a7f0-439d-8982-09cd2bf6e352",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Охладители"
+			},
+			{
+				"Key": "en",
+				"Value": "Охладители"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/cooling",
+		"Icon": null,
+		"CategoryId": "a3567baf-dd73-4077-854c-554c4e152107",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Вентилатори"
+			},
+			{
+				"Key": "en",
+				"Value": "Вентилатори"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/fans",
+		"Icon": null,
+		"CategoryId": "e030ad2b-9310-4368-9626-97d509e79693",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Оптични устройства и дискове"
+			},
+			{
+				"Key": "en",
+				"Value": "Оптични устройства и дискове"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/optical-devices",
+		"Icon": null,
+		"CategoryId": "1d17982b-5d3e-4054-ad0a-a97a8335ddd5",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Звукови карти"
+			},
+			{
+				"Key": "en",
+				"Value": "Звукови карти"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/pc-components/sound-cards",
+		"Icon": null,
+		"CategoryId": "9f133def-4bb9-4525-95f3-64c929b39632",
+		"ParentCategoryId": "89c80bec-3c75-47c9-b77d-6e49da525b91"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "VR"
+			},
+			{
+				"Key": "en",
+				"Value": "VR"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/vr",
+		"Icon": null,
+		"CategoryId": "f92c55ec-1e4f-43ec-9d68-e30a0e72545a",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Очила за VR"
+			},
+			{
+				"Key": "en",
+				"Value": "Очила за VR"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/vr/glasses-for-vr",
+		"Icon": null,
+		"CategoryId": "67884831-e80f-4cf7-9c9d-6f9f213a2d1e",
+		"ParentCategoryId": "f92c55ec-1e4f-43ec-9d68-e30a0e72545a"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за VR"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за VR"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/vr/accessories-for-vr",
+		"Icon": null,
+		"CategoryId": "5929bd58-8bc0-4b5c-834d-3e94adfdd955",
+		"ParentCategoryId": "f92c55ec-1e4f-43ec-9d68-e30a0e72545a"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис периферия и аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис периферия и аксесоари"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories",
+		"Icon": null,
+		"CategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис мишки"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис мишки"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/office-mice",
+		"Icon": null,
+		"CategoryId": "c26f7ed5-8dcd-42e5-a7bc-bf6a02cc3f4d",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис клавиатури"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис клавиатури"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/office-keyboards",
+		"Icon": null,
+		"CategoryId": "84bed2c9-da2b-4e78-9007-2d062d09dffc",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис падове"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис падове"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/office-mousepads",
+		"Icon": null,
+		"CategoryId": "434513d3-dfb6-40f5-aa27-bff5770d1b27",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис комплекти"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис комплекти"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/office-sets",
+		"Icon": null,
+		"CategoryId": "4fb354ae-9c96-4ced-a3f2-80db0530f7b8",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис обзавеждане"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис обзавеждане"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/office furniture",
+		"Icon": null,
+		"CategoryId": "af060f4a-9ea7-4ff8-971f-5d8901f32009",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Колонки"
+			},
+			{
+				"Key": "en",
+				"Value": "Колонки"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/music-stand",
+		"Icon": null,
+		"CategoryId": "39cb3452-9144-40be-bcc2-06649c33e9c4",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Уеб камери"
+			},
+			{
+				"Key": "en",
+				"Value": "Уеб камери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/web-camera",
+		"Icon": null,
+		"CategoryId": "699801c8-575e-4dc8-9275-373ab9e31676",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "USB памети"
+			},
+			{
+				"Key": "en",
+				"Value": "USB памети"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/usb-memory",
+		"Icon": null,
+		"CategoryId": "029cf899-1f9f-4e6f-b50c-d69f65d87c19",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Охладителни подложки"
+			},
+			{
+				"Key": "en",
+				"Value": "Охладителни подложки"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/cooling-pads",
+		"Icon": null,
+		"CategoryId": "be3ce0e4-1f52-4d30-b13a-d8bd648aeede",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "USB хъбове и докинг станции"
+			},
+			{
+				"Key": "en",
+				"Value": "USB хъбове и докинг станции"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/usb-hubs-and-doking-stations",
+		"Icon": null,
+		"CategoryId": "d58b3a97-fad6-4756-b481-963fb8461aec",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Чанти и раници"
+			},
+			{
+				"Key": "en",
+				"Value": "Чанти и раници"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/backpacks",
+		"Icon": null,
+		"CategoryId": "6bf5db50-97f0-4ad3-abad-25e149264fe7",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Слушалки"
+			},
+			{
+				"Key": "en",
+				"Value": "Слушалки"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/accessories/headphones",
+		"Icon": null,
+		"CategoryId": "88ea2a72-4fc7-4f82-a149-8fcb471f442b",
+		"ParentCategoryId": "71cb46ca-160f-4726-b7bb-e406eee8b911"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Принтери и консумативи"
+			},
+			{
+				"Key": "en",
+				"Value": "Принтери и консумативи"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables",
+		"Icon": null,
+		"CategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Лазерни принтери"
+			},
+			{
+				"Key": "en",
+				"Value": "Лазерни принтери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/laser-printers",
+		"Icon": null,
+		"CategoryId": "887b6d6e-8df2-400e-b770-e23d78640809",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Мастиленоструйни принтери"
+			},
+			{
+				"Key": "en",
+				"Value": "Мастиленоструйни принтери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/inkjet-printers",
+		"Icon": null,
+		"CategoryId": "91261f64-9098-47dd-9da0-1ee123b828f3",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Консумативи за лазерни принтери"
+			},
+			{
+				"Key": "en",
+				"Value": "Консумативи за лазерни принтери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/consumables-for-laser-printers",
+		"Icon": null,
+		"CategoryId": "f5f01748-7e12-47dc-98b3-7e247bece014",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Консумативи за мастиленоструйни принтери"
+			},
+			{
+				"Key": "en",
+				"Value": "Консумативи за мастиленоструйни принтери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/consumables-for-inkjet-printers",
+		"Icon": null,
+		"CategoryId": "5067abb7-2c28-47ed-a64c-b26d82824824",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Шредери"
+			},
+			{
+				"Key": "en",
+				"Value": "Шредери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/shredders",
+		"Icon": null,
+		"CategoryId": "c0c7b23f-8904-4934-923d-0a594766ff47",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Скенери"
+			},
+			{
+				"Key": "en",
+				"Value": "Скенери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/printers-and-consumables/scanners",
+		"Icon": null,
+		"CategoryId": "0de2d89d-ef62-492b-8642-677de4547565",
+		"ParentCategoryId": "53c76e10-4b33-4492-b67e-52af38d296fa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Мрежови устройства"
+			},
+			{
+				"Key": "en",
+				"Value": "Мрежови устройства"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network",
+		"Icon": null,
+		"CategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Рутери"
+			},
+			{
+				"Key": "en",
+				"Value": "Рутери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/routers",
+		"Icon": null,
+		"CategoryId": "276a8a52-11f5-4c8b-b36f-ebf783659c5a",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Суичове"
+			},
+			{
+				"Key": "en",
+				"Value": "Суичове"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/switches",
+		"Icon": null,
+		"CategoryId": "b68e08e6-9e83-4d25-aebf-5975ba965d0a",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Разширители на обхват"
+			},
+			{
+				"Key": "en",
+				"Value": "Разширители на обхват"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/range-extenders",
+		"Icon": null,
+		"CategoryId": "46befc3a-18c8-4925-8e4e-3c1f4990780e",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Безжични адаптери"
+			},
+			{
+				"Key": "en",
+				"Value": "Безжични адаптери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/wireless-adapters",
+		"Icon": null,
+		"CategoryId": "89967514-56df-4ea4-ae47-99c23c909821",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Powerline адаптери"
+			},
+			{
+				"Key": "en",
+				"Value": "Powerline адаптери"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/powerline-adapters",
+		"Icon": null,
+		"CategoryId": "332335a2-ef0e-421c-856b-bc8f490e5d12",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "LAN кабели"
+			},
+			{
+				"Key": "en",
+				"Value": "LAN кабели"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/network/lan-cables",
+		"Icon": null,
+		"CategoryId": "e17a8ce8-927c-49b9-9a12-c26cebca97e7",
+		"ParentCategoryId": "d45dc5d0-c44c-4914-9fac-08d3e68c294f"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Софтуер"
+			},
+			{
+				"Key": "en",
+				"Value": "Софтуер"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/software",
+		"Icon": null,
+		"CategoryId": "93128349-27f8-4e95-92ae-ba10418454b8",
+		"ParentCategoryId": "891137b0-e202-417e-8bc4-379d72fdfa13"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Операционни системи"
+			},
+			{
+				"Key": "en",
+				"Value": "Операционни системи"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/software/os",
+		"Icon": null,
+		"CategoryId": "c77de463-dde0-4d0c-891d-6e49fd3787f7",
+		"ParentCategoryId": "93128349-27f8-4e95-92ae-ba10418454b8"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Офис пакети"
+			},
+			{
+				"Key": "en",
+				"Value": "Офис пакети"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/software/office",
+		"Icon": null,
+		"CategoryId": "7e200697-7104-4b71-80c1-01e0e38c54ca",
+		"ParentCategoryId": "93128349-27f8-4e95-92ae-ba10418454b8"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Антивирусни програми"
+			},
+			{
+				"Key": "en",
+				"Value": "Антивирусни програми"
+			}
+		],
+		"UrlPath": "laptops-monitors-computers/software/anti-virus",
+		"Icon": null,
+		"CategoryId": "88440a79-f69d-4547-9780-e854189ecbd8",
+		"ParentCategoryId": "93128349-27f8-4e95-92ae-ba10418454b8"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аудио и Hi-Fi"
+			},
+			{
+				"Key": "en",
+				"Value": "Аудио и Hi-Fi"
+			}
+		],
+		"UrlPath": "audio-and-video",
+		"Icon": "play",
+		"CategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf",
+		"ParentCategoryId": null
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Слушалки"
+			},
+			{
+				"Key": "en",
+				"Value": "Слушалки"
+			}
+		],
+		"UrlPath": "audio-and-video/headphones",
+		"Icon": null,
+		"CategoryId": "ecbe7acf-ec31-49ba-9556-10ad30159f38",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Портативни колонки"
+			},
+			{
+				"Key": "en",
+				"Value": "Портативни колонки"
+			}
+		],
+		"UrlPath": "audio-and-video/mini-audio-systems",
+		"Icon": null,
+		"CategoryId": "bf8d0e23-f874-47db-a5db-b97fc6da8db5",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аудио системи"
+			},
+			{
+				"Key": "en",
+				"Value": "Аудио системи"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-systems",
+		"Icon": "",
+		"CategoryId": "1bbe6fd2-b2d7-46d7-b143-dd88fdc085bd",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "2.0"
+			},
+			{
+				"Key": "en",
+				"Value": "2.0"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-systems/number-of-channels-2",
+		"Icon": null,
+		"CategoryId": "b94e06a4-1254-41fe-b7c9-3c6a913da776",
+		"ParentCategoryId": "1bbe6fd2-b2d7-46d7-b143-dd88fdc085bd"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "2.1"
+			},
+			{
+				"Key": "en",
+				"Value": "2.1"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-systems/number-of-channels-2-1",
+		"Icon": null,
+		"CategoryId": "6d3c2e9d-4b2c-4a1f-8849-6c23b55610c0",
+		"ParentCategoryId": "1bbe6fd2-b2d7-46d7-b143-dd88fdc085bd"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "5.1"
+			},
+			{
+				"Key": "en",
+				"Value": "5.1"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-systems/number-of-channels-5-1",
+		"Icon": null,
+		"CategoryId": "516f8741-b4ce-428c-b1f5-735e8d0bef5c",
+		"ParentCategoryId": "1bbe6fd2-b2d7-46d7-b143-dd88fdc085bd"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Парти системи"
+			},
+			{
+				"Key": "en",
+				"Value": "Парти системи"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-systems/party-systems",
+		"Icon": null,
+		"CategoryId": "203c71d2-4231-4a12-b26d-9d56f97aa6c0",
+		"ParentCategoryId": "1bbe6fd2-b2d7-46d7-b143-dd88fdc085bd"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Саундбар системи"
+			},
+			{
+				"Key": "en",
+				"Value": "Саундбар системи"
+			}
+		],
+		"UrlPath": "audio-and-video/saundbar-systems",
+		"Icon": null,
+		"CategoryId": "4439233d-1c24-412a-8e92-a7ceb665d76b",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Грамофони"
+			},
+			{
+				"Key": "en",
+				"Value": "Грамофони"
+			}
+		],
+		"UrlPath": "audio-and-video/turntables",
+		"Icon": null,
+		"CategoryId": "ffc6d1a0-62de-4b96-88ea-944f7495a5d8",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Микрофони"
+			},
+			{
+				"Key": "en",
+				"Value": "Микрофони"
+			}
+		],
+		"UrlPath": "audio-and-video/microphones",
+		"Icon": null,
+		"CategoryId": "4c073fc7-d336-4593-8eb5-5ee4e6db4ddf",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Hi-Fi"
+			},
+			{
+				"Key": "en",
+				"Value": "Hi-Fi"
+			}
+		],
+		"UrlPath": "audio-and-video/hi-fi",
+		"Icon": null,
+		"CategoryId": "02016727-c01b-4cf4-953c-353bcbac9f86",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Ресийвъри и усилватели"
+			},
+			{
+				"Key": "en",
+				"Value": "Ресийвъри и усилватели"
+			}
+		],
+		"UrlPath": "audio-and-video/receivers",
+		"Icon": null,
+		"CategoryId": "6a90c670-e078-489f-b311-850271c9e36e",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аудио интерфейси и контролери"
+			},
+			{
+				"Key": "en",
+				"Value": "Аудио интерфейси и контролери"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-interfaces-and-controllers",
+		"Icon": null,
+		"CategoryId": "d0684163-b875-4df7-abe6-aa12ebe04ff7",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аудио аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Аудио аксесоари"
+			}
+		],
+		"UrlPath": "audio-and-video/audio-accessories",
+		"Icon": null,
+		"CategoryId": "64d5d1c4-c967-4ed1-8c73-0061ac5a2926",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Музикални инструменти"
+			},
+			{
+				"Key": "en",
+				"Value": "Музикални инструменти"
+			}
+		],
+		"UrlPath": "audio-and-video/musical-instruments",
+		"Icon": null,
+		"CategoryId": "2d7120c9-4ea1-470b-b673-2cd79fd40147",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Авто озвучаване"
+			},
+			{
+				"Key": "en",
+				"Value": "Авто озвучаване"
+			}
+		],
+		"UrlPath": "audio-and-video/auto-voicing",
+		"Icon": null,
+		"CategoryId": "8af7e933-8f41-4a4a-8a9f-b2caaf06d3a1",
+		"ParentCategoryId": "52ce9d8f-1451-4d01-b9e4-79ea9a1c72bf"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смартфони и таблети"
+			},
+			{
+				"Key": "en",
+				"Value": "Смартфони и таблети"
+			}
+		],
+		"UrlPath": "mobile-devices",
+		"Icon": "mobile-screen-button",
+		"CategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657",
+		"ParentCategoryId": null
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смартфони"
+			},
+			{
+				"Key": "en",
+				"Value": "Смартфони"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones",
+		"Icon": null,
+		"CategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Apple iPhone"
+			},
+			{
+				"Key": "en",
+				"Value": "Apple iPhone"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-apple",
+		"Icon": null,
+		"CategoryId": "02a0cd69-5e24-40e3-9606-218792ecfa4b",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Samsung"
+			},
+			{
+				"Key": "en",
+				"Value": "Samsung"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-samsung",
+		"Icon": null,
+		"CategoryId": "67f9156f-781a-48c9-98f1-831827f52169",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Xiaomi"
+			},
+			{
+				"Key": "en",
+				"Value": "Xiaomi"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-xiaomi",
+		"Icon": null,
+		"CategoryId": "10b1e525-8278-4e53-b9e7-994a2ce90410",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Motorola"
+			},
+			{
+				"Key": "en",
+				"Value": "Motorola"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-motorola",
+		"Icon": null,
+		"CategoryId": "24ab5d6c-a03e-4a65-be3d-d44833f67abb",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Huawei"
+			},
+			{
+				"Key": "en",
+				"Value": "Huawei"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-smartphones-huawei",
+		"Icon": null,
+		"CategoryId": "9e1d81c6-a573-4008-9c92-8d3b1ad82520",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Realme"
+			},
+			{
+				"Key": "en",
+				"Value": "Realme"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-realme",
+		"Icon": null,
+		"CategoryId": "011ea5cf-ddb8-4f35-93e7-56c6720b0836",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Nokia"
+			},
+			{
+				"Key": "en",
+				"Value": "Nokia"
+			}
+		],
+		"UrlPath": "mobile-devices/smartphones/group-telephones-nokia",
+		"Icon": null,
+		"CategoryId": "f503a71b-6e9e-4631-8cec-9f34145ff3b8",
+		"ParentCategoryId": "ac9626ee-8642-40cf-9244-ba41b9e39559"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за смартфони"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за смартфони"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones",
+		"Icon": null,
+		"CategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Калъфи за смартфони"
+			},
+			{
+				"Key": "en",
+				"Value": "Калъфи за смартфони"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/cases-for-telephones",
+		"Icon": null,
+		"CategoryId": "422051b5-9431-45d2-99a7-59b10a9bf4b6",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Протектори за смартфони"
+			},
+			{
+				"Key": "en",
+				"Value": "Протектори за смартфони"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/protectors-for-smartphones",
+		"Icon": null,
+		"CategoryId": "dca85de7-6f32-4239-917c-b4a0f27ea3d8",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Селфи стикове"
+			},
+			{
+				"Key": "en",
+				"Value": "Селфи стикове"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/selfie-sticks",
+		"Icon": null,
+		"CategoryId": "ca9ff7e4-bd9b-48ca-be12-f258dc92df40",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Портативни батерии"
+			},
+			{
+				"Key": "en",
+				"Value": "Портативни батерии"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/portable-batteries",
+		"Icon": null,
+		"CategoryId": "846ecac0-9e2f-4b4d-8f1b-59c3c138ce90",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Карти памет"
+			},
+			{
+				"Key": "en",
+				"Value": "Карти памет"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/memory-cards",
+		"Icon": null,
+		"CategoryId": "588cbbf9-4cae-47d5-a652-75668be972a5",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Кабели и адаптери"
+			},
+			{
+				"Key": "en",
+				"Value": "Кабели и адаптери"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/cables-and-adapters",
+		"Icon": null,
+		"CategoryId": "3732420b-0e32-4b26-8d21-ae5c54ddd7c4",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Стойки за автомобил"
+			},
+			{
+				"Key": "en",
+				"Value": "Стойки за автомобил"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-smartphones/car-stands",
+		"Icon": null,
+		"CategoryId": "f91bcbfe-eac5-4651-853c-95ab5127ed3c",
+		"ParentCategoryId": "cad07e5b-48e4-45cd-86f5-93f92c121a41"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Таблети"
+			},
+			{
+				"Key": "en",
+				"Value": "Таблети"
+			}
+		],
+		"UrlPath": "mobile-devices/tablets",
+		"Icon": null,
+		"CategoryId": "5460daba-a8a5-4e0f-8896-d2ef0104cafb",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за таблети"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за таблети"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-tablets",
+		"Icon": null,
+		"CategoryId": "46321078-8671-4a30-b541-0ef15f12f0e4",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Калъфи за таблети"
+			},
+			{
+				"Key": "en",
+				"Value": "Калъфи за таблети"
+			}
+		],
+		"UrlPath": "mobile-devices/accessories-for-tablets/cases-for-tablets",
+		"Icon": null,
+		"CategoryId": "33eee61c-581e-4f42-8b3a-68747357b2c6",
+		"ParentCategoryId": "46321078-8671-4a30-b541-0ef15f12f0e4"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Електронни четци"
+			},
+			{
+				"Key": "en",
+				"Value": "Електронни четци"
+			}
+		],
+		"UrlPath": "mobile-devices/electronic-readers",
+		"Icon": null,
+		"CategoryId": "56eb3840-4e9c-4769-b884-5d88964ea905",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Калъфи за електронни четци"
+			},
+			{
+				"Key": "en",
+				"Value": "Калъфи за електронни четци"
+			}
+		],
+		"UrlPath": "mobile-devices/cases-for-electronic-readers",
+		"Icon": null,
+		"CategoryId": "8ae98672-1335-4160-9eef-ad4399203740",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Зарядни устройства"
+			},
+			{
+				"Key": "en",
+				"Value": "Зарядни устройства"
+			}
+		],
+		"UrlPath": "mobile-devices/chargers",
+		"Icon": null,
+		"CategoryId": "976d669b-8137-4b44-a738-f9583f05e659",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Зарядни за 220V/12V"
+			},
+			{
+				"Key": "en",
+				"Value": "Зарядни за 220V/12V"
+			}
+		],
+		"UrlPath": "mobile-devices/chargers/chargers-for-220v-12v",
+		"Icon": null,
+		"CategoryId": "5a8bb20c-876a-4c0d-a778-6034b777d7ee",
+		"ParentCategoryId": "976d669b-8137-4b44-a738-f9583f05e659"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Безжични зарядни устройства"
+			},
+			{
+				"Key": "en",
+				"Value": "Безжични зарядни устройства"
+			}
+		],
+		"UrlPath": "mobile-devices/chargers/wireless-chargers-devices",
+		"Icon": null,
+		"CategoryId": "ee0911f5-f954-445a-9645-5d497602fd27",
+		"ParentCategoryId": "976d669b-8137-4b44-a738-f9583f05e659"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт хоум"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт хоум"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-home",
+		"Icon": null,
+		"CategoryId": "636898de-8765-489b-a54a-8efe4e01a929",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "IP камери"
+			},
+			{
+				"Key": "en",
+				"Value": "IP камери"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-home/ip-cameras",
+		"Icon": null,
+		"CategoryId": "9e500c81-7336-4d9a-a7e8-df32a327d915",
+		"ParentCategoryId": "636898de-8765-489b-a54a-8efe4e01a929"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт осветление"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт осветление"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-home/smart-lightning",
+		"Icon": null,
+		"CategoryId": "ebaaf6f5-30b4-4cbf-a86b-28a00a037e8f",
+		"ParentCategoryId": "636898de-8765-489b-a54a-8efe4e01a929"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт контакти"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт контакти"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-home/smart-contacts",
+		"Icon": null,
+		"CategoryId": "5560ba52-2a7c-4bdd-a246-2157b6ab72ee",
+		"ParentCategoryId": "636898de-8765-489b-a54a-8efe4e01a929"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт сензори"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт сензори"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-home/smart-sensors",
+		"Icon": null,
+		"CategoryId": "5bf1ff90-e7ac-4e9b-a9fe-67d6fc3f8faa",
+		"ParentCategoryId": "636898de-8765-489b-a54a-8efe4e01a929"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт аксесоари"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-accessories",
+		"Icon": null,
+		"CategoryId": "6f43c1a3-1088-4fab-aabd-cd0f589bfcc0",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт часовници"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт часовници"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-accessories/smart-watches",
+		"Icon": null,
+		"CategoryId": "3511e03b-cb12-40b5-b6a6-a9238c0e99bc",
+		"ParentCategoryId": "6f43c1a3-1088-4fab-aabd-cd0f589bfcc0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за смарт часовници"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за смарт часовници"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-accessories/accessories-for-smart-watches",
+		"Icon": null,
+		"CategoryId": "1d104e7d-76e4-4597-8b10-bd70349f252c",
+		"ParentCategoryId": "6f43c1a3-1088-4fab-aabd-cd0f589bfcc0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Смарт гривни"
+			},
+			{
+				"Key": "en",
+				"Value": "Смарт гривни"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-accessories/smart-bracelets",
+		"Icon": null,
+		"CategoryId": "9610a942-fad3-4616-b9c9-e32133998f4d",
+		"ParentCategoryId": "6f43c1a3-1088-4fab-aabd-cd0f589bfcc0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Метеостанции"
+			},
+			{
+				"Key": "en",
+				"Value": "Метеостанции"
+			}
+		],
+		"UrlPath": "mobile-devices/smart-accessories/weather-stations",
+		"Icon": null,
+		"CategoryId": "8c81a6f5-9f86-46b8-a159-6798f8b2f513",
+		"ParentCategoryId": "6f43c1a3-1088-4fab-aabd-cd0f589bfcc0"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Графични таблети"
+			},
+			{
+				"Key": "en",
+				"Value": "Графични таблети"
+			}
+		],
+		"UrlPath": "mobile-devices/graphic-tablets",
+		"Icon": null,
+		"CategoryId": "9463532c-e836-4bc9-8512-cb441c6dc1a2",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Авто и GPS"
+			},
+			{
+				"Key": "en",
+				"Value": "Авто и GPS"
+			}
+		],
+		"UrlPath": "mobile-devices/auto-and-gps",
+		"Icon": null,
+		"CategoryId": "bc283531-d2ee-4eb4-9e1b-84b9ee974cfa",
+		"ParentCategoryId": "9f45e020-4fb4-4326-946f-cfa82efa8657"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "GPS навигации"
+			},
+			{
+				"Key": "en",
+				"Value": "GPS навигации"
+			}
+		],
+		"UrlPath": "mobile-devices/auto-and-gps/gps-navigations",
+		"Icon": null,
+		"CategoryId": "2e74f7d8-aa59-49c8-9ee0-66d8101350e6",
+		"ParentCategoryId": "bc283531-d2ee-4eb4-9e1b-84b9ee974cfa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Видеорегистратори"
+			},
+			{
+				"Key": "en",
+				"Value": "Видеорегистратори"
+			}
+		],
+		"UrlPath": "mobile-devices/auto-and-gps/video-recorders",
+		"Icon": null,
+		"CategoryId": "35800176-34ea-4c9d-9678-468aacd39b88",
+		"ParentCategoryId": "bc283531-d2ee-4eb4-9e1b-84b9ee974cfa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Сонари"
+			},
+			{
+				"Key": "en",
+				"Value": "Сонари"
+			}
+		],
+		"UrlPath": "mobile-devices/auto-and-gps/sonars",
+		"Icon": null,
+		"CategoryId": "dc7df49d-68cd-4ac9-a494-d173e6b12136",
+		"ParentCategoryId": "bc283531-d2ee-4eb4-9e1b-84b9ee974cfa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "FM трансмитери"
+			},
+			{
+				"Key": "en",
+				"Value": "FM трансмитери"
+			}
+		],
+		"UrlPath": "mobile-devices/auto-and-gps/fm-transmitters",
+		"Icon": null,
+		"CategoryId": "3ac569be-7f07-49af-af5a-66c43895abd7",
+		"ParentCategoryId": "bc283531-d2ee-4eb4-9e1b-84b9ee974cfa"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "ТВ, Фото и видео"
+			},
+			{
+				"Key": "en",
+				"Value": "ТВ, Фото и видео"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video",
+		"Icon": "tv",
+		"CategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c",
+		"ParentCategoryId": null
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Телевизори"
+			},
+			{
+				"Key": "en",
+				"Value": "Телевизори"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs",
+		"Icon": null,
+		"CategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Samsung"
+			},
+			{
+				"Key": "en",
+				"Value": "Samsung"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs/group-tvs-samsung",
+		"Icon": null,
+		"CategoryId": "47d0463f-eaad-493f-a901-43ebe105887e",
+		"ParentCategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Philips"
+			},
+			{
+				"Key": "en",
+				"Value": "Philips"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs/group-tvs-philips",
+		"Icon": null,
+		"CategoryId": "39b23c14-8fcf-441a-b758-08417bf4c105",
+		"ParentCategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "LG"
+			},
+			{
+				"Key": "en",
+				"Value": "LG"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs/group-tvs-lg",
+		"Icon": null,
+		"CategoryId": "02787145-0e47-4249-acec-6b0ab7bea520",
+		"ParentCategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Sony"
+			},
+			{
+				"Key": "en",
+				"Value": "Sony"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs/group-tvs-sony",
+		"Icon": null,
+		"CategoryId": "becf7ad5-1355-4bed-9249-917a279f82b4",
+		"ParentCategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Hisense"
+			},
+			{
+				"Key": "en",
+				"Value": "Hisense"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/tvs/group-tvs-hisense",
+		"Icon": null,
+		"CategoryId": "0d9db7f6-65c5-4e59-89de-fdd467e08fac",
+		"ParentCategoryId": "fede33c2-ba0d-4ffc-b923-208e641898e6"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Фото аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Фото аксесоари"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories",
+		"Icon": null,
+		"CategoryId": "227efd3b-6f3e-4ece-929f-01e340485062",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/lens-and-accessories",
+		"Icon": null,
+		"CategoryId": "13ba78df-ad5d-447d-81b1-5a9218fa6e7e",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Албуми за снимки"
+			},
+			{
+				"Key": "en",
+				"Value": "Албуми за снимки"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/albums-for-camerass",
+		"Icon": null,
+		"CategoryId": "664b91e8-94ca-4a4e-809e-bb40ed8deb96",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Калъфи"
+			},
+			{
+				"Key": "en",
+				"Value": "Калъфи"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/cases",
+		"Icon": null,
+		"CategoryId": "80eea958-bf90-46f0-8eb4-bf55e29685bb",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Мобилни принтери"
+			},
+			{
+				"Key": "en",
+				"Value": "Мобилни принтери"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/mobile-printers",
+		"Icon": null,
+		"CategoryId": "c8369e12-2ec1-40f4-945e-cddfa48229a1",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Фотохартия и филм"
+			},
+			{
+				"Key": "en",
+				"Value": "Фотохартия и филм"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/cameras-paper-and-film",
+		"Icon": null,
+		"CategoryId": "22f222e8-5fef-4509-9e36-32d18f7f1628",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Други аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "Други аксесоари"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/other-accessories",
+		"Icon": null,
+		"CategoryId": "295dedb2-c171-4f3c-b2f0-a8ad266fa944",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Обективи"
+			},
+			{
+				"Key": "en",
+				"Value": "Обективи"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/lens",
+		"Icon": null,
+		"CategoryId": "924ddecb-adea-4300-8dcd-d926d034edc5",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Светкавици"
+			},
+			{
+				"Key": "en",
+				"Value": "Светкавици"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/lightning",
+		"Icon": null,
+		"CategoryId": "2cedb329-b6c5-4ba4-bbf0-b3a6de95e2a8",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Чанти и раници за фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Чанти и раници за фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/bags-and-backpacks",
+		"Icon": null,
+		"CategoryId": "8a3c49df-61f0-44c1-acdb-f1800418ecd8",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Батерии и зарядни"
+			},
+			{
+				"Key": "en",
+				"Value": "Батерии и зарядни"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/batteries-and-chargers",
+		"Icon": null,
+		"CategoryId": "8d19a981-e3c6-4e36-b6f5-a32d7871d0f0",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Филтри"
+			},
+			{
+				"Key": "en",
+				"Value": "Филтри"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/filters",
+		"Icon": null,
+		"CategoryId": "a0a4e9b8-7967-4507-8129-1ddcb9670b2c",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Стативи"
+			},
+			{
+				"Key": "en",
+				"Value": "Стативи"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/tripods",
+		"Icon": null,
+		"CategoryId": "613cd9c2-79b1-4e42-a1be-f30a8e76c17b",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Бинокли"
+			},
+			{
+				"Key": "en",
+				"Value": "Бинокли"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras-accessories/binoculars",
+		"Icon": null,
+		"CategoryId": "94632ae3-ecb6-4965-b859-6fa2180a11e0",
+		"ParentCategoryId": "227efd3b-6f3e-4ece-929f-01e340485062"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras",
+		"Icon": null,
+		"CategoryId": "ffa1e55b-8d45-45e5-90b5-9bc027b2da99",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Моментни фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Моментни фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/moment-cameras",
+		"Icon": null,
+		"CategoryId": "96656496-41c2-4d51-aa26-99541b0df02f",
+		"ParentCategoryId": "ffa1e55b-8d45-45e5-90b5-9bc027b2da99"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Компактни фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Компактни фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/kompaktni-cameras",
+		"Icon": null,
+		"CategoryId": "c7bad647-ebba-4954-9fd4-6ce5ae1da221",
+		"ParentCategoryId": "ffa1e55b-8d45-45e5-90b5-9bc027b2da99"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "DSLR фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "DSLR фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/dslr-cameras",
+		"Icon": null,
+		"CategoryId": "555635d9-5b60-4e71-a4fa-0b7c50dc6d7e",
+		"ParentCategoryId": "ffa1e55b-8d45-45e5-90b5-9bc027b2da99"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Mirrorless фотоапарати"
+			},
+			{
+				"Key": "en",
+				"Value": "Mirrorless фотоапарати"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/mirrorless-cameras",
+		"Icon": null,
+		"CategoryId": "7f27fa34-486e-42df-8dba-183dab480604",
+		"ParentCategoryId": "ffa1e55b-8d45-45e5-90b5-9bc027b2da99"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Проектори и дисплеи"
+			},
+			{
+				"Key": "en",
+				"Value": "Проектори и дисплеи"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/protectors-and-displays",
+		"Icon": null,
+		"CategoryId": "b798cb2b-881f-425e-8035-fdcc8d9092ac",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Проектори"
+			},
+			{
+				"Key": "en",
+				"Value": "Проектори"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/protectors-and-displays/protectors",
+		"Icon": null,
+		"CategoryId": "e0b12170-8e32-4d56-8fe1-16c8327f4998",
+		"ParentCategoryId": "b798cb2b-881f-425e-8035-fdcc8d9092ac"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Екрани"
+			},
+			{
+				"Key": "en",
+				"Value": "Екрани"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/protectors-and-displays/ekrani",
+		"Icon": null,
+		"CategoryId": "351ba89c-b8fb-44de-9a89-63f8670e18c0",
+		"ParentCategoryId": "b798cb2b-881f-425e-8035-fdcc8d9092ac"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аксесоари за проектори"
+			},
+			{
+				"Key": "en",
+				"Value": "Аксесоари за проектори"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/protectors-and-displays/accessories-for-protectors",
+		"Icon": null,
+		"CategoryId": "4554f5aa-f9b2-4934-9701-4dbfcfd5a64f",
+		"ParentCategoryId": "b798cb2b-881f-425e-8035-fdcc8d9092ac"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Дронове"
+			},
+			{
+				"Key": "en",
+				"Value": "Дронове"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/drones",
+		"Icon": null,
+		"CategoryId": "e9bad7ca-c758-403a-9008-57c7ac4de146",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "TV Аксесоари"
+			},
+			{
+				"Key": "en",
+				"Value": "TV Аксесоари"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs",
+		"Icon": null,
+		"CategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Стойки за телевизор"
+			},
+			{
+				"Key": "en",
+				"Value": "Стойки за телевизор"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/tv-stands",
+		"Icon": null,
+		"CategoryId": "a1b03a98-bee0-4952-a658-db18ff3777dd",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Видео кабели"
+			},
+			{
+				"Key": "en",
+				"Value": "Видео кабели"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/video-cables",
+		"Icon": null,
+		"CategoryId": "d9fb5ce6-c454-499f-a73e-415521286a2e",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Аудио кабели"
+			},
+			{
+				"Key": "en",
+				"Value": "Аудио кабели"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/audio-cables",
+		"Icon": null,
+		"CategoryId": "b891a716-9511-438e-951f-00abbec1105c",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Мултимедийни плеъри"
+			},
+			{
+				"Key": "en",
+				"Value": "Мултимедийни плеъри"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/multimedia-players",
+		"Icon": null,
+		"CategoryId": "af6c96db-0d3a-46e0-b1d5-c7637466a76a",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Дистанционни"
+			},
+			{
+				"Key": "en",
+				"Value": "Дистанционни"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/remotes",
+		"Icon": null,
+		"CategoryId": "43927af7-3c5b-46da-a4ed-956e5c7291d4",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Антени"
+			},
+			{
+				"Key": "en",
+				"Value": "Антени"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/antennas",
+		"Icon": null,
+		"CategoryId": "11b8861e-ecbe-42a5-b3cd-f5c15da6455f",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Разклонители и удължители"
+			},
+			{
+				"Key": "en",
+				"Value": "Разклонители и удължители"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/accessories-for-tvs/splitters-and-extension-cords",
+		"Icon": null,
+		"CategoryId": "324eba44-750d-4776-8a84-40c4514922b7",
+		"ParentCategoryId": "edd30935-e9d5-4f24-b2e5-5e007dd85061"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Телескопи и микроскопи"
+			},
+			{
+				"Key": "en",
+				"Value": "Телескопи и микроскопи"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/telescopes-and-microscopes",
+		"Icon": null,
+		"CategoryId": "36faf4a4-1f70-401a-88fb-82cf0b68e74d",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Камери"
+			},
+			{
+				"Key": "en",
+				"Value": "Камери"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras",
+		"Icon": null,
+		"CategoryId": "49fd5974-ab14-4f75-a929-036240245788",
+		"ParentCategoryId": "425e6d49-1e49-4508-9125-e8eb371b262c"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Спортни камери"
+			},
+			{
+				"Key": "en",
+				"Value": "Спортни камери"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/sport-cameras",
+		"Icon": null,
+		"CategoryId": "7ad10326-82e7-4a5a-b9a1-49f993f3c358",
+		"ParentCategoryId": "49fd5974-ab14-4f75-a929-036240245788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "Уеб камери"
+			},
+			{
+				"Key": "en",
+				"Value": "Уеб камери"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/web-camera",
+		"Icon": null,
+		"CategoryId": "0217d987-2e86-49ef-b19c-db08b46e0b1e",
+		"ParentCategoryId": "49fd5974-ab14-4f75-a929-036240245788"
+	},
+	{
+		"DisplayName": [
+			{
+				"Key": "bg",
+				"Value": "IP камери"
+			},
+			{
+				"Key": "en",
+				"Value": "IP камери"
+			}
+		],
+		"UrlPath": "tv-cameras-and-video/cameras/ip-cameras",
+		"Icon": null,
+		"CategoryId": "60b51e6e-028b-4940-97d6-67be4c44a998",
+		"ParentCategoryId": "49fd5974-ab14-4f75-a929-036240245788"
+	}
+]

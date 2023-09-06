@@ -1,15 +1,15 @@
-import { Fragment, useEffect, useRef, useState } from "react"
-import { CategoryDTO, CoverProduct, SortType, authClient, axiosClient, baseProductsURL, sortingParams, sortings } from "../../utilities"
-import axios from "axios"
-import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, SortingComponent, Spinner, useTitle } from "../../components"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Listbox, Transition } from "@headlessui/react"
-import { useTranslation } from "react-i18next"
-import { useLanguage, useUser } from "../../contexts"
-import { Separator } from "@/components/ui/separator"
+import { CategoryFiltersHandle } from "@/components/store/CategoryFIlters"
 import { SortingHandle } from "@/components/store/SortingComponent"
+import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import axios from "axios"
+import { useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link, useLocation } from "react-router-dom"
+import { CategoryFilters, CoverProductCard, NotFoundComponent, Pagination, SortingComponent, useTitle } from "../../components"
+import { useLanguage, useUser } from "../../contexts"
+import { CategoryDTO, CoverProduct, Filter, Item, SortType, authClient, axiosClient, baseProductsURL, sortingParams } from "../../utilities"
 
 export default function CategoryPage() {
     const { t } = useTranslation();
@@ -17,23 +17,29 @@ export default function CategoryPage() {
 
     const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
+    const [productsCount, setProductsCount] = useState<number>(0);
+    const [filteredCount, setFilteredCount] = useState<number>(0);
+
     const [products, setProducts] = useState<CoverProduct[]>([])
-    const [filteredProducts, setFilteredProducts] = useState<CoverProduct[]>([]);
     const [category, setCategory] = useState<CategoryDTO>();
+    const [filters, setFilters] = useState<Item<Item<string, string>[], Filter>[]>([]);
+    const [checkedFilters, setCheckedFilters] = useState<{ key: string, values: string[] }[]>([]);
 
-    const [showProducts, setShowProducts] = useState<CoverProduct[]>([]);
-
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isCategoryLoading, setIsCategoryLoading] = useState<boolean>(true);
+    const [areProductsLoading, setAreProductsLoading] = useState<boolean>(true);
 
     const [isCategoryFound, setIsCategoryFound] = useState<boolean>(false);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
+    const [sorting, setSorting] = useState<SortType>('newest');
 
     const location = useLocation();
     const { language } = useLanguage();
     const { isAuthenticated } = useUser();
 
     const sortingRef = useRef<SortingHandle>(null);
+    const filtersRef = useRef<CategoryFiltersHandle>(null);
 
     useEffect(() => {
         setCategory(undefined);
@@ -41,51 +47,68 @@ export default function CategoryPage() {
             var result = await fetchIfExists();
 
             if (result) {
-                setIsLoading(true);
                 var categoryDTO: CategoryDTO | null = await fetchCategoryData();
-                await fetchProducts(categoryDTO);
-                setIsLoading(false);
+                var { sorting, checkedFilters } = applyFilters();
+                await fetchProducts(categoryDTO, currentPage, itemsPerPage, checkedFilters, sorting);
             }
         }
-
         fetchData();
     }, [location.pathname])
 
     useEffect(() => {
-        applyFilters(products);
+        if (!isInitialLoad)
+            applyFilters();
         setIsInitialLoad(false);
     }, [location.search])
 
-    async function fetchProducts(category: CategoryDTO | null) {
+    async function fetchProducts(category: CategoryDTO | null, page: number, itemsPerPage: number, checkedFilters: { key: string, values: string[] }[], sorting: SortType) {
         try {
-            var response = await axiosClient.get(`${baseProductsURL()}api/products/category/${category?.displayName.find(name => name.key == language.code)?.value}`);
-            var products = response.data as CoverProduct[];
-            var sortedProducts: CoverProduct[] = sortProducts('newest', products)!;
-            setProducts(sortedProducts);
-            applyFilters(sortedProducts);
+            setAreProductsLoading(true);
+            console.log(sorting);
+            var response = await axiosClient.post(`${baseProductsURL()}api/products/category/${category?.displayName.find(name => name.key == language.code)?.value}/${page}/${itemsPerPage}`,
+                { checkedFilters: checkedFilters, sortingType: sorting });
+            var data = response.data as { products: CoverProduct[], count: number};
+            setProducts(data.products);
+            if(checkedFilters.length == 0){
+                setFilteredCount(productsCount);
+            }
+            else{
+                setFilteredCount(data.count);
+            }
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
 
             }
+            console.log(error);
+        }
+        finally {
+            setAreProductsLoading(false);
         }
     }
 
     async function fetchCategoryData() {
         try {
+            setIsCategoryLoading(true);
             var url = encodeURIComponent(location.pathname.split('/category/')[1]);
             if (isAuthenticated) {
                 var response = await authClient.get(`${baseProductsURL()}api/categories/${url}`);
             }
-            else{
+            else {
                 var response = await axiosClient.get(`${baseProductsURL()}api/categories/${url}`);
             }
-            var data = response.data as CategoryDTO;
-            setCategory(data);
-            return data;
+            var data = response.data as { category: CategoryDTO, numberOfProducts: number, tags: Item<Item<string, string>[], Filter>[] };
+            setCategory(data.category);
+            setProductsCount(data.numberOfProducts);
+            setFilteredCount(data.numberOfProducts);
+            setFilters(data.tags);
+            return data.category;
         }
         catch (error) {
             return null;
+        }
+        finally {
+            setIsCategoryLoading(false);
         }
     }
 
@@ -105,88 +128,54 @@ export default function CategoryPage() {
         }
     }
 
-    function applyFilters(products: CoverProduct[]) {
+    function applyFilters() {
         var urlSearchParams = new URLSearchParams(location.search);
         var params = Object.fromEntries(urlSearchParams.entries());
         if (urlSearchParams.size == 0) {
-            setFilteredProducts(products);
-            calculateProductsToShow(products, 1, sortingRef.current?.itemsPerPage || 40);
-            return;
+            return { sorting: 'newest', checkedFilters: [] };
         }
-        var filtredProducts: CoverProduct[] = products;
+
+        var checkedFilters: { key: string, values: string[] }[] = [];
+        var sort: SortType = sorting;
         for (var [key, value] of Object.entries(params)) {
             if (!sortingParams.includes(key)) {
                 var values = value.split('|');
-
-                filtredProducts = filtredProducts.filter(p => p.tags.find(tag => tag.key == language.code)?.value != undefined
-                    && values.includes(p.tags.find(t => t.key == language.code)?.value.find(t => t.key == key)?.value || ''));
+                checkedFilters.push({ key: key, values: values });
             }
             else if (isInitialLoad) {
                 if (key == 'sort') {
-                    sortingRef.current?.setSorting(value);
-                    sortProducts(value, products);
+                    sort = value;
+                    setSorting(value);
                 } else if (key == 'items') {
-                    sortingRef.current?.setItemsPerPage(parseInt(value))
+                    setItemsPerPage(parseInt(value))
                 } else if (key == 'page') {
                     setCurrentPage(parseInt(value));
                 }
             }
         }
+        setCheckedFilters(checkedFilters);
 
-        setFilteredProducts(filtredProducts);
-        calculateProductsToShow(filtredProducts, parseInt(params['page']), parseInt(params['items']));
-    }
-
-    function calculateProductsToShow(products: CoverProduct[], page: number, itemsPerPage: number) {
-        var productsToShow: CoverProduct[];
-        productsToShow = products.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-        setShowProducts(productsToShow);
-    }
-
-    function sortProducts(sortType: SortType, products: CoverProduct[]) {
-        switch (sortType) {
-            case 'lowestPrice':
-                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.price < b.price) ? -1 : 1);
-                setProducts(sortedProducts);
-                return sortedProducts;
-            case 'highestPrice':
-                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.price > b.price) ? -1 : 1);
-                setProducts(sortedProducts);
-                return sortedProducts;
-            case 'newest':
-                var sortedProducts = products.sort((a, b) => a.isAvailable && (new Date(a.addedDate).getTime() > new Date(b.addedDate).getTime()) ? -1 : 1);
-                setProducts(sortedProducts);
-                return sortedProducts;
-            case 'mostCommented':
-                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.comments > b.comments) ? -1 : 1);
-                setProducts(sortedProducts);
-                return sortedProducts;
-            case 'mostSold':
-                var sortedProducts = products.sort((a, b) => a.isAvailable && (a.soldAmount > b.soldAmount) ? -1 : 1);
-                setProducts(sortedProducts);
-                return sortedProducts;
+        if (!isInitialLoad) {
+            fetchProducts(category!, currentPage, itemsPerPage, checkedFilters, sort);
         }
+
+        return { sorting: sort, checkedFilters: checkedFilters }
     }
 
     function onItemsPerPageChanged(productsPerPage: number) {
-        var currentPageStart = (currentPage - 1) * (sortingRef.current?.itemsPerPage!);
-        var newCurrentPage = Math.ceil((currentPageStart + 1) / productsPerPage);
-
-        setCurrentPage(newCurrentPage);
-        calculateProductsToShow(filteredProducts, newCurrentPage, productsPerPage);
+        setCurrentPage(1);
     }
 
     function onSortingTypeChanged(sortingType: SortType) {
-        sortProducts(sortingType, filteredProducts);
-        calculateProductsToShow(filteredProducts, currentPage, sortingRef.current?.itemsPerPage!);
+        setCurrentPage(1);
     }
 
     function onPageChanged(page: number) {
         setCurrentPage(page);
-        calculateProductsToShow(filteredProducts, page, sortingRef.current!.itemsPerPage);
+        fetchProducts(category!, page, itemsPerPage, checkedFilters, sorting);
     }
 
-    if (!isCategoryFound && !isLoading) {
+    if (!isCategoryFound && !isCategoryLoading) {
         return (
             <NotFoundComponent />
         )
@@ -196,7 +185,7 @@ export default function CategoryPage() {
         <div className="grid grid-cols-12">
             <div className="lg:col-start-3 col-span-2 hidden md:flex md:flex-col md:mr-2 ml-2 lg:ml-0">
                 <h1 className="text-black dark:text-white font-bold text-2xl mt-5">{t('categories')}</h1>
-                {isLoading ?
+                {isCategoryLoading ?
                     <Skeleton className="h-24" />
                     :
                     <>
@@ -216,21 +205,24 @@ export default function CategoryPage() {
                         })}
                     </>
                 }
-                {isLoading ?
+                {isCategoryLoading ?
                     <Skeleton className="mt-4 h-56 w-full" />
                     :
                     <>
                         {category != undefined && products != undefined && products.length > 0 &&
                             <section>
                                 <Separator className="mt-4" />
-                                <CategoryFilters category={category} products={products} />
+                                <CategoryFilters ref={filtersRef}
+                                    filters={filters}
+                                    checkedFilters={checkedFilters}
+                                    setCheckedFilters={setCheckedFilters} />
                             </section>
                         }
                     </>
                 }
             </div>
             <div className="lg:col-start-5 lg:col-span-6 col-start-2 col-span-10 md:col-start-3 md:col-span-9">
-                {isLoading ?
+                {isCategoryLoading ?
                     <div className="py-5">
                         <Skeleton className="h-12" />
                     </div>
@@ -242,33 +234,39 @@ export default function CategoryPage() {
 
                 <div className="flex flex-col gap-5">
                     <section className="flex flex-col gap-4 pb-2 border-b">
-                        {isLoading ?
+                        {isCategoryLoading ?
                             <Skeleton className="h-36" />
                             :
                             <>
                                 <div className="flex gap-4 items-center justify-center">
                                     <SortingComponent
                                         ref={sortingRef}
+                                        disabled={areProductsLoading}
                                         onItemsPerPageChanged={onItemsPerPageChanged}
-                                        onSortingTypeChanged={onSortingTypeChanged} />
+                                        onSortingTypeChanged={onSortingTypeChanged}
+                                        itemsPerPage={itemsPerPage}
+                                        setItemsPerPage={setItemsPerPage}
+                                        sorting={sorting}
+                                        setSorting={setSorting} />
                                 </div>
                                 <div className="flex items-center justify-center">
                                     <Pagination
+                                        disabled={areProductsLoading}
                                         currentPage={currentPage}
                                         onPageChanged={onPageChanged}
-                                        items={filteredProducts.length} />
+                                        items={filteredCount} />
                                 </div>
 
                                 <div className="flex items-center justify-start text-black dark:text-white">
                                     <span>{t('foundResults')}: &nbsp;</span>
-                                    <span>{filteredProducts.length}</span>
+                                    <span>{filteredCount}</span>
                                 </div>
                             </>
                         }
                     </section>
 
                     <section className="flex flex-wrap gap-4 justify-center md:justify-start">
-                        {isLoading ?
+                        {areProductsLoading ?
                             <>
                                 {new Array(10).fill(null).map((_, index) => {
                                     return (
@@ -282,7 +280,7 @@ export default function CategoryPage() {
                             </>
                             :
                             <>
-                                {showProducts.map((product, index) => {
+                                {products.map((product, index) => {
                                     return (
                                         <CoverProductCard key={index} product={product} />
                                     )
@@ -291,13 +289,14 @@ export default function CategoryPage() {
                         }
                     </section>
                     <section className="flex items-center justify-center border-t pt-2">
-                        {isLoading ?
+                        {isCategoryLoading ?
                             <Skeleton className="h-12 w-full" />
                             :
                             <Pagination
+                                disabled={areProductsLoading}
                                 currentPage={currentPage}
                                 onPageChanged={onPageChanged}
-                                items={filteredProducts.length} />
+                                items={filteredCount} />
                         }
                     </section>
                 </div>

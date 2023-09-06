@@ -13,6 +13,7 @@ namespace ProductsMicroservice.Mappers
             CreateMap<Category,CategoryDTO>();
             CreateMap<CategoryDocument, SearchCategoryDTO>();
             CreateMap<SearchCategoryDTO, SearchCategoryWithProductsDTO>().ReverseMap();
+            CreateMap<CategoryDTO, CategoryDocument>();
         }
     }
 }

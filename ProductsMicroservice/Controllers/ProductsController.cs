@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProductsMicroservice.Interfaces;
+using ProductsMicroservice.Models.Categories;
 using ProductsMicroservice.Models.Products;
 using ProductsMicroservice.Models.Requests;
 using SharedResources.Extensions;
@@ -20,7 +22,7 @@ namespace ProductsMicroservice.Controllers
 
         #region Constructor
 
-        public ProductsController(IProductsService productsService, 
+        public ProductsController(IProductsService productsService,
                                   IRedisService redisService)
         {
             _productsService = productsService;
@@ -28,6 +30,18 @@ namespace ProductsMicroservice.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        [Route("seed")]
+        public async Task<IActionResult> SeedProducts()
+        {
+            var json = await System.IO.File.ReadAllTextAsync("Resources/tvs.json");
+            var products = JsonConvert.DeserializeObject<List<Product>>(json);
+
+            await _productsService.SeedProductsAsync(products);
+
+            return Ok();
+        }
 
         #region Get Methods
 
@@ -44,6 +58,13 @@ namespace ProductsMicroservice.Controllers
         {
             var products = await _productsService.GetCoverProductsByCategoryAsync(category);
             return Ok(products);
+        }
+
+        [HttpPost]
+        [Route("category/{category}/{page}/{itemsPerPage}")]
+        public async Task<IActionResult> GetCoverProductsByPageAndItems([FromBody] GetProductsByCategoryRequest request, string category, string page, string itemsPerPage)
+        {
+            return Ok(await _productsService.GetCoverProductsByCategoryPageAndItemsAsync(category, page, itemsPerPage, request.CheckedFilters, request.SortingType));
         }
 
         [HttpGet]

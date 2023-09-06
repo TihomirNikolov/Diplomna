@@ -89,7 +89,7 @@ export default function CategoriesComponent() {
                                             )
                                         })}
                                     </div>
-                                    <div className="p-5">
+                                    <div className="p-5 col-span-3 grid grid-cols-5 gap-10">
                                         {selectedCategory.subCategories?.map((item, index) => {
                                             return (
                                                 <div key={index}>

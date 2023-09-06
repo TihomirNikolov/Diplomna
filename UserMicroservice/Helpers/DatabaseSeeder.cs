@@ -12,7 +12,7 @@ namespace UserMicroservice.Helpers
             var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-            string[] roles = new string[] { "Owner", "Administrator", "Moderator", "User" };
+            string[] roles = new string[] { "Owner", "Administrator", "Moderator", "User", "Employee" };
 
             foreach (string role in roles)
             {
@@ -42,7 +42,8 @@ namespace UserMicroservice.Helpers
                 {
                     FirstName = "Owner",
                     LastName = "Owner"
-                }
+                },
+                LockoutEnabled = true
             };
 
             if (!context.Users.Any(u => u.UserName == user.UserName))

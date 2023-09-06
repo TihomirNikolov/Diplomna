@@ -1,6 +1,7 @@
-﻿using ProductsMicroservice.Models.Categories;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using ProductsMicroservice.Models.Categories;
 using SharedResources.Models;
-using System.Collections.Generic;
 
 namespace ProductsMicroservice.Models.Products
 {
@@ -11,6 +12,7 @@ namespace ProductsMicroservice.Models.Products
         public string CoverImageUrl { get; set; } = string.Empty;
         public string ProductUrl { get; set; } = string.Empty;
         public DateTime AddedDate { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
         public decimal Price { get; set; }
         public List<Item<string, List<Item<string, string>>>> CoverTags { get; set; } = default!;
         public List<ProductReview>? Reviews { get; set; }

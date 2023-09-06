@@ -6,7 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 interface Props {
     onPageChanged: (page: number) => void,
     currentPage: number,
-    items: number
+    items: number,
+    disabled: boolean
 }
 
 export default function Pagination(props: Props) {
@@ -80,7 +81,8 @@ export default function Pagination(props: Props) {
                 pageNumbers.push(
                     <li key={currentPage - i}>
                         <button className="h-8 w-10 text-black dark:text-white"
-                            onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}>
+                            onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}
+                            disabled={props.disabled}>
                             {currentPage - i}
                         </button>
                     </li>
@@ -91,7 +93,8 @@ export default function Pagination(props: Props) {
         pageNumbers.push(
             <li key={currentPage}>
                 <button className="h-8 w-10 rounded-lg text-black dark:text-white border"
-                    onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}>
+                    onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}
+                    disabled={props.disabled}>
                     {currentPage}
                 </button>
             </li>
@@ -105,7 +108,8 @@ export default function Pagination(props: Props) {
                 pageNumbers.push(
                     <li key={currentPage + i}>
                         <button className="h-8 w-10 text-black dark:text-white"
-                            onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}>
+                            onClick={(e) => onPageChanged(parseInt(e.currentTarget.innerText))}
+                            disabled={props.disabled}>
                             {currentPage + i}
                         </button>
                     </li>
@@ -128,14 +132,16 @@ export default function Pagination(props: Props) {
         <ul className="flex gap-1">
             <li>
                 <button className="h-8 w-10 border rounded-lg text-black dark:text-white bg-white dark:bg-gray-600"
-                    onClick={(e) => onPageChanged(currentPage - 1)}>
+                    onClick={(e) => onPageChanged(currentPage - 1)}
+                    disabled={props.disabled}>
                     <FontAwesomeIcon icon={['fas', 'chevron-left']} size="xs" />
                 </button>
             </li>
             {renderPages()}
             <li>
                 <button className="h-8 w-10 border rounded-lg text-black dark:text-white bg-white dark:bg-gray-600"
-                    onClick={(e) => onPageChanged(currentPage + 1)}>
+                    onClick={(e) => onPageChanged(currentPage + 1)}
+                    disabled={props.disabled}>
                     <FontAwesomeIcon icon={['fas', 'chevron-right']} size="xs" />
                 </button>
             </li>

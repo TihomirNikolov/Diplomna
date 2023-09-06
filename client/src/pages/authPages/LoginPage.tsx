@@ -58,8 +58,11 @@ export default function LoginPage() {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                if (error.response?.status == 403) {
+                if (error.response?.status == 401) {
                     notification.error(t('responseErrors.loginError'), "top-center");
+                }
+                else if(error.response?.status == 403){
+                    notification.error(t('responseErrors.lockedOut'), "top-center");
                 }
                 else {
                     notification.error(t('responseErrors.serverError'), 'top-center')

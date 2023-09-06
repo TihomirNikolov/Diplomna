@@ -46,14 +46,14 @@ export default function HomePage() {
         <div className="grid grid-cols-12 px-2">
             <div className="lg:col-start-3 col-span-12 md:col-span-8">
                 <section className="mt-5 flex w-full justify-center">
-                    <Carousel className="w-full md:w-1/2" infiniteLoop autoPlay interval={5000} showStatus={false} showThumbs={false}>
+                    {/* <Carousel className="w-full md:w-1/2" infiniteLoop autoPlay interval={5000} showStatus={false} showThumbs={false}>
                         <div>
                             <Image src={card} alt="card" />
                         </div>
                         <div>
                             <Image src={react} alt="react" />
                         </div>
-                    </Carousel>
+                    </Carousel> */}
                 </section>
                 {isLoading ?
                     <div className="flex flex-col space-y-2">

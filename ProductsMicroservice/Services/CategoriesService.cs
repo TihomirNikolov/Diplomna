@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using ProductsMicroservice.Interfaces;
 using ProductsMicroservice.Models.Categories;
 using ProductsMicroservice.Models.Documents;
-using ProductsMicroservice.Models.Products;
 
 namespace ProductsMicroservice.Services
 {
@@ -145,6 +144,17 @@ namespace ProductsMicroservice.Services
             var categoryDocuments = await db.GetCollection<CategoryDocument>(CollectionName).Find(filter).ToListAsync();
 
             return _mapper.Map<List<SearchCategoryDTO>>(categoryDocuments);
+        }
+
+        public async Task SeedCategoriesAsync(List<CategoryDTO> categories)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var documents = _mapper.Map<List<CategoryDocument>>(categories);
+
+            await db.GetCollection<CategoryDocument>(CollectionName).InsertManyAsync(documents);
         }
     }
 }

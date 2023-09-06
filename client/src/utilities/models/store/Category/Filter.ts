@@ -1,7 +1,7 @@
-import { Dictionary } from "@/utilities/types";
+import { Item } from "@/utilities/types";
 
 export default interface Filter {
-    values: Dictionary<FilterValue>
+    values: Item<Item<string,string>[], FilterValue>[]
 }
 
 interface FilterValue {

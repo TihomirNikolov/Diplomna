@@ -7,7 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
     onSortingTypeChanged: (sortingType: SortType) => void,
-    onItemsPerPageChanged: (productsPerPage: number) => void
+    onItemsPerPageChanged: (productsPerPage: number) => void,
+    disabled: boolean,
+    sorting: SortType,
+    setSorting: Dispatch<SetStateAction<string>>,
+    itemsPerPage: number,
+    setItemsPerPage: Dispatch<SetStateAction<number>>
 }
 
 export type SortingHandle = {
@@ -17,11 +22,9 @@ export type SortingHandle = {
     setItemsPerPage: Dispatch<SetStateAction<number>>
 }
 
-const SortingComponent = forwardRef<SortingHandle, Props>(({ onSortingTypeChanged, onItemsPerPageChanged }: Props, ref) => {
+const SortingComponent = forwardRef<SortingHandle, Props>(({ onSortingTypeChanged, onItemsPerPageChanged, disabled, sorting,
+                                                            setSorting, itemsPerPage, setItemsPerPage }: Props, ref) => {
     const { t } = useTranslation();
-
-    const [itemsPerPage, setItemsPerPage] = useState<number>(40);
-    const [sorting, setSorting] = useState<SortType>('newest');
 
     const navigate = useNavigate();
 
@@ -54,10 +57,13 @@ const SortingComponent = forwardRef<SortingHandle, Props>(({ onSortingTypeChange
         <>
             <div>
                 <span className="text-black dark:text-white mr-2 text-sm">{t('sortBy')}:</span>
-                <Listbox value={sorting} onChange={onSortingTypeChanged}>
+                <Listbox disabled={disabled}
+                    value={sorting}
+                    onChange={onSortingTypeChanged}>
                     {({ open }) => (
                         <div className="relative w-44">
-                            <Listbox.Button className="w-full bg-white dark:bg-darkBackground-800
+                            <Listbox.Button
+                                className="w-full bg-white dark:bg-darkBackground-800
                                                                  text-black dark:text-white border p-1 rounded-lg">
                                 <div className="flex w-full items-center justify-between">
                                     <span>{t(`${sorting}`)}</span>
@@ -94,7 +100,9 @@ const SortingComponent = forwardRef<SortingHandle, Props>(({ onSortingTypeChange
 
             <div>
                 <span className="text-black dark:text-white mr-2 text-sm">{t('showBy')}:</span>
-                <Listbox value={itemsPerPage} onChange={onItemsPerPageChanged}>
+                <Listbox disabled={disabled}
+                    value={itemsPerPage}
+                    onChange={onItemsPerPageChanged}>
                     {({ open }) => (
                         <div className="relative w-44">
                             <Listbox.Button className="w-full bg-white dark:bg-darkBackground-800

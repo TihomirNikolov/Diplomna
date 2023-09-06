@@ -11,5 +11,6 @@ namespace ProductsMicroservice.Interfaces
         Task<bool> CreateCategoryAsync(Category category);
         Task<bool> UrlPathExists(string url);
         Task<List<SearchCategoryDTO>> GetCategoriesByUrlsAsync(List<string> urls);
+        Task SeedCategoriesAsync(List<CategoryDTO> categories);
     }
 }
