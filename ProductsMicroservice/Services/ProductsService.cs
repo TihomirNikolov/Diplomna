@@ -217,7 +217,9 @@ namespace ProductsMicroservice.Services
             return products;
         }
 
-        public async Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, string pageNumber, string itemsPerPage, List<CheckedFilter> filters, string sortingType)
+        public async Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, string pageNumber, 
+                                                                                            string itemsPerPage, List<CheckedFilter> filters,
+                                                                                            string sortingType)
         {
             await CreateCollectionIfDoesntExistAsync();
 
