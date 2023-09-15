@@ -32,16 +32,16 @@ namespace UserMicroservice.Helpers
             {
                 Email = "tihomirdiplomna@gmail.com",
                 NormalizedEmail = "TIHOMIRDIPLOMNA@GMAIL.COM",
-                UserName = "Owner",
-                NormalizedUserName = "OWNER",
+                UserName = "Admin",
+                NormalizedUserName = "ADMIN",
                 PhoneNumber = "",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 UserInfo = new UserInfo
                 {
-                    FirstName = "Owner",
-                    LastName = "Owner"
+                    FirstName = "Admin",
+                    LastName = "Admin"
                 },
                 LockoutEnabled = true
             };
@@ -56,7 +56,7 @@ namespace UserMicroservice.Helpers
                 await userStore.CreateAsync(user);
 
                 UserManager<ApplicationUser> _userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>()!;
-                var result = await _userManager.AddToRolesAsync(user, new string[] { "Owner", "User" });
+                var result = await _userManager.AddToRolesAsync(user, new string[] { "Administrator", "User" });
             }
         }
     }
