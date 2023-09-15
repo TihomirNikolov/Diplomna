@@ -5,7 +5,7 @@ export type User = {
     refreshToken: string
 }
 
-export type Role = 'Owner' | 'Administrator' | 'Moderator' | 'User';
+export type Role = 'Owner' | 'Administrator' | 'Moderator' | 'User' | 'Employee';
 
 export type UserContextType = {
     user: User,
@@ -17,5 +17,9 @@ export type UserContextType = {
     logout: () => Promise<void>,
     isAuthenticated: boolean,
     setIsAuthenticated: (isAuthenticated: SetStateAction<boolean>) => void
-    isUserLoaded: boolean
+    isUserLoaded: boolean,
+    isAdmin: () => boolean,
+    isEmployee:() =>  boolean,
+    isModerator:() =>  boolean,
+    isOwner:() =>  boolean
 }

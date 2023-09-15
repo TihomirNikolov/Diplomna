@@ -8,7 +8,7 @@ import { Fragment, useState } from "react";
 
 
 export default function Profile() {
-    const { user, logout } = useUser();
+    const { user, isAdmin, logout } = useUser();
 
     const { t } = useTranslation();
 
@@ -65,17 +65,25 @@ export default function Profile() {
                         <label>{t("darkTheme")}</label>
                         <ThemeToggle />
                     </div>
-
+                    <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
+                        {isAdmin() &&
+                            <Menu.Item>
+                                <Link to='/admin-panel' className="text-center w-full py-1" >
+                                    Admin panel
+                                </Link>
+                            </Menu.Item>
+                        }
+                    </div>
                     <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
                         {isLoggedIn() && (
-                            (
+                            <>
                                 <Menu.Item>
                                     <Link to='/logout' className="text-center w-full py-1"
                                         onClick={onLoggedOut}>
                                         {t("signOut")}
                                     </Link>
                                 </Menu.Item>
-                            )
+                            </>
                         )}
                     </div>
                 </Menu.Items>

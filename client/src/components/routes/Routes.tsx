@@ -5,6 +5,7 @@ import AuthRoute from './AuthRoute'
 import { AccountLayout } from '../layouts'
 import { Suspense, lazy } from 'react'
 import UserLoadedRoute from './UserLoadedRoute'
+import RoleProtectedRoute from './RoleProtectedRoute'
 
 const AccountPage = lazy(() => import('../../pages').then((module) => ({ default: module.AccountPage })));
 const AddressPage = lazy(() => import('../../pages').then((module) => ({ default: module.AddressPage })));
@@ -26,7 +27,7 @@ const ShoppingCartPage = lazy(() => import('../../pages').then((module) => ({ de
 const FinishOrderPage = lazy(() => import('../../pages').then((module) => ({ default: module.FinishOrderPage })));
 const WishlistPage = lazy(() => import('../../pages').then((module) => ({ default: module.WishlistPage })));
 const SearchPage = lazy(() => import('../../pages').then((module) => ({ default: module.SearchPage })));
-
+const AdminPanelPage = lazy(() => import('../../pages').then((module) => ({ default: module.AdminPanelPage })))
 
 export default function Router() {
 
@@ -42,18 +43,21 @@ export default function Router() {
                 <Route path='/checkout/finish' element={<FinishOrderPage />} />
                 <Route path='/email/verify/:emailConfirmToken' element={<ConfirmEmailPage />} />
                 <Route path='/email/change/:emailChangeToken' element={<ChangeEmailPage />} />
+                <Route path='/search/:searchText' element={<SearchPage />} />
                 <Route element={<UserLoadedRoute />}>
                     <Route path={''} element={<HomePage />} />
                     {homeRoutes()}
                     <Route path='/category/*' element={<CategoryPage />} />
                     <Route path='/product/:productUrl' element={<ProductPage />} />
                 </Route>
-                <Route path='/search/:searchText' element={<SearchPage />} />
                 <Route element={<AuthRoute />}>
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
                     <Route path='/forgotpassword' element={<ForgottenPasswordPage />} />
                     <Route path='/password/reset/:resetToken' element={<ResetPasswordPage />} />
+                </Route>
+                <Route element={<RoleProtectedRoute role='Administrator' />}>
+                    <Route path='/admin-panel' element={<AdminPanelPage />} />
                 </Route>
                 <Route element={<ProtectedRoute />}>
                     <Route path='/account' element={<AccountLayout><AccountPage /></AccountLayout>} />

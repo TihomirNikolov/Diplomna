@@ -8,7 +8,11 @@ export const UserContext = createContext<UserContextType>({
     logout: async () => console.log("failed to log out"),
     isAuthenticated: false,
     setIsAuthenticated: isAuthenticated => console.log(isAuthenticated),
-    isUserLoaded: false
+    isUserLoaded: false,
+    isAdmin: () => false,
+    isEmployee: () => false,
+    isModerator: () => false,
+    isOwner: () => false
 });
 
 export const useUser = () => useContext(UserContext);

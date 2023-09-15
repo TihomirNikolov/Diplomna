@@ -12,6 +12,8 @@ export default function Layout() {
 
     const { t } = useTranslation();
 
+    const [width, setWidth] = useState<number>(0);
+
     useLayoutEffect(() => {
         if (localStorage.getItem('theme') === null) {
             if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
@@ -29,7 +31,14 @@ export default function Layout() {
                 saveTheme('light');
             }
         }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
     }, [])
+
+    function updateSize() {
+        setWidth(window.innerWidth);
+    }
 
     function saveTheme(theme: string) {
         if (theme === 'dark') {
@@ -45,7 +54,7 @@ export default function Layout() {
 
     async function resendEmail() {
         try {
-            var response = await authClient.post(`${baseUserURL()}api/user/resend-email-verification`);
+            await authClient.post(`${baseUserURL()}api/user/resend-email-verification`);
 
             notification.info(t('responseErrors.resentVerificationEmailSuccess'), 'top-center');
         }
@@ -54,6 +63,10 @@ export default function Layout() {
                 notification.error(t('responseErrors.resentVerificationEmailError'), 'top-center')
             }
         }
+    }
+
+    function isMobile() {
+        return width < 640;
     }
 
     return (
@@ -68,9 +81,11 @@ export default function Layout() {
                             <Link to='/' className="text-white">Home</Link>
                         </div>
                     </div>
-                    <div className="sm:flex justify-center items-center hidden">
-                        <SearchBar />
-                    </div>
+                    {!isMobile() &&
+                        <div className="flex justify-center items-center">
+                            <SearchBar />
+                        </div>
+                    }
                     <div className="flex justify-end items-center lg:order-2 space-x-2 mr-6">
                         <LanguageSelector />
                         {user.accessToken.length > 0 && <Favourites />}
@@ -83,9 +98,11 @@ export default function Layout() {
                         <CategoriesComponent />
                     </div>
                 </div>
-                <div className="flex justify-center items-center mx-4 sm:hidden">
-                    <SearchBar />
-                </div>
+                {isMobile() &&
+                    <div className="flex justify-center items-center mx-4 pb-2">
+                        <SearchBar />
+                    </div>
+                }
             </nav>
             {isUserLoaded && isAuthenticated && !isEmailConfirmed &&
                 <div className="grid place-items-center">

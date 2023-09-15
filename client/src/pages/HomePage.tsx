@@ -44,7 +44,7 @@ export default function HomePage() {
 
     return (
         <div className="grid grid-cols-12 px-2">
-            <div className="lg:col-start-3 col-span-12 md:col-span-8">
+            <div className="md:col-start-3 col-span-12 md:col-span-8">
                 <section className="mt-5 flex w-full justify-center">
                     {/* <Carousel className="w-full md:w-1/2" infiniteLoop autoPlay interval={5000} showStatus={false} showThumbs={false}>
                         <div>

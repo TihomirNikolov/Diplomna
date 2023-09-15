@@ -6,5 +6,6 @@ import ScrollToTop from "./ScrollToTop";
 import ProgressBar from "./ProgressBar";
 import Image from "./Image";
 import Chatbot from "./Chatbot";
+import TypeWriter from "./TypeWriter";
 
-export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Image, Chatbot }
+export { i18n, Tooltip, Spinner, NotFoundComponent, ScrollToTop, ProgressBar, Image, Chatbot, TypeWriter }

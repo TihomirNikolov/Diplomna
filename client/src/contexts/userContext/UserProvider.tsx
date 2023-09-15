@@ -76,12 +76,29 @@ export default function UserProvider(props: any) {
         setIsAuthenticated(false);
     }
 
+    function isAdmin(){
+        return roles.includes('Administrator');
+    }
+
+    function isEmployee(){
+        return roles.includes('Employee') || roles.includes('Administrator')
+    }
+
+    function isModerator(){
+        return roles.includes('Moderator') || roles.includes('Administrator')
+    }
+
+    function isOwner(){
+        return roles.includes('Owner') || roles.includes('Administrator')
+    }
+
     return (
         <UserContext.Provider value={{
             user: user, setUser: setUser, roles, setRoles,
             isEmailConfirmed, setIsEmailConfirmed, logout: logout,
             isAuthenticated: isAuthenticated, setIsAuthenticated: setIsAuthenticated,
-            isUserLoaded: isLoaded
+            isUserLoaded: isLoaded, isAdmin: isAdmin, isEmployee: isEmployee,
+            isModerator: isModerator, isOwner: isOwner
         }}>
             {props.children}
         </UserContext.Provider>
