@@ -15,6 +15,8 @@ export default function SearchBar(props: Props) {
     const [results, setResults] = useState<SearchProduct[]>([]);
     const [showResults, setShowResults] = useState<boolean>(false);
 
+    const [text, setText] = useState<string>('');
+
     const [popularProducts, setPopularProducts] = useState<SearchProduct[]>([]);
     const [popularCategories, setPopularCategories] = useState<SearchCategory[]>([]);
     const [arePopularVisible, setArePopularVisible] = useState<boolean>(false);
@@ -73,25 +75,42 @@ export default function SearchBar(props: Props) {
         }
     }, [])
 
+
+    useEffect(() => {
+        if (text.length == 0)
+            return;
+        const controller = new AbortController();
+
+        async function search() {
+            try {
+                var result = await axiosClient.get(`${baseProductsURL()}api/products/search/${text}`, { signal: controller.signal });
+
+                var data = result.data as SearchProduct[];
+
+                setResults(data);
+                setArePopularVisible(false);
+            }
+            catch (error) {
+                if (axios.isAxiosError(error)) {
+
+                }
+            }
+        }
+        search();
+
+        return () => {
+            controller.abort();
+        }
+    }, [text])
+
     async function onSearchTextChanged(text: string) {
+        setText(text);
         if (text.length == 0) {
             setResults([]);
             setArePopularVisible(true);
             return;
         }
-        try {
-            var result = await axiosClient.get(`${baseProductsURL()}api/products/search/${text}`);
 
-            var data = result.data as SearchProduct[];
-
-            setResults(data);
-            setArePopularVisible(false);
-        }
-        catch (error) {
-            if (axios.isAxiosError(error)) {
-
-            }
-        }
     }
 
     function onKeydown(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -116,7 +135,7 @@ export default function SearchBar(props: Props) {
             <div className="flex justify-between items-center border rounded-lg">
                 <div className="flex items-center w-full">
                     <FontAwesomeIcon icon={['fas', 'search']} className="text-black dark:text-white p-1" />
-                    <input id="search" ref={inputRef} autoComplete="off"
+                    <input id="search" ref={inputRef} autoComplete="off" value={text}
                         className="bg-transparent text-black dark:text-white outline-none p-1 w-full"
                         onChange={(e) => onSearchTextChanged(e.target.value)}
                         onFocus={() => setShowResults(true)}
@@ -131,7 +150,7 @@ export default function SearchBar(props: Props) {
                 }
             </div>
             {showResults &&
-                <div className="absolute w-full bg-white dark:bg-gray-800 
+                <div className="absolute z-40 w-full bg-white dark:bg-gray-800 
                 text-black dark:text-white border-l border-r border-b px-1z-[60]">
                     {arePopularVisible &&
                         <div>
@@ -142,7 +161,7 @@ export default function SearchBar(props: Props) {
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <div className="relative col-span-2">
-                                                <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
+                                                <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product" />
                                                 {product.discount > 0 &&
                                                     <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
                                                         <span>-{product.discount}%</span>
@@ -196,7 +215,7 @@ export default function SearchBar(props: Props) {
                                         onClick={() => setShowResults(false)}>
                                         <div className="grid grid-cols-12 place-items-start items-center hover:bg-gray-300 hover:dark:bg-gray-600">
                                             <div className="relative col-span-2">
-                                            <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product"/>
+                                                <Image src={`${baseProductsURL()}${product.coverImageUrl}`} alt="product" />
                                                 {product.discount > 0 &&
                                                     <div className="absolute w-12 top-3 -left-1 text-center bg-orange-600 rounded-lg -rotate-45">
                                                         <span>-{product.discount}%</span>

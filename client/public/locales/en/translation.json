@@ -15,7 +15,8 @@
         "shoppingCart": "Basket",
         "home": "Home",
         "notFound": "Page was not found",
-        "finishOrder": "Finish Order"
+        "finishOrder": "Finish Order",
+        "successfulOrder": "Successful Order"
     },
     "errorInput": {
         "mobileNumberInvalid": "Please enter a valid phone number..",
@@ -156,5 +157,15 @@
     "chooseAddress": "Choose an address",
     "chooseCard": "Choose a card",
     "year": "Year",
-    "expires": "Expires"
+    "expires": "Expires",
+
+    "new": "New",
+    "approved": "Approved",
+    "processed" : "Processed",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+
+    "id": "Id",
+    "active": "Active"
 }

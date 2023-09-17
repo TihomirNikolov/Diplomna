@@ -88,12 +88,14 @@ export default function RegisterPage() {
                         inputId="floating_outlined_4"
                         placeholder={t('firstName')}
                         type="text"
+                        maxLength={50}
                         validate={validateFirstName} immediateValdation={true}
                         validationMessage={t('errorInput.threeCharactersRequired')!} />
                     <FloatingInput ref={lastNameInput}
                         inputId="floating_outlined_5"
                         placeholder={t('lastName')}
                         type="text"
+                        maxLength={50}
                         validate={validateLastName} immediateValdation={true}
                         validationMessage={t('errorInput.threeCharactersRequired')!} />
                     <div className="space-y-1">

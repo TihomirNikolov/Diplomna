@@ -9,11 +9,11 @@ export function validatePassword(password: string) {
 }
 
 export function validateFirstName(value: string) {
-    return value.length >= 3;
+    return value.match(/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u) !== null;
 }
 
 export function validateLastName(value: string) {
-    return value.length >= 3;
+    return value.match(/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u) !== null;
 }
 
 export function validateMobileNumber(value: string) {

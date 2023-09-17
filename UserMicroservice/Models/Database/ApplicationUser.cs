@@ -10,5 +10,6 @@ namespace UserMicroservice.Models.Database
         public EmailVerificationToken EmailVerificationToken { get; set; } = default!;
         public ResetPasswordToken ResetPasswordToken { get; set; } = default!;
         public ChangeEmailToken ChangeEmailToken { get; set; } = default!;
+        public bool IsActive { get; set; }
     }
 }

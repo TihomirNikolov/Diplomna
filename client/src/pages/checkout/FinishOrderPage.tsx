@@ -130,7 +130,7 @@ export default function FinishOrderPage() {
                     })
             }
             await deleteShoppingCart();
-            navigate('/');
+            navigate('/order/successful', { state: { orderId: response.data as string } });
         }
         catch (error) {
             if (axios.isAxiosError(error)) {

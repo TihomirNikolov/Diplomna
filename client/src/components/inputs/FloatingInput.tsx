@@ -12,7 +12,8 @@ interface Props {
     immediateValdation?: boolean,
     validationMessage?: string,
     isPassword?: boolean,
-    initialValue?: string
+    initialValue?: string,
+    maxLength?: number
 }
 
 export type FloatingInputHandle = {
@@ -77,7 +78,9 @@ const FloatingInput = forwardRef<FloatingInputHandle, Props>((props: Props, ref)
 
     return (
         <div className="relative flex items-center w-full">
-            <input type={props.isPassword ? (isPasswordVisible ? 'text' : props.type) : props.type} id={props.inputId}
+            <input type={props.isPassword ? (isPasswordVisible ? 'text' : props.type) : props.type}
+                id={props.inputId}
+                maxLength={props.maxLength}
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={(e) => onLostFocus(e.target.value)} value={value}
                 className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-800 bg-transparent rounded-lg border-2  

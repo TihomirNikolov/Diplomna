@@ -10,6 +10,7 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
+import 'react-slidedown/lib/slidedown.css'
 
 const queryClient = new QueryClient();
 

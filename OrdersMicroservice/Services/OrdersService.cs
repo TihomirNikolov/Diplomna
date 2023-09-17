@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OrdersMicroservice.Helpers;
 using OrdersMicroservice.Interfaces;
 using OrdersMicroservice.Models;
 using OrdersMicroservice.Models.Database;
 using OrdersMicroservice.Models.DTOs;
+using System.Globalization;
+using System.Xml.Schema;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OrdersMicroservice.Services
 {
@@ -39,7 +43,7 @@ namespace OrdersMicroservice.Services
                     Comment = comment,
                     Status = OrderStatusEnum.New,
                     Address = mappedAddress,
-                    OrderDate= DateTime.Now
+                    OrderDate = DateTime.Now
                 };
 
                 decimal sum = 0;
@@ -97,7 +101,7 @@ namespace OrdersMicroservice.Services
 
         public async Task<List<OrderDTO>> GetOrdersAsync(string id)
         {
-            var orders = await _dbContext.Orders.Include(o => o.OrderItems).Include(o => o.Address).Where(o => o.UniqueId.ToLower() == id.ToLower()).ToListAsync();
+            var orders = await _dbContext.Orders.Where(o => o.UniqueId.ToLower() == id.ToLower()).ToListAsync();
 
             return _mapper.Map<List<OrderDTO>>(orders);
         }
@@ -116,7 +120,7 @@ namespace OrdersMicroservice.Services
 
             var mappedOrder = _mapper.Map<OrderWithItemsDTO>(order);
 
-            foreach(var item in orderItems)
+            foreach (var item in orderItems)
             {
                 var mappedItem = mappedOrder.OrderItems.FirstOrDefault(o => o.ProductId == item.ProductId);
 
@@ -129,6 +133,59 @@ namespace OrdersMicroservice.Services
             }
 
             return mappedOrder;
+        }
+
+        public async Task<List<OrderDTO>> GetOrdersByStatusAsync(OrderStatusEnum status)
+        {
+            var orders = await _dbContext.Orders.Where(o => o.Status == status).ToListAsync();
+
+            return _mapper.Map<List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<OrderDTO>> GetNonFinishedOrdersAsync()
+        {
+            var orders = await _dbContext.Orders.Where(o => o.Status != OrderStatusEnum.New && o.Status != OrderStatusEnum.Delivered && o.Status != OrderStatusEnum.Cancelled).ToListAsync();
+
+            return _mapper.Map<List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<OrderCountDTO>> GetFinishedOrdersCountAsync(int year)
+        {
+            var orders = await _dbContext.Orders.Where(o => o.Status == OrderStatusEnum.Delivered && o.OrderDate.Year == year).ToListAsync();
+
+            var allMonths = DateHelper.GenerateListOfAllMonths();
+
+            var result = allMonths
+                        .GroupJoin(
+                            orders,
+                            month => month,
+                            entity => entity.OrderDate.ToString("MMMM", CultureInfo.GetCultureInfo("en-US")),
+                            (month, entities) => new OrderCountDTO
+                            {
+                                Name = month,
+                                Total = entities.Count()
+                            })
+                        .Select(item => new OrderCountDTO { Name = item.Name, Total = item.Total })
+                        .ToList();
+
+            return result;
+        }
+
+        public async Task UpdateOrderStatusAsync(string id, OrderStatusEnum status)
+        {
+            var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == id);
+
+            order.Status = status;
+
+            _dbContext.Orders.Update(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<OrderDTO>> GetFinishedOrdersByMonthAsync(int month)
+        {
+            var orders = await _dbContext.Orders.Where(o => o.OrderDate.Month == month).ToListAsync();
+
+            return _mapper.Map<List<OrderDTO>>(orders);
         }
     }
 }

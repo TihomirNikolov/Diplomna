@@ -377,13 +377,13 @@ namespace UserMicroservice.Services
         public async Task<Response> RemoveAddressAsync(string email, string addressId)
         {
             var result = int.TryParse(addressId, out var parsedAddressId);
-            if(!result)
+            if (!result)
                 return new Response { Status = StatusEnum.Failure };
 
             var userInfo = await _context.UserInfos.Include(u => u.User).Include(u => u.Addresses).FirstOrDefaultAsync(u => u.User.Email!.ToLower() == email.ToLower());
 
             if (userInfo == null || userInfo.Addresses == null)
-                return new Response { Status = StatusEnum.NotFound, Message = "User info not found"};
+                return new Response { Status = StatusEnum.NotFound, Message = "User info not found" };
 
             var address = userInfo.Addresses.FirstOrDefault(a => a.Id == parsedAddressId);
 
@@ -391,6 +391,35 @@ namespace UserMicroservice.Services
                 return new Response { Status = StatusEnum.NotFound, Message = "Address  not found" };
 
             userInfo.Addresses.Remove(address);
+            await _context.SaveChangesAsync();
+
+            return new Response { Status = StatusEnum.Success };
+        }
+
+        public async Task<Response<List<UserDTO>>> GetAllUsersAsync()
+        {
+            var users = await _context.Users.Include(u => u.UserInfo).ToListAsync();
+
+            var mappedUsers = _mapper.Map<List<UserDTO>>(users);
+
+            return new Response<List<UserDTO>>
+            {
+                Status = StatusEnum.Success,
+                Data = mappedUsers
+            };
+        }
+
+        public async Task<Response> ChangeActiveStatusAsync(string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null) 
+                return new Response { Status = StatusEnum.Failure, Message = "User not found" };
+
+            user.IsActive = !user.IsActive;
+
+            _context.Users.Update(user);
+
             await _context.SaveChangesAsync();
 
             return new Response { Status = StatusEnum.Success };

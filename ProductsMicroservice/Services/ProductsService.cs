@@ -487,9 +487,29 @@ namespace ProductsMicroservice.Services
 
             foreach (var category in categories)
             {
-                var products = await GetCoverProductsByCategoryAsync(category.DisplayName[0].Value);
-                category.Products = products.OrderByDescending(p => p.AddedDate).Take(10).ToList();
+                var products = await GetNewestCoverProductsByCategoryAsync(category.DisplayName[0].Value, 10);
+                category.Products = products;
             }
+        }
+
+        public async Task<List<CoverProductDTO>> GetNewestCoverProductsByCategoryAsync(string categoryName, int numberOfProducts)
+        {
+            await CreateCollectionIfDoesntExistAsync();
+
+            var db = GetDatabase();
+
+            var collection = await db.GetCollection<ProductDocument>(CollectionName)
+                .Find(Builders<ProductDocument>.Filter.ElemMatch(c => c.Categories,
+                c => c.DisplayName.Any(name => name.Value == categoryName)))
+                .SortByDescending(p => p.AddedDate)
+                .Limit(numberOfProducts)
+                .ToListAsync();
+
+            var products = _mapper.Map<List<CoverProductDTO>>(collection);
+
+            await CalculatePrices(products);
+
+            return products;
         }
 
         private async Task CalculatePrices(IEnumerable<ProductDTOBase> products)

@@ -179,6 +179,16 @@ namespace UserMicroservice.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var response = await _userService.GetAllUsersAsync();
+
+            return Ok(response.Data);
+        }
+
         #endregion
 
         #region Post Methods
@@ -364,6 +374,15 @@ namespace UserMicroservice.Controllers
             if (result.Status == StatusEnum.Forbid)
                 return Forbid();
 
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("change-active-status/{userId}")]
+        public async Task<IActionResult> ChangeActiveStatus(string userId)
+        {
+            var result = await _userService.ChangeActiveStatusAsync(userId);
             return Ok();
         }
 

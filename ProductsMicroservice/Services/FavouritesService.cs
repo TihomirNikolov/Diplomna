@@ -86,6 +86,9 @@ namespace ProductsMicroservice.Services
             var favourites = await db.GetCollection<FavouriteDocument>(CollectionName)
                         .Find(Builders<FavouriteDocument>.Filter.Eq("Email", email)).FirstOrDefaultAsync();
 
+            if (favourites == null)
+                return new List<string>();
+
             return favourites.ProductUrls;
         }
     }

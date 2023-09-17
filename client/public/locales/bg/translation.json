@@ -15,7 +15,8 @@
         "shoppingCart": "Количка",
         "home": "Начало",
         "notFound": "Страницта не е намерена",
-        "finishOrder": "Завършване на поръчка"
+        "finishOrder": "Завършване на поръчка",
+        "successfulOrder": "Успешна поръчка"
     },
     "errorInput": {
         "mobileNumberInvalid": "Моля въведете валиден телефонен номер.",
@@ -156,5 +157,15 @@
     "chooseAddress": "Изберете адрес",
     "chooseCard": "Изберете карта",
     "year": "Година",
-    "expires": "Изтича на"
+    "expires": "Изтича на",
+
+    "new": "Нова",
+    "approved": "Одобрена",
+    "processed" : "Обработена",
+    "shipped": "Изпратена",
+    "delivered": "Доставена",
+    "cancelled": "Отказана",
+
+    "id": "Идентификационен номер",
+    "active": "Активен"
 }

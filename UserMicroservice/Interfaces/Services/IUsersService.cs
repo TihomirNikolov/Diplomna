@@ -23,5 +23,7 @@ namespace UserMicroservice.Interfaces.Services
         Task<Response> RevokeAllAsync(string email);
         Task<Response> RevokeByIdAsync(string email, string id);
         Task<Response> RemoveAddressAsync(string email, string addressId);
+        Task<Response<List<UserDTO>>> GetAllUsersAsync();
+        Task<Response> ChangeActiveStatusAsync(string userId);
     }
 }

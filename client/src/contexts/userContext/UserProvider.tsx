@@ -29,6 +29,7 @@ export default function UserProvider(props: any) {
         else {
             setRoles(['User']);
         }
+        setIsLoaded(true);
     }
 
     async function fetchIsEmailConfirmed() {
@@ -56,7 +57,6 @@ export default function UserProvider(props: any) {
             setIsAuthenticated(true);
         }
         setUser(userObject);
-        setIsLoaded(true);
         fetchRole();
         fetchIsEmailConfirmed();
     }, [])
@@ -76,19 +76,19 @@ export default function UserProvider(props: any) {
         setIsAuthenticated(false);
     }
 
-    function isAdmin(){
+    function isAdmin() {
         return roles.includes('Administrator');
     }
 
-    function isEmployee(){
+    function isEmployee() {
         return roles.includes('Employee') || roles.includes('Administrator')
     }
 
-    function isModerator(){
+    function isModerator() {
         return roles.includes('Moderator') || roles.includes('Administrator')
     }
 
-    function isOwner(){
+    function isOwner() {
         return roles.includes('Owner') || roles.includes('Administrator')
     }
 

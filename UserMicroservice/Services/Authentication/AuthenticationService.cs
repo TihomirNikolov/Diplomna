@@ -66,6 +66,10 @@ namespace UserMicroservice.Services.Authentication
             {
                 return new Response<LoginResponse> { Status = StatusEnum.Failure, Message = "User not found" };
             }
+
+            if (!user.IsActive)
+                return new Response<LoginResponse> { Status = StatusEnum.Failure, Message = "User is not active" };
+
             var result = await _signInManager.PasswordSignInAsync(user, password, false, true);
             if (!result.Succeeded)
             {
@@ -136,7 +140,8 @@ namespace UserMicroservice.Services.Authentication
                     FirstName = firstName,
                     LastName = lastName,
                 },
-                LockoutEnabled = true
+                LockoutEnabled = true,
+                IsActive = true
             };
 
             var emailVerificationToken = _authHelper.GenerateToken();

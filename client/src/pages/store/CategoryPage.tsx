@@ -64,7 +64,6 @@ export default function CategoryPage() {
     async function fetchProducts(category: CategoryDTO | null, page: number, itemsPerPage: number, checkedFilters: { key: string, values: string[] }[], sorting: SortType) {
         try {
             setAreProductsLoading(true);
-            console.log(sorting);
             var response = await axiosClient.post(`${baseProductsURL()}api/products/category/${category?.displayName.find(name => name.key == language.code)?.value}/${page}/${itemsPerPage}`,
                 { checkedFilters: checkedFilters, sortingType: sorting });
             var data = response.data as { products: CoverProduct[], count: number};

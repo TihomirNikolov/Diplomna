@@ -2,13 +2,15 @@ import { Order, OrderStatusEnum } from "@/utilities/models/account"
 import moment from "moment"
 import { Link } from "react-router-dom"
 import { BlackWhiteButton } from "../buttons"
+import { useTranslation } from "react-i18next"
 
 interface Props {
     order: Order
 }
 
 export default function OrderCard({ order }: Props) {
-
+    const { t } = useTranslation();
+    
     return (
         <section className="grid grid-cols-3 border rounded-lg border-gray-300 dark:border-gray-700 p-2">
             <div className="col-span-2">
@@ -26,7 +28,7 @@ export default function OrderCard({ order }: Props) {
                 </div>
                 <div className="grid grid-cols-2">
                     <span>Статус: </span>
-                    <span>{order.status as OrderStatusEnum}</span>
+                    <span>{t(OrderStatusEnum[order.status as OrderStatusEnum].toString().toLocaleLowerCase())}</span>
                 </div>
             </div>
             <div className="grid justify-items-end">

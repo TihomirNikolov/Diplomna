@@ -8,7 +8,7 @@ import { Fragment, useState } from "react";
 
 
 export default function Profile() {
-    const { user, isAdmin, logout } = useUser();
+    const { user, isAdmin, isOwner, isEmployee, logout } = useUser();
 
     const { t } = useTranslation();
 
@@ -42,8 +42,8 @@ export default function Profile() {
                 leave="transition ease-in duration-75"
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95">
-                <Menu.Items className="absolute right-0 z-10 mt-2 py-2 w-40 rounded-lg
-                                     bg-lightBackground dark:bg-gray-700 
+                <Menu.Items className="absolute right-0 z-10 mt-2 py-2 w-48 rounded-lg
+                                     bg-lightBackground dark:bg-gray-700 px-2
                                      shadow-lg cursor-pointer text-black dark:text-white">
                     <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
                         {!isLoggedIn() ? (
@@ -65,27 +65,43 @@ export default function Profile() {
                         <label>{t("darkTheme")}</label>
                         <ThemeToggle />
                     </div>
-                    <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
-                        {isAdmin() &&
+                    {isAdmin() &&
+                        <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
                             <Menu.Item>
                                 <Link to='/admin-panel' className="text-center w-full py-1" >
-                                    Admin panel
+                                    Администраторски панел
                                 </Link>
                             </Menu.Item>
-                        }
-                    </div>
-                    <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
-                        {isLoggedIn() && (
-                            <>
-                                <Menu.Item>
-                                    <Link to='/logout' className="text-center w-full py-1"
-                                        onClick={onLoggedOut}>
-                                        {t("signOut")}
-                                    </Link>
-                                </Menu.Item>
-                            </>
-                        )}
-                    </div>
+                        </div>
+                    }
+                    {(isOwner()) &&
+                        <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
+                            <Menu.Item>
+                                <Link to='/owner-panel' className="text-center w-full py-1" >
+                                    Панел за собственик
+                                </Link>
+                            </Menu.Item>
+                        </div>
+                    }
+                    {isEmployee() &&
+                        <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
+                            <Menu.Item>
+                                <Link to='/employee-panel/new-orders' className="text-center w-full py-1" >
+                                    Панел за служител
+                                </Link>
+                            </Menu.Item>
+                        </div>
+                    }
+                    {isLoggedIn() &&
+                        <div className="flex rounded-lg hover:bg-gray-500 hover:dark:bg-gray-500">
+                            <Menu.Item>
+                                <Link to='/logout' className="text-center w-full py-1"
+                                    onClick={onLoggedOut}>
+                                    {t("signOut")}
+                                </Link>
+                            </Menu.Item>
+                        </div>
+                    }
                 </Menu.Items>
             </Transition>
         </Menu>

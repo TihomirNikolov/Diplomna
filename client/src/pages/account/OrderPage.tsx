@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Image } from "@/components/utilities";
 import { useLanguage } from "@/contexts";
 import { authClient, baseOrdersURL, baseProductsURL } from "@/utilities";
-import { OrderWithItems } from "@/utilities/models/account";
+import { OrderStatusEnum, OrderWithItems } from "@/utilities/models/account";
 import { Separator } from "@radix-ui/react-separator";
 import axios from "axios";
 import moment from "moment";
@@ -78,7 +78,7 @@ export default function OrderPage() {
                         </div>
                         <div className="grid grid-cols-2">
                             <span>Статус: </span>
-                            <span>{order?.status}</span>
+                            <span>{t(OrderStatusEnum[order?.status ?? 0].toLocaleLowerCase())}</span>
                         </div>
                     </div>
                 </section>

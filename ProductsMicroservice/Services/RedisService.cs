@@ -80,7 +80,7 @@ namespace ProductsMicroservice.Services
                 visits.Add(new ProductVisit { ProductUrl = key, DateTimes = value });
             }
 
-            var urls = visits.OrderBy(v => v.DateTimes.Count).Take(5).Select(v => v.ProductUrl.Split(prefix)[1]).ToList();
+            var urls = visits.OrderByDescending(v => v.DateTimes.Count).Take(5).Select(v => v.ProductUrl.Split(prefix)[1]).ToList();
 
             var products = await _productsService.GetSearchProductsByUrls(urls);
 

@@ -16,10 +16,12 @@ export default function RoleProtectedRoute({ role }: Props) {
             </div>
         )
     }
-    
-    if (!isAuthenticated || !roles.includes(role) || !isAdmin()) {
+
+    if (isAdmin())
+        return <Outlet />
+
+    if (!isAuthenticated || !roles.includes(role))
         return <Navigate to='/' />
-    }
 
     return <Outlet />
 }

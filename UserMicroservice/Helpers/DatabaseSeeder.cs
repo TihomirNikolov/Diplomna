@@ -43,7 +43,8 @@ namespace UserMicroservice.Helpers
                     FirstName = "Admin",
                     LastName = "Admin"
                 },
-                LockoutEnabled = true
+                LockoutEnabled = true,
+                IsActive= true
             };
 
             if (!context.Users.Any(u => u.UserName == user.UserName))
