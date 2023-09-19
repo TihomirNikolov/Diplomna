@@ -20,19 +20,19 @@ export default function NewOrderMadePage() {
         <div className="flex items-center justify-center h-screen">
             <div className="flex flex-col text-black dark:text-white font-bold text-2xl">
                 <span>
-                    Успешно направихте поръчката си
+                    {t('successfulOrder')}
                 </span>
                 <span>
-                    с № {orderId} !
+                    {t('withNumber')} {orderId} !
                 </span>
                 <span>
-                    Очаквайте доставка до няколко дни!
+                    {t('expectDelivery')}
                 </span>
                 <span>
-                    Може да проверите статуса на поръчката Ви
+                    {t('checkStatus')}
                 </span>
                 <span>
-                    във вашият профил!
+                    {t('yourProfile')}
                 </span>
             </div>
         </div>

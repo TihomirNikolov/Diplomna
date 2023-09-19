@@ -131,14 +131,14 @@ export default function ShoppingCartPage() {
                                     {item.discount > 0 ?
                                         <div className="flex space-x-1">
                                             <span className="line-through decoration-red-600 decoration-2">
-                                                {item.price.toFixed(2)} лв.
+                                                {item.price.toFixed(2)} {t('lv')}.
                                             </span>
                                             <span>
-                                                {item.discountedPrice.toFixed(2)} лв.
+                                                {item.discountedPrice.toFixed(2)} {t('lv')}.
                                             </span>
                                         </div> :
                                         <>
-                                            <span>{item.price.toFixed(2)} лв.</span>
+                                            <span>{item.price.toFixed(2)} {t('lv')}.</span>
                                         </>
                                     }
                                 </div>
@@ -158,7 +158,7 @@ export default function ShoppingCartPage() {
                                     </button>
                                 </div>
                                 <div className="grid md:grid-cols-2 items-center justify-center md:justify-items-end">
-                                    <span>{(item.number * item.discountedPrice).toFixed(2)} лв.</span>
+                                    <span>{(item.number * item.discountedPrice).toFixed(2)} {t('lv')}.</span>
                                     <FontAwesomeIcon icon={['fas', 'x']} className="hidden md:block mr-2 cursor-pointer hover:text-red-600"
                                         onClick={() => removeItem(item)} />
                                 </div>
@@ -168,7 +168,7 @@ export default function ShoppingCartPage() {
                 </section>
                 <div className="flex flex-col">
                     <div className="text-black dark:text-white">
-                        {t('total')}: {sum.toFixed(2)} лв.
+                        {t('total')}: {sum.toFixed(2)} {t('lv')}.
                     </div>
                     <Link to="/checkout/finish" className="mt-2 px-5 py-2 w-48 text-white
                      bg-orange-600 rounded-lg hover:bg-orange-700 text-center" onClick={(e) => onNavigate(e)}>

@@ -1,16 +1,25 @@
+import { cn } from "@/lib/utils";
 import {
   Order,
   OrderStatusEnum,
   statuses,
 } from "@/utilities/models/account/Order";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Listbox, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import {
+  Check,
+  ChevronsUpDown
+} from "lucide-react";
+import moment from "moment";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
-import { ArrowUpDown } from "lucide-react";
-import moment from "moment";
-import { ColumnDef } from "@tanstack/react-table";
+import {
+  Command,
+  CommandGroup,
+  CommandItem
+} from "../ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { SortingArrow } from "../utilities";
 
 interface Props {
   updateStatus: (id: string, status: OrderStatusEnum) => void;
@@ -29,8 +38,8 @@ export default function useOrderColumns({ updateStatus }: Props) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Id на поръчка
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            {t("orderId")}
+            <SortingArrow isSorted={column.getIsSorted()} />
           </Button>
         );
       },
@@ -45,8 +54,8 @@ export default function useOrderColumns({ updateStatus }: Props) {
             className="w-full justify-start"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Users id
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            {t("usersId")}
+            <SortingArrow isSorted={column.getIsSorted()} />
           </Button>
         );
       },
@@ -62,7 +71,7 @@ export default function useOrderColumns({ updateStatus }: Props) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {t("sum")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <SortingArrow isSorted={column.getIsSorted()} />
           </Button>
         );
       },
@@ -78,7 +87,7 @@ export default function useOrderColumns({ updateStatus }: Props) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {t("date")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <SortingArrow isSorted={column.getIsSorted()} />
           </Button>
         );
       },
@@ -103,68 +112,53 @@ export default function useOrderColumns({ updateStatus }: Props) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             {t("status")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <SortingArrow isSorted={column.getIsSorted()} />
           </Button>
         );
       },
       cell: ({ row }) => {
-        return (
-          <Listbox
-            value={t(
-              OrderStatusEnum[row.original.status ?? 0].toLocaleLowerCase(),
-            )}
-            onChange={(value: any) => updateStatus(row.original.id, value.id)}
-          >
-            {({ open }) => (
-              <div className="w-44">
-                <Listbox.Button
-                  className="w-full rounded-lg border bg-white p-1
-                         text-black dark:bg-darkBackground-800 dark:text-white"
-                >
-                  <div className="flex w-full items-center justify-between">
-                    <span>
-                      {t(
-                        OrderStatusEnum[
-                          row.original.status ?? 0
-                        ].toLocaleLowerCase(),
-                      )}
-                    </span>
-                    {open == true ? (
-                      <FontAwesomeIcon icon={["fas", "chevron-up"]} />
-                    ) : (
-                      <FontAwesomeIcon icon={["fas", "chevron-down"]} />
-                    )}
-                  </div>
-                </Listbox.Button>
+        const [open, setOpen] = useState<boolean>(false);
 
-                <Transition
-                  show={open}
-                  as={Fragment}
-                  enter="transition ease-out duration-200"
-                  enterFrom="opacity-0 translate-y-1"
-                  enterTo="opacity-100 translate-y-0"
-                  leave="transition ease-in duration-150"
-                  leaveFrom="opacity-100 translate-y-0"
-                  leaveTo="opacity-0 translate-y-1"
-                >
-                  <Listbox.Options className="absolute z-10 mt-2 w-44 rounded-lg bg-white shadow-lg dark:bg-darkBackground-800">
-                    {statuses.map((value, index) => {
-                      return (
-                        <Listbox.Option
-                          value={value}
-                          key={index}
-                          className="w-full cursor-pointer py-1 text-center text-black
-                                            hover:text-orange-500 dark:text-white hover:dark:text-orange-500"
-                        >
-                          {t(value.key.toLocaleLowerCase())}
-                        </Listbox.Option>
-                      );
-                    })}
-                  </Listbox.Options>
-                </Transition>
-              </div>
-            )}
-          </Listbox>
+        return (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-[200px] justify-between"
+              >
+                {t(OrderStatusEnum[row.original.status])}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandGroup>
+                  {statuses.map((status, index) => (
+                    <CommandItem
+                      key={index}
+                      value={status.id.toString()}
+                      onSelect={(currentValue) => {
+                        updateStatus(row.original.id, parseInt(currentValue));
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          row.original.status == status.id
+                            ? "opacity-100"
+                            : "opacity-0",
+                        )}
+                      />
+                      {t(OrderStatusEnum[status.id])}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
         );
       },
       size: 100,

@@ -9,12 +9,6 @@ import { PaymentCardComponent } from "../account";
 import { CreateCard, PaymentCardHandle } from "../account/PaymentCardComponent";
 import { useUser } from "@/contexts";
 
-const initialCard: Card = {
-    id: '',
-    last4: '',
-    type: ''
-}
-
 const createNewCard: Card = {
     id: '',
     last4: '',

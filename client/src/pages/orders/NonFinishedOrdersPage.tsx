@@ -42,10 +42,10 @@ export default function NonFinishedOrdersPage() {
       });
       setOrders((prev) => {
         var newOrders = [...prev];
-
         if (
           status == OrderStatusEnum.New ||
-          status == OrderStatusEnum.Delivered
+          status == OrderStatusEnum.Delivered ||
+          status == OrderStatusEnum.Cancelled
         ) {
           newOrders = newOrders.filter((o) => o.id != orderId);
         } else {

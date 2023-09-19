@@ -56,7 +56,7 @@ const CountriesComboBox = forwardRef<CountriesComboboxHandle, Props>((props: Pro
 
     return (
         <div>
-            <label>{props.labelText}</label>
+            <span className="text-black dark:text-white">{props.labelText}</span>
             <Combobox>
                 <div className="relative mt-1">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg

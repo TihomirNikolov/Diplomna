@@ -60,7 +60,7 @@ export default function FinishedOrdersPage() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Id на поръчка
+            {t("orderId")}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
@@ -76,7 +76,7 @@ export default function FinishedOrdersPage() {
             className="w-full justify-start"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Users id
+            {t("usersId")}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
@@ -141,7 +141,7 @@ export default function FinishedOrdersPage() {
       cell: ({ row }) => {
         return (
           <span>
-            {t(OrderStatusEnum[row.original.status ?? 0].toLocaleLowerCase())}
+            {t(OrderStatusEnum[row.original.status ?? 0])}
           </span>
         );
       },
@@ -260,6 +260,9 @@ export default function FinishedOrdersPage() {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(value) => {
+                  return t(value);
+                }}
               />
               <YAxis
                 stroke="#888888"

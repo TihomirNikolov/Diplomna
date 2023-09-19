@@ -183,7 +183,7 @@ namespace OrdersMicroservice.Services
 
         public async Task<List<OrderDTO>> GetFinishedOrdersByMonthAsync(int month)
         {
-            var orders = await _dbContext.Orders.Where(o => o.OrderDate.Month == month).ToListAsync();
+            var orders = await _dbContext.Orders.Where(o => o.OrderDate.Month == month && o.Status == OrderStatusEnum.Delivered).ToListAsync();
 
             return _mapper.Map<List<OrderDTO>>(orders);
         }

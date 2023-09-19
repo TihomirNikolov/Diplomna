@@ -40,7 +40,7 @@ export default function ForgottenPasswordPage() {
                         validate={validateEmail} immediateValdation={true}
                         validationMessage={t('errorInput.emailInvalid')!} />
                     <div className="space-y-1">
-                        <button type="submit" tabIndex={6} className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('send')}</button>
+                        <button type="submit" className="text-white bg-blue-600 rounded-lg w-full py-1.5 hover:bg-blue-700" >{t('send')}</button>
                     </div>
                 </form>
             </div>

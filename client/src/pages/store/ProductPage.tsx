@@ -157,7 +157,7 @@ export default function ProductPage() {
                                     </Carousel>
                                     {!product!.isAvailable &&
                                         <div className="absolute w-24 bottom-[152px] -right-2 text-center bg-red-600 rounded-lg -rotate-45">
-                                            <span>Изчерпан</span>
+                                            <span>{t('outOfStock')}</span>
                                         </div>
                                     }
                                     {product!.discount > 0 &&
