@@ -64,7 +64,13 @@ namespace ProductsMicroservice.Controllers
         [Route("category/{category}/{page}/{itemsPerPage}")]
         public async Task<IActionResult> GetCoverProductsByPageAndItems([FromBody] GetProductsByCategoryRequest request, string category, string page, string itemsPerPage)
         {
-            return Ok(await _productsService.GetCoverProductsByCategoryPageAndItemsAsync(category, page, itemsPerPage, request.CheckedFilters, request.SortingType));
+            var pageResult = int.TryParse(page, out var parsedPage);
+            var itemsPerPageResult = int.TryParse(itemsPerPage, out var parsedItemsPerPage);
+
+            if (!pageResult || !itemsPerPageResult)
+                return BadRequest();
+
+            return Ok(await _productsService.GetCoverProductsByCategoryPageAndItemsAsync(category, parsedPage, parsedItemsPerPage, request.CheckedFilters, request.SortingType));
         }
 
         [HttpGet]
@@ -101,11 +107,17 @@ namespace ProductsMicroservice.Controllers
             return Ok(products);
         }
 
-        [HttpGet]
-        [Route("search/getall/{searchText}")]
-        public async Task<IActionResult> GetAllBySearchText(string searchText)
+        [HttpPost]
+        [Route("search/getall/{searchText}/{page}/{itemsPerPage}")]
+        public async Task<IActionResult> GetAllBySearchText([FromBody] GetProductsBySearchTextRequest request,string searchText, string page, string itemsPerPage)
         {
-            var products = await _productsService.GetAllBySearchTextAsync(searchText);
+            var pageResult = int.TryParse(page, out var parsedPage);
+            var itemsPerPageResult = int.TryParse(itemsPerPage, out var parsedItemsPerPage);
+
+            if (!pageResult || !itemsPerPageResult)
+                return BadRequest();
+
+            var products = await _productsService.GetAllBySearchTextAsync(searchText, parsedPage, parsedItemsPerPage, request.SortingType);
 
             return Ok(products);
         }

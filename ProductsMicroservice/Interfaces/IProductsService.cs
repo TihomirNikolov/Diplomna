@@ -14,7 +14,9 @@ namespace ProductsMicroservice.Interfaces
         Task<List<ProductDTO>> GetProductsByUrlsAsync(List<string> productUrls);
         Task<List<CoverProductDTO>> GetCoverProductsAsync();
         Task<List<CoverProductDTO>> GetCoverProductsByCategoryAsync(string categoryName);
-        Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, string pageNumber, string itemsPerPage, List<CheckedFilter> filters, string sortingType);
+        Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, int pageNumber, 
+                                                                                int itemsPerPage,
+                                                                                List<CheckedFilter> filters, string sortingType);
         Task<List<Item<List<Item<string, string>>, Filter>>> GetTagsAsync(CategoryDTO category);
         Task<bool> CreateProductAsync(Product product);
         Task<bool> CheckIfProductExistsAsync(string url);
@@ -22,7 +24,8 @@ namespace ProductsMicroservice.Interfaces
         Task<bool> AddReviewAsync(ProductReview review, string productUrl);
         Task<bool> RemoveReviewAsync(ProductReview review, string productUrl);
         Task<List<SearchProductDTO>> SearchByTextAsync (string searchText);
-        Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText);
+        Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText, int pageNumber,
+                                                            int itemsPerPage, string sortingType);
         Task<List<SearchProductDTO>> GetSearchProductsByUrls(List<string> urls);
         Task<List<ShoppingCartItemDTO>> GetShoppingCartItemsInformationAsync(List<string> ids);
         Task<List<OrderItemDTO>> GetOrderItemsInformationAsync(List<string> ids);

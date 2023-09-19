@@ -217,9 +217,9 @@ namespace ProductsMicroservice.Services
             return products;
         }
 
-        public async Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, string pageNumber, 
-                                                                                            string itemsPerPage, List<CheckedFilter> filters,
-                                                                                            string sortingType)
+        public async Task<CoverProductsResponse> GetCoverProductsByCategoryPageAndItemsAsync(string categoryName, int pageNumber, 
+                                                                                             int itemsPerPage, List<CheckedFilter> filters,
+                                                                                             string sortingType)
         {
             await CreateCollectionIfDoesntExistAsync();
 
@@ -264,8 +264,8 @@ namespace ProductsMicroservice.Services
 
             var collection = await db.GetCollection<ProductDocument>(CollectionName).Find(combinedFilter)
                 .Sort(sortDefinition)
-                .Skip((int.Parse(pageNumber) - 1) * int.Parse(itemsPerPage))
-                .Limit(int.Parse(itemsPerPage))
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Limit(itemsPerPage)
                 .ToListAsync();
 
             var products = _mapper.Map<List<CoverProductDTO>>(collection);
@@ -384,11 +384,30 @@ namespace ProductsMicroservice.Services
             return products;
         }
 
-        public async Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText)
+        public async Task<List<CoverProductDTO>> GetAllBySearchTextAsync(string searchText, int pageNumber,
+                                                                         int itemsPerPage, string sortingType)
         {
             await CreateCollectionIfDoesntExistAsync();
 
             var db = GetDatabase();
+
+            var sortingBuilder = Builders<ProductDocument>.Sort;
+            SortDefinition<ProductDocument> sortDefinition;
+            switch (sortingType)
+            {
+                case "lowestPrice":
+                    sortDefinition = sortingBuilder.Ascending(p => p.Price);
+                    break;
+                case "highestPrice":
+                    sortDefinition = sortingBuilder.Descending(p => p.Price);
+                    break;
+                case "newest":
+                    sortDefinition = sortingBuilder.Descending(p => p.AddedDate);
+                    break;
+                default:
+                    sortDefinition = sortingBuilder.Descending(p => p.AddedDate);
+                    break;
+            }
 
             var filters = Builders<ProductDocument>.Filter.Or(
                 Builders<ProductDocument>.Filter.ElemMatch(p => p.Name, name => name.Value.ToLower().Contains(searchText.ToLower())),
@@ -396,7 +415,12 @@ namespace ProductsMicroservice.Services
                 Builders<ProductDocument>.Filter.ElemMatch(p => p.Tags, tags => tags.Value.Any(t => t.Value.ToLower().Contains(searchText.ToLower())))
                 );
 
-            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName).Find(filters).ToListAsync();
+            var productDocuments = await db.GetCollection<ProductDocument>(CollectionName)
+                                           .Find(filters)
+                                           .Sort(sortDefinition)
+                                           .Skip((pageNumber - 1) * itemsPerPage)
+                                           .Limit(itemsPerPage)
+                                           .ToListAsync();
 
             var products = _mapper.Map<List<CoverProductDTO>>(productDocuments);
 
