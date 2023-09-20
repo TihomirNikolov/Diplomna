@@ -16,7 +16,6 @@ namespace ProductsMicroservice.Services
     {
         private readonly IHttpService _httpService;
         private readonly IStoresService _storesService;
-        private readonly IStoreProductService _storeProductService;
 
         private readonly IMapper _mapper;
 
@@ -29,14 +28,12 @@ namespace ProductsMicroservice.Services
                                IMapper mapper,
                                IHttpContextAccessor httpContextAccessor,
                                IHttpService httpService,
-                               IStoresService storesService,
-                               IStoreProductService storeProductService) : base(mongoClient)
+                               IStoresService storesService) : base(mongoClient)
         {
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _httpService = httpService;
             _storesService = storesService;
-            _storeProductService = storeProductService;
         }
 
         public async Task<long> GetProductCountByCategoryUrlAsync(string categoryUrl)
@@ -326,7 +323,7 @@ namespace ProductsMicroservice.Services
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
                 product.IsAvailable = true;
-                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
+                var storeProductInfo = await _storesService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
                 product.Discount = storeProductInfo.Discount;
                 product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }
@@ -480,7 +477,7 @@ namespace ProductsMicroservice.Services
 
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
-                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.ProductId);
+                var storeProductInfo = await _storesService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.ProductId);
                 product.Discount = storeProductInfo.Discount;
                 product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }
@@ -561,7 +558,7 @@ namespace ProductsMicroservice.Services
                 product.StoreId = nearestStore.Store.Id;
                 product.Price = Math.Round(product.Price + product.Price * (decimal)nearestStore.Coefficient, 2);
                 product.IsAvailable = true;
-                var storeProductInfo = await _storeProductService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
+                var storeProductInfo = await _storesService.GetProductInfoByStoreAsync(nearestStore.Store.Id, product.Id);
                 product.Discount = storeProductInfo.Discount;
                 product.DiscountedPrice = Math.Round(product.Price * ((100 - product.Discount) / 100), 2);
             }

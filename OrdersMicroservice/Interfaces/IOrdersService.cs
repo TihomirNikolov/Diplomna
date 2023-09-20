@@ -19,6 +19,8 @@ namespace OrdersMicroservice.Interfaces
 
         Task<List<OrderDTO>> GetFinishedOrdersByMonthAsync(int year);
 
+        Task<List<FullOrderItemDTO>> GetOrderItemsAsync(string orderId);
+
         Task UpdateOrderStatusAsync(string id, OrderStatusEnum status);
     }
 }

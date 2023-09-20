@@ -1,19 +1,28 @@
 import useOrderColumns from "@/components/hooks/useOrderColumns";
 import { DataTable } from "@/components/ui/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { authClient, baseOrdersURL } from "@/utilities";
-import { Order, OrderStatusEnum } from "@/utilities/models/account";
+import { Image } from "@/components/utilities";
+import { authClient, baseOrdersURL, baseProductsURL } from "@/utilities";
+import {
+  FullOrderItem,
+  Order,
+  OrderStatusEnum,
+} from "@/utilities/models/account";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SlideDown from "react-slidedown";
 
 export default function NewOrdersPage() {
   const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
-
+  const [selectedOrder, setSelectedOrder] = useState<Order>();
+  const [orderItems, setOrderItems] = useState<FullOrderItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [areDetailsVisible, setAreDetailsVisible] = useState<boolean>(false);
+  const columns = useOrderColumns({ updateStatus, onDetailsClicked });
 
-  const columns = useOrderColumns({ updateStatus });
+  const slideDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -48,6 +57,22 @@ export default function NewOrdersPage() {
     }
   }
 
+  async function onDetailsClicked(orderId: string) {
+    try {
+      var response = await authClient.get(
+        `${baseOrdersURL()}api/orders/order-items/${orderId}`,
+      );
+      var items = response.data as FullOrderItem[];
+      setOrderItems(items);
+      setSelectedOrder(orders.find((o) => o.id == orderId));
+      setAreDetailsVisible(true);
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    slideDownRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [areDetailsVisible]);
+
   return (
     <div className="mt-5">
       {isLoading ? (
@@ -55,6 +80,23 @@ export default function NewOrdersPage() {
       ) : (
         <DataTable columns={columns} data={orders} />
       )}
+      <SlideDown ref={slideDownRef} className={"my-dropdown-slidedown"}>
+        {areDetailsVisible ? (
+          <div>
+            {orderItems.map((item, index) => {
+              return (
+                <div key={`${item.name} ${index}`}>
+                  <Image
+                    alt="product"
+                    src={`${baseProductsURL()}${item.imageUrl}`}
+                    className="w-56"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+      </SlideDown>
     </div>
   );
 }

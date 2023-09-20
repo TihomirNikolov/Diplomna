@@ -11,13 +11,10 @@ namespace ProductsMicroservice.Controllers
     public class StoresController : ControllerBase
     {
         private readonly IStoresService _storesService;
-        private readonly IStoreProductService _storeProductService;
 
-        public StoresController(IStoresService storesService,
-                                IStoreProductService storeProductService)
+        public StoresController(IStoresService storesService)
         {
             _storesService = storesService;
-            _storeProductService = storeProductService;
         }
 
         [HttpGet]
@@ -42,7 +39,7 @@ namespace ProductsMicroservice.Controllers
         [Route("add/product")]
         public async Task<IActionResult> AddProductToStore([FromBody] AddProductToStoreRequest request)
         {
-            var result = await _storeProductService.AddProductToStoreAsync(request.StoreProduct.ProductId, request.StoreProduct.StoreId, request.StoreProduct.Count);
+            var result = await _storesService.AddProductToStoreAsync(request.StoreProduct.ProductId, request.StoreProduct.StoreId, request.StoreProduct.Count);
 
             return Ok();
         }
@@ -51,7 +48,7 @@ namespace ProductsMicroservice.Controllers
         [Route("available")]
         public async Task<IActionResult> AreProductsAvailable([FromBody] AreProductsAvailableRequest request)
         {
-            var result = await _storeProductService.AreProductsAvailableAsync(request.StoreProducts);
+            var result = await _storesService.AreProductsAvailableAsync(request.StoreProducts);
 
             return Ok(result);
         }
@@ -60,7 +57,7 @@ namespace ProductsMicroservice.Controllers
         [Route("buy/products")]
         public async Task<IActionResult> BuyProductFromStore([FromBody] BuyProductsFromStoreRequest request)
         {
-            var result = await _storeProductService.BuyProductsFromStoreAsync(request.StoreProducts);
+            var result = await _storesService.BuyProductsFromStoreAsync(request.StoreProducts);
 
             return Ok();
         }

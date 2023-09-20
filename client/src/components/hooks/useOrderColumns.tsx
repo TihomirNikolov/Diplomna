@@ -5,27 +5,24 @@ import {
   statuses,
 } from "@/utilities/models/account/Order";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  Check,
-  ChevronsUpDown
-} from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
-import {
-  Command,
-  CommandGroup,
-  CommandItem
-} from "../ui/command";
+import { Command, CommandGroup, CommandItem } from "../ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { SortingArrow } from "../utilities";
 
 interface Props {
   updateStatus: (id: string, status: OrderStatusEnum) => void;
+  onDetailsClicked: (id: string) => void;
 }
 
-export default function useOrderColumns({ updateStatus }: Props) {
+export default function useOrderColumns({
+  updateStatus,
+  onDetailsClicked,
+}: Props) {
   const { t } = useTranslation();
 
   const columns: ColumnDef<Order>[] = [
@@ -159,6 +156,27 @@ export default function useOrderColumns({ updateStatus }: Props) {
               </Command>
             </PopoverContent>
           </Popover>
+        );
+      },
+      size: 100,
+    },
+    {
+      accessorKey: "orderDate",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" className="w-full justify-start">
+            Details
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <button
+            className="w-full text-center"
+            onClick={() => onDetailsClicked(row.original.id)}
+          >
+            Details
+          </button>
         );
       },
       size: 100,

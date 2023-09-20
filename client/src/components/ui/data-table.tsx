@@ -65,10 +65,10 @@ export function DataTable<TData, TValue>({
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers.map((header, index) => {
                 return (
                   <TableHead
-                    key={header.id}
+                    key={index}
                     style={{
                       width: header.getSize(),
                     }}
@@ -95,14 +95,14 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody className="text-black dark:text-white">
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+            table.getRowModel().rows.map((row, index) => (
               <TableRow
-                key={row.id}
+                key={index}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
+                {row.getVisibleCells().map((cell, index) => (
                   <TableCell
-                    key={cell.id}
+                  key={index}
                     style={{
                       width: cell.column.getSize(),
                     }}

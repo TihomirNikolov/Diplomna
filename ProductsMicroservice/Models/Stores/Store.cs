@@ -9,5 +9,7 @@ namespace ProductsMicroservice.Models.Stores
         public List<Item<string, string>> Description { get; set; } = default!;
 
         public Location Location { get; set; } = default!;
+
+        public List<StoreProduct> Products { get; set; } = default!;
     }
 }

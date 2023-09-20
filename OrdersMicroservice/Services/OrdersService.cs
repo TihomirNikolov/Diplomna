@@ -6,8 +6,6 @@ using OrdersMicroservice.Models;
 using OrdersMicroservice.Models.Database;
 using OrdersMicroservice.Models.DTOs;
 using System.Globalization;
-using System.Xml.Schema;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OrdersMicroservice.Services
 {
@@ -186,6 +184,15 @@ namespace OrdersMicroservice.Services
             var orders = await _dbContext.Orders.Where(o => o.OrderDate.Month == month && o.Status == OrderStatusEnum.Delivered).ToListAsync();
 
             return _mapper.Map<List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<FullOrderItemDTO>> GetOrderItemsAsync(string orderId)
+        {
+            var order = await _dbContext.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+
+            var orderItems = await _httpService.GetOrderItemsAsync(order.OrderItems.Select(o => o.ProductId).ToList());
+
+            return _mapper.Map<List<FullOrderItemDTO>>(orderItems);
         }
     }
 }

@@ -137,5 +137,14 @@ namespace OrdersMicroservice.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("order-items/{orderId}")]
+        public async Task<IActionResult> GetOrderItems(string orderId)
+        {
+            var items = await _ordersService.GetOrderItemsAsync(orderId);
+
+            return Ok(items);
+        }
     }
 }
